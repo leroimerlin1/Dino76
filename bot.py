@@ -1,227 +1,45 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>DINO 76 🍣</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+import os
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0;
-      padding: 15px;
-      background: url('https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=1050&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: #ffffff;
-    }
+# Récupère le token depuis l'environnement
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
-    h1 {
-      text-align: center;
-      text-shadow: 1px 1px 4px #000;
-      margin-bottom: 20px;
-    }
+if not BOT_TOKEN:
+    raise ValueError("Erreur : La variable d'environnement BOT_TOKEN n'est pas définie !")
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .product, .detail {
-      background: rgba(0,0,0,0.7);
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      backdrop-filter: blur(5px);
-      text-align: center;
-    }
-
-    .product img {
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      background: #ff6347;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .back {
-      background: #444;
-    }
-
-    .price {
-      color: #00ff9c;
-      font-weight: bold;
-    }
-
-    video {
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 12px;
-    }
-  </style>
-</head>
-
-<body>
-
-<h1>🦖🍣 DINO 76</h1>
-
-<!-- ACCUEIL -->
-<div id="home">
-  <div class="products">
-    <div class="product">
-      <img src="caliplates-thumb.jpg" alt="FROZEN SIFT 🥶">
-      <h3>🥶 FROZEN SIFT</h3>
-      <button onclick="openProduct('frozen')">Voir</button>
-    </div>
-
-    <div class="product">
-      <img src="cali-thumb.jpg" alt="Cali weed 🇺🇸🇺🇸">
-      <h3>🇺🇸 Cali weed</h3>
-      <button onclick="openProduct('cali')">Voir</button>
-    </div>
-
-    <div class="product">
-      <img src="gaz-thumb.jpg" alt="Gaz fruit 90u⚡️">
-      <h3>⚡️ Gaz fruit 90u</h3>
-      <button onclick="openProduct('gaz')">Voir</button>
-    </div>
-
-    <div class="product">
-      <img src="120u-thumb.jpg" alt="CALIMOUNTAIN FARM 🧑‍🌾⛰️">
-      <h3>🧑‍🌾⛰️ CALIMOUNTAIN FARM 120u</h3>
-      <button onclick="openProduct('calimountain')">Voir</button>
-    </div>
-  </div>
-</div>
-
-<!-- DÉTAIL -->
-<div id="productDetail" style="display:none;"></div>
-
-<script>
-const contact = "@DINOS76S";
-
-const products = {
-  frozen: {
-    name: "FROZEN SIFT 🥶",
-    video: "caliplates.mp4",
-    description: `🧑‍⚕️
-- Garlic coockie 🍪🍪✅
-- JELLY DONUTS 🍩 🌈✅
-- 🍰 ✅
-
-Nous sommes sur une gamme très solide et une farm réputée pour ses TERPS gourmands. Le meilleur du Frozen !
-🍑🍓🍋🥭🍊
-
-Promotion 25% pour ouverture la famille !!!`,
-    prices: [
-      "2,5G : 50€",
-      "5G : 90€",
-      "10G : 180€",
-      "20G : 350€",
-      "25G : 400€"
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Fonction qui répond à la commande /start
+    en envoyant un bouton pour ouvrir la mini-app
+    """
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                text="🚀 Ouvrir Mini-App DINO 76",
+                web_app=WebAppInfo(url="https://leroimerlin1.github.io/Dino76/")
+            )
+        ]
     ]
-  },
-  cali: {
-    name: "Cali weed 🇺🇸🇺🇸",
-    video: "cali.mp4",
-    description: `- runtz 🌈 ✅ 
-- Tropicana strawbeery 🌴🍓 ✅ 
 
-Nous sommes sur une gamme 
-de qualité et prix accessible à tous. 
-Une cali avec de très bons TERPS, niveau odor et high. La famille c’est du lourd !`,
-    prices: [
-      "3G : 40€",
-      "5G : 60€",
-      "10G : 120€",
-      "20G : 230€",
-      "25G : 300€"
-    ]
-  },
-  gaz: {
-    name: "Gaz fruit 90u⚡️",
-    video: "gaz.mp4",
-    description: `- Papaya dolce 🥭 ✅ 
-- Mimi cheese 🧀 ✅ 
+    reply_markup = InlineKeyboardMarkup(keyboard)
 
-On est sur la farm du moment 
-On voit ça partout. Ça la team frais et fruité en bouche high carré la Team ! 💨`,
-    prices: [
-      "10G : 130€",
-      "25G : 240€",
-      "50G : 450€"
-    ]
-  },
-  calimountain: {
-    name: "CALIMOUNTAIN FARM 🧑‍🌾⛰️ 120u PREMIUM ⭐️",
-    video: "120u.mp4",
-    description: `- CANDY GAZ 🍬 ⛽️ ✅ 
-- GLITTER BOMB 💣 ✅ 
-- APPLE MINTZ 🍏 ✅`,
-    prices: [
-      "5G : 70€",
-      "10G : 140€",
-      "20G : 260€",
-      "25G : 310€"
-    ]
-  }
-};
+    await update.message.reply_text(
+        "🦖 Bienvenue sur DINO 76 ! Cliquez ci-dessous pour accéder à la mini-app :",
+        reply_markup=reply_markup
+    )
 
-function openProduct(key) {
-  const p = products[key];
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Tapez /start pour ouvrir la mini-app DINO 76.")
 
-  let html = `<div class="detail">`;
+# Crée l'application du bot
+app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-  // Ajouter la vidéo si elle existe
-  if(p.video) {
-    html += `<video src="${p.video}" controls></video>`;
-  }
+# Ajouter les handlers
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("help", help_command))
 
-  html += `
-      <h2>${p.name}</h2>
-      <p>${p.description}</p>
-      <h4>💰 Tarifs</h4>
-  `;
+print("🤖 Bot DINO 76 démarré !")
 
-  p.prices.forEach(price => {
-    html += `<p class="price">${price}</p>`;
-  });
-
-  const message = encodeURIComponent(
-    `Bonjour, je souhaite commander : ${p.name}`
-  );
-
-  html += `
-      <button onclick="order('${message}')">📩 Commander</button>
-      <button class="back" onclick="goBack()">⬅ Retour</button>
-    </div>
-  `;
-
-  document.getElementById("home").style.display = "none";
-  const detail = document.getElementById("productDetail");
-  detail.innerHTML = html;
-  detail.style.display = "block";
-}
-
-function goBack() {
-  document.getElementById("productDetail").style.display = "none";
-  document.getElementById("home").style.display = "block";
-}
-
-function order(message) {
-  window.open(`https://t.me/${contact.replace("@","")}?text=${message}`, "_blank");
-}
-</script>
-
-</body>
-</html>
+# Lancement du polling
+app.run_polling()
