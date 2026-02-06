@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -31,6 +31,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    justify-items: center;
   }
 
   .product {
@@ -42,6 +43,7 @@
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s ease;
+    width: 200px;
   }
 
   .product:hover {
@@ -56,53 +58,39 @@
   }
 
   .product h3 {
-    font-size: 18px;
+    font-size: 22px;
     margin: 5px 0;
   }
 
-  .product p {
-    font-size: 14px;
-    color: #00ff9c;
-    margin: 4px 0;
+  .detail {
+    display: none;
+    position: fixed;
+    top: 0; left:0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
   }
 
-  .detail {
-    background: rgba(0,0,0,0.65);
+  .detail-content {
+    background: rgba(0,0,0,0.85);
     border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-    max-width: 900px;
-    margin: 0 auto;
+    padding: 20px;
+    max-width: 450px;
+    width: 90%;
     text-align: center;
     position: relative;
   }
 
-  .detail h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  .detail p {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-
-  .detail video {
-    width: 90%;
-    max-width: 350px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-  }
+  .detail-content h2 { font-size: 22px; margin-bottom:10px; }
+  .detail-content p { font-size:14px; margin-bottom:10px; }
+  .detail-content video { width: 100%; border-radius: 12px; margin-bottom:15px; }
 
   .back {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    background: #444;
-    font-size: 14px;
+    position: absolute; top: 10px; left: 10px;
+    padding: 8px 12px; border-radius: 12px;
+    background: #444; font-size: 14px; cursor:pointer;
   }
 
   .price-grid {
@@ -114,30 +102,42 @@
 
   .price-cell {
     background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 8px;
-    font-weight: bold;
-    font-size: 14px;
+    border-radius: 8px; padding:8px;
+    font-weight: bold; font-size:14px;
+    cursor: pointer;
   }
 
   button.order-btn {
-    margin-top: 10px;
-    padding: 12px;
-    width: 60%;
-    border: none;
-    border-radius: 50px;
-    background: #ff6347;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: 10px; padding: 12px;
+    width: 60%; border: none; border-radius: 50px;
+    background: #ff6347; color:white; font-size:16px;
+    cursor:pointer; display:block; margin:auto;
   }
 
+  #cart {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #ff6347; padding: 10px 15px; border-radius: 50px;
+    cursor: pointer; font-weight:bold; z-index:20;
+  }
+
+  #cartModal {
+    display:none; position: fixed; top:0; left:0;
+    width:100%; height:100%; background: rgba(0,0,0,0.7);
+    justify-content:center; align-items:center; z-index:30;
+  }
+
+  #cartContent {
+    background: rgba(0,0,0,0.85); border-radius:12px; padding:20px;
+    max-width:450px; width:90%; text-align:center;
+  }
+
+  #cartContent input, #cartContent textarea {
+    width: 90%; margin:5px 0; padding:8px; border-radius:8px; border:none;
+  }
+
+  .btn-small { padding:6px 10px; border-radius:12px; margin:3px; cursor:pointer; }
 </style>
 </head>
-
 <body>
 
 <h1>🦖🍣 DINO TERPS 76</h1>
@@ -148,22 +148,18 @@
       <img src="caliplates-thumb.jpg" alt="FROZEN SIFT 🥶">
       <h3>🥶 FROZEN SIFT</h3>
     </div>
-
     <div class="product" onclick="openProduct('cali')">
       <img src="cali-thumb.jpg" alt="Cali weed 🇺🇸">
       <h3>🇺🇸 Cali weed</h3>
     </div>
-
     <div class="product" onclick="openProduct('gaz')">
       <img src="gaz-thumb.jpg" alt="Gaz fruit 90u⚡️">
       <h3>⚡️ Gaz fruit 90u</h3>
     </div>
-
     <div class="product" onclick="openProduct('calimountain')">
       <img src="120u-thumb.jpg" alt="CALIMOUNTAIN FARM 120u">
       <h3>🧑‍🌾 CALIMOUNTAIN 120u</h3>
     </div>
-
     <div class="product" onclick="openProduct('farm')">
       <img src="farm-thumb.jpg" alt="FRESH FROZEN SIF KINGZ FARM">
       <h3>🥶 FRESH FROZEN SIF</h3>
@@ -171,111 +167,120 @@
   </div>
 </div>
 
-<div id="productDetail" style="display:none; position: relative;"></div>
+<div id="productDetail" class="detail"></div>
+<div id="cart">🛒 Panier (0)</div>
+<div id="cartModal">
+  <div id="cartContent">
+    <h2>🛒 Votre Panier</h2>
+    <div id="cartItems"></div>
+    <h3>Total: <span id="cartTotal">0€</span></h3>
+    <button class="btn-small" onclick="chooseDelivery()">Commander</button>
+    <button class="btn-small" onclick="closeCart()">Fermer</button>
+  </div>
+</div>
 
 <script>
 const contact = "@DINOS76S";
+let cart = [];
 
 const products = {
-  frozen: {
-    name: "FROZEN SIFT 🥶",
-    video: "caliplates.mp4",
-    description: `🧑‍⚕️ Garlic coockie 🍪, Jelly Donuts 🍩, Cake 🍰
-
-Gamme solide et TERPS gourmands. Promotion 25%!`,
-    prices: [
-      {qty:"2,5G", price:"50€"},
-      {qty:"5G", price:"90€"},
-      {qty:"10G", price:"180€"},
-      {qty:"20G", price:"350€"},
-      {qty:"25G", price:"400€"}
-    ]
-  },
-  cali: {
-    name: "Cali weed 🇺🇸",
-    video: "cali.mp4",
-    description: `Runtz 🌈, Tropicana Strawberry 🌴🍓
-
-Gamme qualité prix accessible.`,
-    prices: [
-      {qty:"3G", price:"40€"},
-      {qty:"5G", price:"60€"},
-      {qty:"10G", price:"120€"},
-      {qty:"20G", price:"230€"},
-      {qty:"25G", price:"300€"}
-    ]
-  },
-  gaz: {
-    name: "Gaz fruit 90u⚡️",
-    video: "gaz.mp4",
-    description: `Papaya Dolce 🥭, Mimi Cheese 🧀
-
-Farm du moment, frais et fruité.`,
-    prices: [
-      {qty:"10G", price:"130€"},
-      {qty:"25G", price:"240€"},
-      {qty:"50G", price:"450€"}
-    ]
-  },
-  calimountain: {
-    name: "CALIMOUNTAIN FARM 120u PREMIUM",
-    video: "120u.mp4",
-    description: `Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏`,
-    prices: [
-      {qty:"5G", price:"70€"},
-      {qty:"10G", price:"140€"},
-      {qty:"20G", price:"260€"},
-      {qty:"25G", price:"310€"}
-    ]
-  },
-  farm: {
-    name: "FRESH FROZEN SIF 🥶 KINGZ FARM",
-    video: "farm.mp4",
-    description: `PERMANENT MAKER x GELATO 41 ⛽️🍦`,
-    prices: [
-      {qty:"5G", price:"70€"},
-      {qty:"10G", price:"140€"},
-      {qty:"20G", price:"250€"},
-      {qty:"25G", price:"300€"}
-    ]
-  }
+  frozen: { name:"FROZEN SIFT 🥶", video:"caliplates.mp4", description:"🧑‍⚕️ Garlic coockie 🍪, Jelly Donuts 🍩, Cake 🍰\nGamme solide et TERPS gourmands.", prices:[{qty:"2,5G",price:50},{qty:"5G",price:90},{qty:"10G",price:180}] },
+  cali: { name:"Cali weed 🇺🇸", video:"cali.mp4", description:"Runtz 🌈, Tropicana Strawberry 🌴🍓", prices:[{qty:"3G",price:40},{qty:"5G",price:60},{qty:"10G",price:120}] },
+  gaz: { name:"Gaz fruit 90u⚡️", video:"gaz.mp4", description:"Papaya Dolce 🥭, Mimi Cheese 🧀", prices:[{qty:"10G",price:130},{qty:"25G",price:240}] },
+  calimountain: { name:"CALIMOUNTAIN FARM 120u PREMIUM", video:"120u.mp4", description:"Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏", prices:[{qty:"5G",price:70},{qty:"10G",price:140}] },
+  farm: { name:"FRESH FROZEN SIF 🥶 KINGZ FARM", video:"farm.mp4", description:"PERMANENT MAKER x GELATO 41 ⛽️🍦", prices:[{qty:"5G",price:70},{qty:"10G",price:140}] }
 };
 
-function openProduct(key) {
-  const p = products[key];
-  let html = `<div class="detail">`;
-
-  // Bouton retour en haut à gauche
-  html += `<button class="back" onclick="goBack()">⬅ Retour</button>`;
-
-  // Vidéo séparée
-  if(p.video) html += `<video src="${p.video}" controls></video>`;
-
-  html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
-
-  // Grille de prix
-  html += `<div class="price-grid">`;
-  p.prices.forEach(pr => {
-    html += `<div class="price-cell">${pr.qty}<br>${pr.price}</div>`;
+function openProduct(key){
+  const p=products[key];
+  let html=`<div class="detail-content">`;
+  html+=`<button class="back" onclick="goBack()">⬅ Retour</button>`;
+  html+=`<video src="${p.video}" controls></video>`;
+  html+=`<h2>${p.name}</h2><p>${p.description}</p>`;
+  html+=`<h4>💰 Tarifs</h4><div class="price-grid">`;
+  p.prices.forEach((pr,i)=>{
+    html+=`<div class="price-cell" onclick="addToCart('${key}',${i})">${pr.qty}<br>${pr.price}€</div>`;
   });
-  html += `</div>`;
-
-  // Bouton commander rond
-  html += `<button class="order-btn" onclick="order()">📩 Commander</button></div>`;
-
-  document.getElementById("home").style.display = "none";
-  const detail = document.getElementById("productDetail");
-  detail.innerHTML = html;
-  detail.style.display = "block";
+  html+=`</div></div>`;
+  document.getElementById("home").style.display="none";
+  const detail=document.getElementById("productDetail");
+  detail.innerHTML=html;
+  detail.style.display="flex";
 }
 
-function goBack() {
-  document.getElementById("productDetail").style.display = "none";
-  document.getElementById("home").style.display = "block";
+function goBack(){
+  document.getElementById("productDetail").style.display="none";
+  document.getElementById("home").style.display="block";
 }
 
-function order() {
-  window.open(`https://t.me/${contact.replace("@","")}`, "_blank");
+function addToCart(productKey,index){
+  const p=products[productKey];
+  const price=p.prices[index];
+  const existing=cart.find(item=>item.key===productKey && item.qty===price.qty);
+  if(existing){ existing.count++; }
+  else{ cart.push({key:productKey, name:p.name, qty:price.qty, price:price.price, count:1}); }
+  updateCartDisplay();
+}
+
+function updateCartDisplay(){
+  const cartBtn=document.getElementById("cart");
+  let total=0;
+  cart.forEach(i=>{ total+=i.price*i.count; });
+  cartBtn.textContent=`🛒 Panier (${cart.length})`;
+}
+
+document.getElementById("cart").onclick=function(){ openCart(); };
+
+function openCart(){
+  const modal=document.getElementById("cartModal");
+  const itemsDiv=document.getElementById("cartItems");
+  itemsDiv.innerHTML="";
+  cart.forEach((i,index)=>{
+    itemsDiv.innerHTML+=`<div>${i.name} (${i.qty}) x${i.count} = ${i.price*i.count}€ 
+    <button class="btn-small" onclick="removeFromCart(${index})">❌</button></div>`;
+  });
+  let total=cart.reduce((sum,i)=>sum+i.price*i.count,0);
+  document.getElementById("cartTotal").textContent=total+"€";
+  modal.style.display="flex";
+}
+
+function closeCart(){ document.getElementById("cartModal").style.display="none"; }
+
+function removeFromCart(index){ cart.splice(index,1); updateCartDisplay(); openCart(); }
+
+function chooseDelivery(){
+  const modal=document.getElementById("cartContent");
+  modal.innerHTML=`<h2>Livraison ou Sur place?</h2>
+  <button class="btn-small" onclick="orderForm(true)">Livraison</button>
+  <button class="btn-small" onclick="orderForm(false)">Sur place</button>`;
+}
+
+function orderForm(delivery){
+  const modal=document.getElementById("cartContent");
+  if(delivery){
+    modal.innerHTML=`<h2>Livraison 🏠</h2>
+    <input id="name" placeholder="Nom complet"/>
+    <input id="address" placeholder="Adresse"/>
+    <textarea id="desc" placeholder="Notes supplémentaires"></textarea>
+    <button class="btn-small" onclick="sendOrder(true)">Valider</button>`;
+  } else {
+    sendOrder(false);
+  }
+}
+
+function sendOrder(delivery){
+  let msg=`Commande:\n`;
+  let total=0;
+  cart.forEach(i=>{ msg+=`${i.name} (${i.qty}) x${i.count} = ${i.price*i.count}€\n`; total+=i.price*i.count; });
+  msg+=`Total: ${total}€\n`;
+  if(delivery){
+    const name=document.getElementById("name").value;
+    const address=document.getElementById("address").value;
+    const desc=document.getElementById("desc").value;
+    msg+=`Nom: ${name}\nAdresse: ${address}\nNotes: ${desc}`;
+  }
+  window.open(`https://t.me/${contact.replace("@","")}?text=${encodeURIComponent(msg)}`,"_blank");
+  cart=[]; updateCartDisplay(); closeCart();
 }
 </script>
 
