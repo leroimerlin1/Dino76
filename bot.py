@@ -1,25 +1,22 @@
-const TelegramBot = require('node-telegram-bot-api');
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-const token = 'NOUVEAU_TOKEN_ICI';
-const bot = new TelegramBot(token, { polling: true });
+import os
 
-bot.onText(/\/start/, (msg) => {
-  console.log("Commande /start reçue");
+BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
-  bot.sendMessage(msg.chat.id, '🦖 Bienvenue sur DINO 76', {
-    reply_markup: {
-      inline_keyboard: [[
-        {
-          text: '🚀 Mini-app DINO 76',
-          web_app: {
-            url: 'https://leroimerlin1.github.io/Dino76/'
-          }
-        }
-      ]]
-    }
-  });
-});
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [[
+        InlineKeyboardButton(
+            "🚀 Mini-app DINO 76",
+            web_app=WebAppInfo(url="https://leroimerlin1.github.io/Dino76/")
+        )
+    ]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("🦖 Bienvenue sur DINO 76", reply_markup=reply_markup)
 
-bot.on('message', (msg) => {
-  console.log("Message reçu :", msg.text);
-});
+app = ApplicationBuilder().token(BOT_TOKEN).build()
+app.add_handler(CommandHandler("start", start))
+
+print("🤖 Bot démarré")
+app.run_polling()
