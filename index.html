@@ -23,123 +23,133 @@
   }
 
   #home {
-    max-width: 900px;
+    max-width: 100%;
     margin: 0 auto;
   }
 
   .products {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
     justify-items: center;
   }
 
   .product {
-    background: rgba(0,0,0,0.65);
+    background: rgba(0,0,0,0.7);
     border-radius: 16px;
     padding: 15px;
     box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    backdrop-filter: blur(5px);
     text-align: center;
     cursor: pointer;
+    width: 90%;
     transition: transform 0.2s ease;
-    width: 220px;
   }
 
-  .product:hover {
-    transform: scale(1.08);
-  }
+  .product:hover { transform: scale(1.05); }
 
   .product img {
     width: 100%;
-    max-width: 270px;
     border-radius: 16px;
     margin-bottom: 10px;
   }
 
   .product h3 {
-    font-size: 24px;
+    font-size: 22px;
     margin: 10px 0;
   }
 
   .detail {
     display: none;
     position: fixed;
-    top: 0; left:0;
+    top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
+    background: rgba(0,0,0,0.85);
+    display: flex; justify-content: center; align-items: center;
     z-index: 10;
   }
 
   .detail-content {
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.95);
     border-radius: 16px;
     padding: 25px;
-    max-width: 500px;
     width: 95%;
+    max-width: 450px;
     text-align: center;
     position: relative;
   }
 
-  .detail-content h2 { font-size: 26px; margin-bottom:15px; }
-  .detail-content p { font-size:16px; margin-bottom:15px; }
-  .detail-content video { width: 100%; border-radius: 16px; margin-bottom:20px; }
+  .detail-content h2 { font-size: 26px; margin-bottom: 15px; }
+  .detail-content p { font-size: 18px; margin-bottom: 15px; }
+  .detail-content video { width: 100%; border-radius: 16px; margin-bottom: 20px; }
 
   .back {
     position: absolute; top: 10px; left: 10px;
     padding: 10px 14px; border-radius: 16px;
-    background: #444; font-size: 16px; cursor:pointer;
+    background: #444; font-size: 16px; cursor: pointer;
   }
 
   .price-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: 10px;
     margin-bottom: 20px;
   }
 
   .price-cell {
     background: rgba(255,255,255,0.15);
-    border-radius: 16px; padding:12px;
-    font-weight: bold; font-size:16px;
+    border-radius: 16px;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
-    transition: transform 0.1s;
   }
 
-  .price-cell:hover { transform: scale(1.05); }
-
   button.order-btn {
-    margin-top: 10px; padding: 16px;
-    width: 70%; border: none; border-radius: 50px;
-    background: #ff6347; color:white; font-size:18px;
+    margin-top: 10px; padding: 18px;
+    width: 80%; border: none; border-radius: 50px;
+    background: #ff6347; color:white; font-size:20px;
     cursor:pointer; display:block; margin:auto;
   }
 
   #cart {
-    position: fixed; top: 20px; right: 20px;
-    background: #ff6347; padding: 12px 18px; border-radius: 50px;
-    cursor: pointer; font-weight:bold; font-size:16px; z-index:20;
+    position: fixed; top: 15px; right: 15px;
+    background: #ff6347; padding: 14px 22px; border-radius: 50px;
+    cursor: pointer; font-weight:bold; font-size:18px; z-index:20;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
 
   #cartModal {
     display:none; position: fixed; top:0; left:0;
-    width:100%; height:100%; background: rgba(0,0,0,0.8);
-    justify-content:center; align-items:center; z-index:30;
+    width:100%; height:100%; background: rgba(0,0,0,0.85);
+    display:flex; justify-content:center; align-items:center; z-index:30;
   }
 
   #cartContent {
-    background: rgba(0,0,0,0.95); border-radius:16px; padding:25px;
+    background: rgba(0,0,0,0.95);
+    border-radius:16px; padding:30px;
     max-width:500px; width:90%; text-align:center;
   }
 
   #cartContent input, #cartContent textarea {
-    width: 90%; margin:8px 0; padding:10px; border-radius:12px; border:none;
+    width: 95%; margin:12px 0; padding:14px; border-radius:14px; border:none;
+    font-size:16px;
   }
 
-  .btn-small { padding:10px 15px; border-radius:50px; margin:5px; cursor:pointer; font-size:16px; }
+  textarea { min-height:120px; }
+
+  .btn-small {
+    padding:14px 22px; border-radius:50px; margin:10px; cursor:pointer; font-size:18px;
+  }
+
+  #cartItems div { margin-bottom:14px; font-size:16px; }
+
+  /* Mobile optimisé */
+  @media(max-width:480px){
+    .products { grid-template-columns: 1fr; gap:15px; }
+    .product h3 { font-size:24px; }
+    button.order-btn { font-size:22px; padding:20px; width:90%; }
+  }
+
 </style>
 </head>
 <body>
@@ -171,108 +181,108 @@
   </div>
 </div>
 
-<div id="productDetail" class="detail"></div>
-<div id="cart">🛒 Panier (0)</div>
+<div id="productDetail" class="detail">
+  <div class="detail-content"></div>
+</div>
+
+<div id="cart" onclick="openCart()">🛒 Panier</div>
 
 <div id="cartModal">
   <div id="cartContent">
     <h2>🛒 Votre Panier</h2>
     <div id="cartItems"></div>
-    <h3>Total: <span id="cartTotal">0€</span></h3>
-    <button class="btn-small" onclick="chooseDelivery()">Commander</button>
-    <button class="btn-small" onclick="closeCart()">Fermer</button>
+    <div>
+      <button class="btn-small" onclick="chooseDelivery('livraison')">📦 Livraison</button>
+      <button class="btn-small" onclick="chooseDelivery('surplace')">🏬 Sur place</button>
+    </div>
+    <div id="deliveryForm" style="display:none;">
+      <input type="text" id="customerName" placeholder="Nom complet">
+      <input type="text" id="customerAddress" placeholder="Adresse">
+      <textarea id="customerNote" placeholder="Notes supplémentaires"></textarea>
+      <button class="btn-small" onclick="sendOrder()">✅ Valider</button>
+    </div>
+    <button class="btn-small" onclick="closeCart()">❌ Fermer</button>
   </div>
 </div>
 
 <script>
-const contact="@DINOS76S";
-let cart=[];
+const contact = "@DINOS76S";
 
-const products={
-frozen:{name:"FROZEN SIFT 🥶",video:"caliplates.mp4",description:"🧑‍⚕️ Garlic coockie 🍪, Jelly Donuts 🍩, Cake 🍰\nGamme solide et TERPS gourmands.",prices:[{qty:"2,5G",price:50},{qty:"5G",price:90},{qty:"10G",price:180}]},
-cali:{name:"Cali weed 🇺🇸",video:"cali.mp4",description:"Runtz 🌈, Tropicana Strawberry 🌴🍓",prices:[{qty:"3G",price:40},{qty:"5G",price:60},{qty:"10G",price:120}]},
-gaz:{name:"Gaz fruit 90u⚡️",video:"gaz.mp4",description:"Papaya Dolce 🥭, Mimi Cheese 🧀",prices:[{qty:"10G",price:130},{qty:"25G",price:240}]},
-calimountain:{name:"CALIMOUNTAIN FARM 120u PREMIUM",video:"120u.mp4",description:"Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏",prices:[{qty:"5G",price:70},{qty:"10G",price:140}]},
-farm:{name:"FRESH FROZEN SIF 🥶 KINGZ FARM",video:"farm.mp4",description:"PERMANENT MAKER x GELATO 41 ⛽️🍦",prices:[{qty:"5G",price:70},{qty:"10G",price:140}]}
+const products = {
+  frozen: {name:"FROZEN SIFT 🥶", video:"caliplates.mp4", description:"Garlic coockie, Jelly Donuts, Cake", prices:[{qty:"2,5G",price:"50€"},{qty:"5G",price:"90€"},{qty:"10G",price:"180€"}]},
+  cali: {name:"Cali weed 🇺🇸", video:"cali.mp4", description:"Runtz, Tropicana Strawberry", prices:[{qty:"3G",price:"40€"},{qty:"5G",price:"60€"},{qty:"10G",price:"120€"}]},
+  gaz: {name:"Gaz fruit 90u⚡️", video:"gaz.mp4", description:"Papaya Dolce, Mimi Cheese", prices:[{qty:"10G",price:"130€"},{qty:"25G",price:"240€"},{qty:"50G",price:"450€"}]},
+  calimountain:{name:"CALIMOUNTAIN FARM 120u",video:"120u.mp4",description:"Candy Gaz, Glitter Bomb, Apple Mintz",prices:[{qty:"5G",price:"70€"},{qty:"10G",price:"140€"},{qty:"20G",price:"260€"}]},
+  farm:{name:"FRESH FROZEN SIF 🥶 KINGZ FARM",video:"farm.mp4",description:"PERMANENT MAKER x GELATO 41",prices:[{qty:"5G",price:"70€"},{qty:"10G",price:"140€"},{qty:"20G",price:"250€"}]}
 };
 
+let cart = [];
+
 function openProduct(key){
-  const p=products[key];
-  let html=`<div class="detail-content">`;
-  html+=`<button class="back" onclick="goBack()">⬅ Retour</button>`;
-  html+=`<video src="${p.video}" controls></video>`;
-  html+=`<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4><div class="price-grid">`;
-  p.prices.forEach((pr,i)=>{ html+=`<div class="price-cell" onclick="addToCart('${key}',${i})">${pr.qty}<br>${pr.price}€</div>`; });
-  html+=`</div><button class="order-btn" onclick="openCart()">🛒 Ajouter au Panier</button></div>`;
-  document.getElementById("home").style.display="none";
-  const detail=document.getElementById("productDetail");
-  detail.innerHTML=html;
-  detail.style.display="flex"; detail.style.justifyContent="center"; detail.style.alignItems="center";
+  const p = products[key];
+  const detailContent = document.querySelector('.detail-content');
+  let html = `<button class="back" onclick="closeDetail()">⬅ Retour</button>`;
+  html += `<video src="${p.video}" controls></video>`;
+  html += `<h2>${p.name}</h2>`;
+  html += `<p>${p.description}</p>`;
+  html += `<div class="price-grid">`;
+  p.prices.forEach(pr=>{
+    html += `<div class="price-cell" onclick="addToCart('${key}','${pr.qty}','${pr.price}')">${pr.qty}<br>${pr.price}</div>`;
+  });
+  html += `</div>`;
+  html += `<button class="order-btn" onclick="openCart()">🛒 Commander</button>`;
+  detailContent.innerHTML = html;
+  document.getElementById('productDetail').style.display='flex';
 }
 
-function goBack(){ document.getElementById("productDetail").style.display="none"; document.getElementById("home").style.display="block"; }
-
-function addToCart(productKey,index){
-  const p=products[productKey];
-  const price=p.prices[index];
-  const existing=cart.find(item=>item.key===productKey && item.qty===price.qty);
-  if(existing){ existing.count++; } else{ cart.push({key:productKey,name:p.name,qty:price.qty,price:price.price,count:1}); }
-  updateCartDisplay();
+function closeDetail(){
+  document.getElementById('productDetail').style.display='none';
 }
 
-function updateCartDisplay(){
-  const cartBtn=document.getElementById("cart");
-  let total=0; cart.forEach(i=>{ total+=i.price*i.count; });
-  cartBtn.textContent=`🛒 Panier (${cart.length})`;
+function addToCart(key, qty, price){
+  cart.push({product:products[key].name, qty, price});
+  alert(`${products[key].name} ajouté au panier !`);
 }
 
-document.getElementById("cart").onclick=function(){ openCart(); };
-
-function openCart(){
-  const modal=document.getElementById("cartModal");
-  const itemsDiv=document.getElementById("cartItems");
-  itemsDiv.innerHTML="";
-  cart.forEach((i,index)=>{ itemsDiv.innerHTML+=`<div>${i.name} (${i.qty}) x${i.count} = ${i.price*i.count}€ <button class="btn-small" onclick="removeFromCart(${index})">❌</button></div>`; });
-  let total=cart.reduce((sum,i)=>sum+i.price*i.count,0);
-  document.getElementById("cartTotal").textContent=total+"€";
-  modal.style.display="flex";
+function openCart(){ 
+  document.getElementById('cartModal').style.display='flex';
+  renderCart();
 }
 
-function closeCart(){ document.getElementById("cartModal").style.display="none"; }
-
-function removeFromCart(index){ cart.splice(index,1); updateCartDisplay(); openCart(); }
-
-function chooseDelivery(){
-  const modal=document.getElementById("cartContent");
-  modal.innerHTML=`<h2>Livraison ou Sur place?</h2>
-  <button class="btn-small" onclick="orderForm(true)">Livraison</button>
-  <button class="btn-small" onclick="orderForm(false)">Sur place</button>`;
+function closeCart(){ 
+  document.getElementById('cartModal').style.display='none';
+  document.getElementById('deliveryForm').style.display='none';
 }
 
-function orderForm(delivery){
-  const modal=document.getElementById("cartContent");
-  if(delivery){
-    modal.innerHTML=`<h2>Livraison 🏠</h2>
-    <input id="name" placeholder="Nom complet"/>
-    <input id="address" placeholder="Adresse"/>
-    <textarea id="desc" placeholder="Notes supplémentaires"></textarea>
-    <button class="btn-small" onclick="sendOrder(true)">Valider</button>`;
-  } else { sendOrder(false); }
+function renderCart(){
+  const cartItems = document.getElementById('cartItems');
+  cartItems.innerHTML = '';
+  cart.forEach((item,i)=>{
+    cartItems.innerHTML += `<div>${item.product} - ${item.qty} - ${item.price}</div>`;
+  });
 }
 
-function sendOrder(delivery){
-  let msg=`Commande:\n`;
-  let total=0;
-  cart.forEach(i=>{ msg+=`${i.name} (${i.qty}) x${i.count} = ${i.price*i.count}€\n`; total+=i.price*i.count; });
-  msg+=`Total: ${total}€\n`;
-  if(delivery){
-    const name=document.getElementById("name").value;
-    const address=document.getElementById("address").value;
-    const desc=document.getElementById("desc").value;
-    msg+=`Nom: ${name}\nAdresse: ${address}\nNotes: ${desc}`;
+function chooseDelivery(type){
+  if(type==='livraison'){
+    document.getElementById('deliveryForm').style.display='block';
+  }else{
+    sendOrder(false);
   }
-  window.open(`https://t.me/${contact.replace("@","")}?text=${encodeURIComponent(msg)}`,"_blank");
-  cart=[]; updateCartDisplay(); closeCart();
+}
+
+function sendOrder(livraison=true){
+  let message = '🛒 Commande :\n';
+  cart.forEach(i=>{ message+=`${i.product} - ${i.qty} - ${i.price}\n`; });
+  if(livraison){
+    const name = document.getElementById('customerName').value || '';
+    const address = document.getElementById('customerAddress').value || '';
+    const note = document.getElementById('customerNote').value || '';
+    message += `\nNom : ${name}\nAdresse : ${address}\nNote : ${note}`;
+  }
+  const url = `https://t.me/${contact.replace('@','')}?text=${encodeURIComponent(message)}`;
+  window.open(url,'_blank');
+  cart = [];
+  closeCart();
 }
 </script>
 
