@@ -1,6 +1,7 @@
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+import os
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -11,12 +12,15 @@ logger = logging.getLogger(__name__)
 # === LIEN DE LA MINI-APP ===
 LIEN_MINI_APP = "https://leroimerlin1.github.io/Dino76/"
 
+# Nom de l'image locale
+IMAGE_ACCUEIL = "dino.jpg"
+
 # Clavier avec bouton web app
 def get_mini_app_keyboard():
     keyboard = [
         [
             InlineKeyboardButton(
-                text="🚀 Ouvrir Mini-App DINO 76",
+                text="🚀 Ouvrir Mini-App DINO TERPZ 76",
                 web_app=WebAppInfo(url=LIEN_MINI_APP)
             )
         ]
@@ -25,10 +29,25 @@ def get_mini_app_keyboard():
 
 # /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "🦖 Bienvenue sur DINO 76 ! Cliquez ci-dessous pour accéder à la mini-app :",
-        reply_markup=get_mini_app_keyboard()
-    )
+    chat = update.message.chat
+
+    keyboard = get_mini_app_keyboard()
+
+    # Vérifie si l'image existe
+    if os.path.exists(IMAGE_ACCUEIL):
+        with open(IMAGE_ACCUEIL, 'rb') as photo:
+            await chat.send_photo(
+                photo=photo,
+                caption="🦖 Bienvenue sur 🍣DINO TERPZ 76 ! Cliquez ci-dessous pour accéder à la mini-app :",
+                parse_mode='Markdown',
+                reply_markup=keyboard
+            )
+    else:
+        # Si image manquante, envoie juste le texte
+        await chat.send_message(
+            "🦖 Bienvenue sur 🍣DINO TERPZ 76 ! Cliquez ci-dessous pour accéder à la mini-app :",
+            reply_markup=keyboard
+        )
 
 # Gestion erreurs globale
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
