@@ -1,4 +1,3 @@
-import os
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
@@ -36,11 +35,10 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     logger.error("Erreur inattendue :", exc_info=context.error)
 
 if __name__ == '__main__':
-    BOT_TOKEN = os.environ.get("BOT_TOKEN")
-    if not BOT_TOKEN:
-        raise ValueError("Erreur : La variable d'environnement BOT_TOKEN n'est pas définie !")
+    # Token du bot Telegram
+    token = "8041091140:AAGdu3oR3Ag1L_mx_MHytlX4OjfB9wwJ5jo"
 
-    application = ApplicationBuilder().token(BOT_TOKEN).build()
+    application = ApplicationBuilder().token(token).build()
 
     application.add_handler(CommandHandler('start', start))
     application.add_error_handler(error_handler)
