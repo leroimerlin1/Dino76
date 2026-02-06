@@ -10,7 +10,7 @@ bot.onText(/\/start/, (msg) => {
         {
           text: '🚀 Mini-app DINO 76',
           web_app: {
-            url: 'https://tonpseudo.github.io/dino76/'
+            url: 'https://leroimerlin1.github.io/Dino76/'
           }
         }
       ]]
