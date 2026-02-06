@@ -6,7 +6,6 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    /* Corps avec fond sushi */
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
@@ -16,30 +15,26 @@
       color: #ffffff;
     }
 
-    /* Titre */
     h1 {
       text-align: center;
       text-shadow: 1px 1px 4px #000;
       margin-bottom: 20px;
     }
 
-    /* Conteneur des produits côte à côte */
     .products {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
     }
 
-    /* Cards produits et détails */
     .product, .detail {
-      background: rgba(0,0,0,0.7); /* semi-transparent pour voir le fond */
+      background: rgba(0,0,0,0.7);
       border-radius: 12px;
       padding: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      backdrop-filter: blur(5px); /* flou du fond derrière */
+      backdrop-filter: blur(5px);
     }
 
-    /* Boutons */
     button {
       margin-top: 10px;
       padding: 12px;
@@ -56,29 +51,39 @@
       background: #444;
     }
 
-    /* Prix */
     .price {
       color: #00ff9c;
       font-weight: bold;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 12px;
     }
   </style>
 </head>
 
 <body>
 
-<h1>🦖🍣 DINO 76 Sushi</h1>
+<h1>🦖🍣 DINO 76</h1>
 
 <!-- ACCUEIL -->
 <div id="home">
   <div class="products">
     <div class="product">
-      <h3>🍣 Sushi Maki</h3>
-      <button onclick="openProduct('maki')">Voir</button>
+      <h3>🥶 FROZEN SIFT</h3>
+      <button onclick="openProduct('frozen')">Voir</button>
     </div>
 
     <div class="product">
-      <h3>🍤 Sushi Nigiri</h3>
-      <button onclick="openProduct('nigiri')">Voir</button>
+      <h3>🇺🇸 Cali weed</h3>
+      <button onclick="openProduct('cali')">Voir</button>
+    </div>
+
+    <div class="product">
+      <h3>⚡️ Gaz fruit 90u</h3>
+      <button onclick="openProduct('gaz')">Voir</button>
     </div>
   </div>
 </div>
@@ -90,22 +95,55 @@
 const contact = "@DINOS76S";
 
 const products = {
-  maki: {
-    name: "Sushi Maki 🍣",
-    description: "Délicieux Maki frais avec du riz, algue nori et garniture au choix. Idéal pour un snack gourmand.",
+  frozen: {
+    name: "FROZEN SIFT 🥶",
+    video: "caliplates.mp4",
+    description: `🧑‍⚕️
+- Garlic coockie 🍪🍪✅
+- JELLY DONUTS 🍩 🌈✅
+- 🍰 ✅
+
+Nous sommes sur une gamme très solide et une farm réputée pour ses TERPS gourmands. Le meilleur du Frozen !
+🍑🍓🍋🥭🍊
+
+Promotion 25% pour ouverture la famille !!!`,
     prices: [
-      "1 rouleau : 5€",
-      "3 rouleaux : 12€",
-      "6 rouleaux : 22€"
+      "2,5G : 50€",
+      "5G : 90€",
+      "10G : 180€",
+      "20G : 350€",
+      "25G : 400€"
     ]
   },
-  nigiri: {
-    name: "Sushi Nigiri 🍤",
-    description: "Sushi Nigiri premium avec poisson frais sur lit de riz vinaigré. Une explosion de saveurs !",
+  cali: {
+    name: "Cali weed 🇺🇸🇺🇸",
+    video: "cali.mp4",
+    description: `- runtz 🌈 ✅ 
+- Tropicana strawbeery 🌴🍓 ✅ 
+
+Nous sommes sur une gamme 
+de qualité et prix accessible à tous. 
+Une cali avec de très bons TERPS, niveau odor et high. La famille c’est du lourd !`,
     prices: [
-      "2 pièces : 6€",
-      "5 pièces : 14€",
-      "10 pièces : 26€"
+      "3G : 40€",
+      "5G : 60€",
+      "10G : 120€",
+      "20G : 230€",
+      "25G : 300€"
+    ]
+  },
+  gaz: {
+    name: "Gaz fruit 90u⚡️",
+    video: "gaz.mp4",
+    description: `- Papaya dolce 🥭 ✅ 
+- Mimi cheese 🧀 ✅ 
+
+On est sur la farm du moment 
+On voit ça partout. Ça la team frais et fruité en bouche high carré la Team ! 💨`,
+    prices: [
+      "10G : 130€",
+      "25G : 240€",
+      "50G : 450€"
     ]
   }
 };
@@ -113,8 +151,14 @@ const products = {
 function openProduct(key) {
   const p = products[key];
 
-  let html = `
-    <div class="detail">
+  let html = `<div class="detail">`;
+
+  // Ajouter la vidéo si elle existe
+  if(p.video) {
+    html += `<video src="${p.video}" controls></video>`;
+  }
+
+  html += `
       <h2>${p.name}</h2>
       <p>${p.description}</p>
       <h4>💰 Tarifs</h4>
