@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>DINO TERPS 76 🍣</title>
+<title>DINO 76 🍣</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
@@ -33,7 +33,7 @@
     gap: 10px;
   }
 
-  .product, .detail {
+  .product {
     background: rgba(0,0,0,0.65);
     border-radius: 12px;
     padding: 10px;
@@ -48,7 +48,7 @@
     transform: scale(1.05);
   }
 
-  .product img, video {
+  .product img {
     width: 100%;
     max-width: 250px;
     border-radius: 12px;
@@ -66,24 +66,33 @@
     margin: 4px 0;
   }
 
-  .price {
-    font-weight: bold;
-    margin: 2px 0;
+  .detail {
+    background: rgba(0,0,0,0.65);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
   }
 
-  button {
-    margin-top: 15px;
-    padding: 12px;
-    width: 60%;
-    border: none;
-    border-radius: 50px; /* Rond */
-    background: #ff6347;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  .detail h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .detail p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .detail video {
+    width: 90%;
+    max-width: 350px;
+    border-radius: 12px;
+    margin-bottom: 15px;
   }
 
   .back {
@@ -96,15 +105,34 @@
     font-size: 14px;
   }
 
-  /* Contenu détail plus compact */
-  .detail h2 {
-    font-size: 20px;
-    margin-bottom: 8px;
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 8px;
+    margin-bottom: 15px;
   }
 
-  .detail p {
+  .price-cell {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px;
+    font-weight: bold;
     font-size: 14px;
-    margin-bottom: 6px;
+  }
+
+  button.order-btn {
+    margin-top: 10px;
+    padding: 12px;
+    width: 60%;
+    border: none;
+    border-radius: 50px;
+    background: #ff6347;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
 </style>
@@ -112,7 +140,7 @@
 
 <body>
 
-<h1>🦖🍣 DINO TERPS 76</h1>
+<h1>🦖🍣 DINO 76</h1>
 
 <div id="home">
   <div class="products">
@@ -165,7 +193,13 @@ const products = {
     description: `🧑‍⚕️ Garlic coockie 🍪, Jelly Donuts 🍩, Cake 🍰
 
 Gamme solide et TERPS gourmands. Promotion 25%!`,
-    prices: ["2,5G : 50€","5G : 90€","10G : 180€","20G : 350€","25G : 400€"]
+    prices: [
+      {qty:"2,5G", price:"50€"},
+      {qty:"5G", price:"90€"},
+      {qty:"10G", price:"180€"},
+      {qty:"20G", price:"350€"},
+      {qty:"25G", price:"400€"}
+    ]
   },
   cali: {
     name: "Cali weed 🇺🇸",
@@ -173,7 +207,13 @@ Gamme solide et TERPS gourmands. Promotion 25%!`,
     description: `Runtz 🌈, Tropicana Strawberry 🌴🍓
 
 Gamme qualité prix accessible.`,
-    prices: ["3G : 40€","5G : 60€","10G : 120€","20G : 230€","25G : 300€"]
+    prices: [
+      {qty:"3G", price:"40€"},
+      {qty:"5G", price:"60€"},
+      {qty:"10G", price:"120€"},
+      {qty:"20G", price:"230€"},
+      {qty:"25G", price:"300€"}
+    ]
   },
   gaz: {
     name: "Gaz fruit 90u⚡️",
@@ -181,19 +221,33 @@ Gamme qualité prix accessible.`,
     description: `Papaya Dolce 🥭, Mimi Cheese 🧀
 
 Farm du moment, frais et fruité.`,
-    prices: ["10G : 130€","25G : 240€","50G : 450€"]
+    prices: [
+      {qty:"10G", price:"130€"},
+      {qty:"25G", price:"240€"},
+      {qty:"50G", price:"450€"}
+    ]
   },
   calimountain: {
     name: "CALIMOUNTAIN FARM 120u PREMIUM",
     video: "120u.mp4",
     description: `Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏`,
-    prices: ["5G : 70€","10G : 140€","20G : 260€","25G : 310€"]
+    prices: [
+      {qty:"5G", price:"70€"},
+      {qty:"10G", price:"140€"},
+      {qty:"20G", price:"260€"},
+      {qty:"25G", price:"310€"}
+    ]
   },
   farm: {
     name: "FRESH FROZEN SIF 🥶 KINGZ FARM",
     video: "farm.mp4",
     description: `PERMANENT MAKER x GELATO 41 ⛽️🍦`,
-    prices: ["5G : 70€","10G : 140€","20G : 250€","25G : 300€"]
+    prices: [
+      {qty:"5G", price:"70€"},
+      {qty:"10G", price:"140€"},
+      {qty:"20G", price:"250€"},
+      {qty:"25G", price:"300€"}
+    ]
   }
 };
 
@@ -204,12 +258,20 @@ function openProduct(key) {
   // Bouton retour en haut à gauche
   html += `<button class="back" onclick="goBack()">⬅ Retour</button>`;
 
+  // Vidéo séparée
   if(p.video) html += `<video src="${p.video}" controls></video>`;
+
   html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
-  p.prices.forEach(price => html += `<p class="price">${price}</p>`);
+
+  // Grille de prix
+  html += `<div class="price-grid">`;
+  p.prices.forEach(pr => {
+    html += `<div class="price-cell">${pr.qty}<br>${pr.price}</div>`;
+  });
+  html += `</div>`;
 
   // Bouton commander rond
-  html += `<button onclick="order()">📩 Commander</button></div>`;
+  html += `<button class="order-btn" onclick="order()">📩 Commander</button></div>`;
 
   document.getElementById("home").style.display = "none";
   const detail = document.getElementById("productDetail");
