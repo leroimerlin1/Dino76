@@ -31,7 +31,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    justify-items: center;
   }
 
   .product {
@@ -43,7 +42,6 @@
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s ease;
-    width: 200px;
   }
 
   .product:hover {
@@ -74,8 +72,8 @@
     padding: 10px;
     box-shadow: 0 0 8px rgba(0,0,0,0.5);
     backdrop-filter: blur(5px);
-    max-width: 450px;
-    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
     text-align: center;
     position: relative;
   }
@@ -91,7 +89,8 @@
   }
 
   .detail video {
-    width: 100%;
+    width: 90%;
+    max-width: 350px;
     border-radius: 12px;
     margin-bottom: 15px;
   }
@@ -104,7 +103,6 @@
     border-radius: 12px;
     background: #444;
     font-size: 14px;
-    cursor: pointer;
   }
 
   .price-grid {
@@ -136,6 +134,7 @@
     margin-left: auto;
     margin-right: auto;
   }
+
 </style>
 </head>
 
@@ -182,8 +181,7 @@
   </div>
 </div>
 
-<!-- DETAIL PRODUIT CENTRÉ -->
-<div id="productDetail" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; display:flex; justify-content:center; align-items:center; z-index:10;"></div>
+<div id="productDetail" style="display:none; position: relative;"></div>
 
 <script>
 const contact = "@DINOS76S";
@@ -256,20 +254,29 @@ Farm du moment, frais et fruité.`,
 function openProduct(key) {
   const p = products[key];
   let html = `<div class="detail">`;
+
+  // Bouton retour en haut à gauche
   html += `<button class="back" onclick="goBack()">⬅ Retour</button>`;
+
+  // Vidéo séparée
   if(p.video) html += `<video src="${p.video}" controls></video>`;
+
   html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
+
+  // Grille de prix
   html += `<div class="price-grid">`;
   p.prices.forEach(pr => {
     html += `<div class="price-cell">${pr.qty}<br>${pr.price}</div>`;
   });
   html += `</div>`;
+
+  // Bouton commander rond
   html += `<button class="order-btn" onclick="order()">📩 Commander</button></div>`;
 
   document.getElementById("home").style.display = "none";
   const detail = document.getElementById("productDetail");
   detail.innerHTML = html;
-  detail.style.display = "flex"; // CENTRÉ
+  detail.style.display = "block";
 }
 
 function goBack() {
