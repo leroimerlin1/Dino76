@@ -3,7 +3,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppI
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 # Récupère le token depuis l'environnement
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
+BOT_TOKEN = os.environ.get("8041091140:AAGdu3oR3Ag1L_mx_MHytlX4OjfB9wwJ5jo")
 
 if not BOT_TOKEN:
     raise ValueError("Erreur : La variable d'environnement BOT_TOKEN n'est pas définie !")
