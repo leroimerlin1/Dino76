@@ -1,118 +1,159 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>DINO TERPZ 76 🍣</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<title>DINO TERPS 76 🍣</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0;
-      padding: 15px;
-      /* Nouveau fond : image locale dino.jpg */
-      background: url('dino.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #ffffff;
-    }
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    background: url('dino.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+  }
 
-    h1 {
-      text-align: center;
-      text-shadow: 1px 1px 4px #000;
-      margin-bottom: 20px;
-    }
+  h1 {
+    text-align: center;
+    text-shadow: 1px 1px 4px #000;
+    margin-bottom: 15px;
+    font-size: 28px;
+  }
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+  #home {
+    max-width: 900px;
+    margin: 0 auto;
+  }
 
-    .product, .detail {
-      background: rgba(0,0,0,0.6);
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      backdrop-filter: blur(5px);
-      text-align: center;
-    }
+  .products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 
-    .product img {
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
+  .product, .detail {
+    background: rgba(0,0,0,0.65);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
 
-    button {
-      margin-top: 10px;
-      padding: 12px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      background: #ff6347;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+  .product:hover {
+    transform: scale(1.05);
+  }
 
-    .back {
-      background: #444;
-    }
+  .product img, video {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 12px;
+    margin-bottom: 6px;
+  }
 
-    .price {
-      color: #00ff9c;
-      font-weight: bold;
-    }
+  .product h3 {
+    font-size: 18px;
+    margin: 5px 0;
+  }
 
-    /* Réduction de la taille des vidéos */
-    video {
-      width: 90%;
-      max-width: 300px;
-      border-radius: 12px;
-      margin-bottom: 12px;
-    }
-  </style>
+  .product p {
+    font-size: 14px;
+    color: #00ff9c;
+    margin: 4px 0;
+  }
+
+  .price {
+    font-weight: bold;
+    margin: 2px 0;
+  }
+
+  button {
+    margin-top: 15px;
+    padding: 12px;
+    width: 60%;
+    border: none;
+    border-radius: 50px; /* Rond */
+    background: #ff6347;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: #444;
+    font-size: 14px;
+  }
+
+  /* Contenu détail plus compact */
+  .detail h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .detail p {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+</style>
 </head>
 
 <body>
 
-<h1>🦖🍣 DINO TERPZ 76</h1>
+<h1>🦖🍣 DINO TERPS 76</h1>
 
 <div id="home">
   <div class="products">
-    <div class="product">
+    <div class="product" onclick="openProduct('frozen')">
       <img src="caliplates-thumb.jpg" alt="FROZEN SIFT 🥶">
       <h3>🥶 FROZEN SIFT</h3>
-      <button onclick="openProduct('frozen')">Voir</button>
+      <p>Garlic coockie, Jelly Donuts, Cake</p>
+      <p class="price">2,5G:50€ 5G:90€ 10G:180€</p>
     </div>
 
-    <div class="product">
-      <img src="cali-thumb.jpg" alt="Cali weed 🇺🇸🇺🇸">
+    <div class="product" onclick="openProduct('cali')">
+      <img src="cali-thumb.jpg" alt="Cali weed 🇺🇸">
       <h3>🇺🇸 Cali weed</h3>
-      <button onclick="openProduct('cali')">Voir</button>
+      <p>Runtz, Tropicana Strawberry</p>
+      <p class="price">3G:40€ 5G:60€ 10G:120€</p>
     </div>
 
-    <div class="product">
+    <div class="product" onclick="openProduct('gaz')">
       <img src="gaz-thumb.jpg" alt="Gaz fruit 90u⚡️">
       <h3>⚡️ Gaz fruit 90u</h3>
-      <button onclick="openProduct('gaz')">Voir</button>
+      <p>Papaya Dolce, Mimi Cheese</p>
+      <p class="price">10G:130€ 25G:240€ 50G:450€</p>
     </div>
 
-    <div class="product">
-      <img src="120u-thumb.jpg" alt="CALIMOUNTAIN FARM 🧑‍🌾⛰️">
-      <h3>🧑‍🌾⛰️ CALIMOUNTAIN FARM 120u</h3>
-      <button onclick="openProduct('calimountain')">Voir</button>
+    <div class="product" onclick="openProduct('calimountain')">
+      <img src="120u-thumb.jpg" alt="CALIMOUNTAIN FARM 120u">
+      <h3>🧑‍🌾 CALIMOUNTAIN 120u</h3>
+      <p>Candy Gaz, Glitter Bomb, Apple Mintz</p>
+      <p class="price">5G:70€ 10G:140€ 20G:260€</p>
     </div>
 
-    <div class="product">
-      <img src="farm-thumb.jpg" alt="FRESH FROZEN SIF 🥶 KINGZ FARM 🧑‍🌾">
-      <h3>🥶 FRESH FROZEN SIF - KINGZ FARM 🧑‍🌾</h3>
-      <button onclick="openProduct('farm')">Voir</button>
+    <div class="product" onclick="openProduct('farm')">
+      <img src="farm-thumb.jpg" alt="FRESH FROZEN SIF KINGZ FARM">
+      <h3>🥶 FRESH FROZEN SIF</h3>
+      <p>PERMANENT MAKER x GELATO 41</p>
+      <p class="price">5G:70€ 10G:140€ 20G:250€ 25G:300€</p>
     </div>
   </div>
 </div>
 
-<div id="productDetail" style="display:none;"></div>
+<div id="productDetail" style="display:none; position: relative;"></div>
 
 <script>
 const contact = "@DINOS76S";
@@ -121,65 +162,54 @@ const products = {
   frozen: {
     name: "FROZEN SIFT 🥶",
     video: "caliplates.mp4",
-    description: `🧑‍⚕️
-- Garlic coockie 🍪🍪✅
-- JELLY DONUTS 🍩 🌈✅
-- 🍰 ✅
+    description: `🧑‍⚕️ Garlic coockie 🍪, Jelly Donuts 🍩, Cake 🍰
 
-Nous sommes sur une gamme très solide et une farm réputée pour ses TERPS gourmands. Le meilleur du Frozen !
-🍑🍓🍋🥭🍊
-
-Promotion 25% pour ouverture la famille !!!`,
+Gamme solide et TERPS gourmands. Promotion 25%!`,
     prices: ["2,5G : 50€","5G : 90€","10G : 180€","20G : 350€","25G : 400€"]
   },
   cali: {
-    name: "Cali weed 🇺🇸🇺🇸",
+    name: "Cali weed 🇺🇸",
     video: "cali.mp4",
-    description: `- runtz 🌈 ✅ 
-- Tropicana strawbeery 🌴🍓 ✅ 
+    description: `Runtz 🌈, Tropicana Strawberry 🌴🍓
 
-Nous sommes sur une gamme de qualité et prix accessible à tous. 
-Une cali avec de très bons TERPS, niveau odor et high. La famille c’est du lourd !`,
+Gamme qualité prix accessible.`,
     prices: ["3G : 40€","5G : 60€","10G : 120€","20G : 230€","25G : 300€"]
   },
   gaz: {
     name: "Gaz fruit 90u⚡️",
     video: "gaz.mp4",
-    description: `- Papaya dolce 🥭 ✅ 
-- Mimi cheese 🧀 ✅ 
+    description: `Papaya Dolce 🥭, Mimi Cheese 🧀
 
-On est sur la farm du moment 
-On voit ça partout. Ça la team frais et fruité en bouche high carré la Team ! 💨`,
+Farm du moment, frais et fruité.`,
     prices: ["10G : 130€","25G : 240€","50G : 450€"]
   },
   calimountain: {
-    name: "CALIMOUNTAIN FARM 🧑‍🌾⛰️ 120u PREMIUM ⭐️",
+    name: "CALIMOUNTAIN FARM 120u PREMIUM",
     video: "120u.mp4",
-    description: `- CANDY GAZ 🍬 ⛽️ ✅ 
-- GLITTER BOMB 💣 ✅ 
-- APPLE MINTZ 🍏 ✅`,
+    description: `Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏`,
     prices: ["5G : 70€","10G : 140€","20G : 260€","25G : 310€"]
   },
   farm: {
-    name: "FRESH FROZEN SIF 🥶 KINGZ FARM 🧑‍🌾",
+    name: "FRESH FROZEN SIF 🥶 KINGZ FARM",
     video: "farm.mp4",
-    description: `PERMANENT MAKER x GELATO 41 ⛽️ 🍦`,
+    description: `PERMANENT MAKER x GELATO 41 ⛽️🍦`,
     prices: ["5G : 70€","10G : 140€","20G : 250€","25G : 300€"]
   }
 };
 
 function openProduct(key) {
   const p = products[key];
-
   let html = `<div class="detail">`;
 
-  if(p.video) html += `<video src="${p.video}" controls></video>`;
+  // Bouton retour en haut à gauche
+  html += `<button class="back" onclick="goBack()">⬅ Retour</button>`;
 
+  if(p.video) html += `<video src="${p.video}" controls></video>`;
   html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
   p.prices.forEach(price => html += `<p class="price">${price}</p>`);
 
-  html += `<button onclick="order()">📩 Commander</button>
-           <button class="back" onclick="goBack()">⬅ Retour</button></div>`;
+  // Bouton commander rond
+  html += `<button onclick="order()">📩 Commander</button></div>`;
 
   document.getElementById("home").style.display = "none";
   const detail = document.getElementById("productDetail");
