@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>DINO 76</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 15px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .product, .detail {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      background: #0088cc;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .back {
+      background: #777;
+    }
+
+    .price {
+      font-weight: bold;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🦖 DINO 76</h1>
+
+<!-- PAGE ACCUEIL -->
+<div id="home">
+  <div class="product">
+    <h3>Produit Alpha</h3>
+    <button onclick="openProduct('alpha')">Voir le produit</button>
+  </div>
+
+  <div class="product">
+    <h3>Produit Beta</h3>
+    <button onclick="openProduct('beta')">Voir le produit</button>
+  </div>
+</div>
+
+<!-- PAGE PRODUIT -->
+<div id="productDetail" style="display:none;"></div>
+
+<script>
+const contact = "@DINOS76S";
+
+const products = {
+  alpha: {
+    name: "Produit Alpha",
+    description: "Description détaillée du produit Alpha. Qualité premium, livraison rapide.",
+    prices: [
+      "1 unité : 20€",
+      "5 unités : 90€",
+      "10 unités : 160€"
+    ]
+  },
+  beta: {
+    name: "Produit Beta",
+    description: "Produit Beta très demandé, idéal pour revente.",
+    prices: [
+      "1 unité : 30€",
+      "3 unités : 80€",
+      "10 unités : 250€"
+    ]
+  }
+};
+
+function openProduct(key) {
+  const p = products[key];
+
+  let html = `
+    <div class="detail">
+      <h2>${p.name}</h2>
+      <p>${p.description}</p>
+      <h4>💰 Tarifs</h4>
+  `;
+
+  p.prices.forEach(price => {
+    html += `<p class="price">${price}</p>`;
+  });
+
+  const message = encodeURIComponent(
+    `Bonjour, je souhaite commander : ${p.name}`
+  );
+
+  html += `
+      <button onclick="order('${message}')">📩 Commander</button>
+      <button class="back" onclick="goBack()">⬅ Retour</button>
+    </div>
+  `;
+
+  document.getElementById("home").style.display = "none";
+  const detail = document.getElementById("productDetail");
+  detail.innerHTML = html;
+  detail.style.display = "block";
+}
+
+function goBack() {
+  document.getElementById("productDetail").style.display = "none";
+  document.getElementById("home").style.display = "block";
+}
+
+function order(message) {
+  window.open(`https://t.me/${contact.replace("@","")}?text=${message}`, "_blank");
+}
+</script>
+
+</body>
+</html>
