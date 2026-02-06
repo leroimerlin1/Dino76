@@ -134,7 +134,7 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     # (le bot gère déjà tout en interne)
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token("8433304578:AAHTAtyqw7ZnzK-2QymALBgohAZNTXmwa8g").build()
+    application = ApplicationBuilder().token("8041091140:AAGdu3oR3Ag1L_mx_MHytlX4OjfB9wwJ5jo").build()
 
     application.add_handler(CommandHandler('start', start))
     application.add_handler(CommandHandler('menu', start))
