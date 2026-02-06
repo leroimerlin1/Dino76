@@ -33,6 +33,13 @@
       padding: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       backdrop-filter: blur(5px);
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 8px;
     }
 
     button {
@@ -66,19 +73,33 @@
 
 <body>
 
-<h1>🦖🍣 DINO 76 Sushi</h1>
+<h1>🦖🍣 DINO 76</h1>
 
 <!-- ACCUEIL -->
 <div id="home">
   <div class="products">
     <div class="product">
+      <img src="caliplates-thumb.jpg" alt="FROZEN SIFT 🥶">
       <h3>🥶 FROZEN SIFT</h3>
       <button onclick="openProduct('frozen')">Voir</button>
     </div>
 
     <div class="product">
-      <h3>🍤 Sushi Nigiri</h3>
-      <button onclick="openProduct('nigiri')">Voir</button>
+      <img src="cali-thumb.jpg" alt="Cali weed 🇺🇸🇺🇸">
+      <h3>🇺🇸 Cali weed</h3>
+      <button onclick="openProduct('cali')">Voir</button>
+    </div>
+
+    <div class="product">
+      <img src="gaz-thumb.jpg" alt="Gaz fruit 90u⚡️">
+      <h3>⚡️ Gaz fruit 90u</h3>
+      <button onclick="openProduct('gaz')">Voir</button>
+    </div>
+
+    <div class="product">
+      <img src="120u-thumb.jpg" alt="CALIMOUNTAIN FARM 🧑‍🌾⛰️">
+      <h3>🧑‍🌾⛰️ CALIMOUNTAIN FARM 120u</h3>
+      <button onclick="openProduct('calimountain')">Voir</button>
     </div>
   </div>
 </div>
@@ -110,13 +131,48 @@ Promotion 25% pour ouverture la famille !!!`,
       "25G : 400€"
     ]
   },
-  nigiri: {
-    name: "Sushi Nigiri 🍤",
-    description: "Sushi Nigiri premium avec poisson frais sur lit de riz vinaigré. Une explosion de saveurs !",
+  cali: {
+    name: "Cali weed 🇺🇸🇺🇸",
+    video: "cali.mp4",
+    description: `- runtz 🌈 ✅ 
+- Tropicana strawbeery 🌴🍓 ✅ 
+
+Nous sommes sur une gamme 
+de qualité et prix accessible à tous. 
+Une cali avec de très bons TERPS, niveau odor et high. La famille c’est du lourd !`,
     prices: [
-      "2 pièces : 6€",
-      "5 pièces : 14€",
-      "10 pièces : 26€"
+      "3G : 40€",
+      "5G : 60€",
+      "10G : 120€",
+      "20G : 230€",
+      "25G : 300€"
+    ]
+  },
+  gaz: {
+    name: "Gaz fruit 90u⚡️",
+    video: "gaz.mp4",
+    description: `- Papaya dolce 🥭 ✅ 
+- Mimi cheese 🧀 ✅ 
+
+On est sur la farm du moment 
+On voit ça partout. Ça la team frais et fruité en bouche high carré la Team ! 💨`,
+    prices: [
+      "10G : 130€",
+      "25G : 240€",
+      "50G : 450€"
+    ]
+  },
+  calimountain: {
+    name: "CALIMOUNTAIN FARM 🧑‍🌾⛰️ 120u PREMIUM ⭐️",
+    video: "120u.mp4",
+    description: `- CANDY GAZ 🍬 ⛽️ ✅ 
+- GLITTER BOMB 💣 ✅ 
+- APPLE MINTZ 🍏 ✅`,
+    prices: [
+      "5G : 70€",
+      "10G : 140€",
+      "20G : 260€",
+      "25G : 310€"
     ]
   }
 };
