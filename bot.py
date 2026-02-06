@@ -55,7 +55,7 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
 
 if __name__ == '__main__':
     # Token du bot Telegram
-    token = "8041091140:AAGdu3oR3Ag1L_mx_MHytlX4OjfB9wwJ5jo"
+    token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK88041091140:AAGdu3oR3Ag1L_mx_MHytlX4OjfB9wwJ5jo"
 
     application = ApplicationBuilder().token(token).build()
 
