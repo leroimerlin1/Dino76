@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -31,7 +31,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    justify-items: center;
   }
 
   .product {
@@ -43,7 +42,6 @@
     text-align: center;
     cursor: pointer;
     transition: transform 0.2s ease;
-    width: 200px;
   }
 
   .product:hover {
@@ -57,33 +55,25 @@
     margin-bottom: 6px;
   }
 
-  /* TITRE PRODUIT ACCUEIL PLUS GROS */
   .product h3 {
-    font-size: 24px; /* augmentée pour l'accueil */
+    font-size: 18px;
     margin: 5px 0;
   }
 
-  /* === DETAIL PRODUIT CENTRÉ === */
-  #productDetail {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    background: rgba(0,0,0,0.6);
+  .product p {
+    font-size: 14px;
+    color: #00ff9c;
+    margin: 4px 0;
   }
 
   .detail {
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.65);
     border-radius: 12px;
-    padding: 20px;
-    max-width: 450px;
-    width: 90%;
+    padding: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    max-width: 900px;
+    margin: 0 auto;
     text-align: center;
     position: relative;
   }
@@ -99,7 +89,8 @@
   }
 
   .detail video {
-    width: 100%;
+    width: 90%;
+    max-width: 350px;
     border-radius: 12px;
     margin-bottom: 15px;
   }
@@ -112,7 +103,6 @@
     border-radius: 12px;
     background: #444;
     font-size: 14px;
-    cursor: pointer;
   }
 
   .price-grid {
@@ -144,6 +134,7 @@
     margin-left: auto;
     margin-right: auto;
   }
+
 </style>
 </head>
 
@@ -180,7 +171,7 @@
   </div>
 </div>
 
-<div id="productDetail"></div>
+<div id="productDetail" style="display:none; position: relative;"></div>
 
 <script>
 const contact = "@DINOS76S";
@@ -253,14 +244,14 @@ Farm du moment, frais et fruité.`,
 function openProduct(key) {
   const p = products[key];
   let html = `<div class="detail">`;
+
+  // Bouton retour en haut à gauche
   html += `<button class="back" onclick="goBack()">⬅ Retour</button>`;
 
   // Vidéo séparée
   if(p.video) html += `<video src="${p.video}" controls></video>`;
 
-  html += `<h2>${p.name}</h2>`;
-  html += `<p>${p.description}</p>`;
-  html += `<h4>💰 Tarifs</h4>`;
+  html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
 
   // Grille de prix
   html += `<div class="price-grid">`;
@@ -269,14 +260,13 @@ function openProduct(key) {
   });
   html += `</div>`;
 
-  // Bouton commander
-  html += `<button class="order-btn" onclick="order()">📩 Commander</button>`;
-  html += `</div>`;
+  // Bouton commander rond
+  html += `<button class="order-btn" onclick="order()">📩 Commander</button></div>`;
 
   document.getElementById("home").style.display = "none";
   const detail = document.getElementById("productDetail");
   detail.innerHTML = html;
-  detail.style.display = "flex"; // produit centré
+  detail.style.display = "block";
 }
 
 function goBack() {
