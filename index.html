@@ -10,7 +10,8 @@
       font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
       padding: 15px;
-      background: url('https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=1050&q=80') no-repeat center center fixed;
+      /* Nouveau fond : image locale dino.jpg */
+      background: url('dino.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #ffffff;
     }
@@ -28,7 +29,7 @@
     }
 
     .product, .detail {
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.6);
       border-radius: 12px;
       padding: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -77,7 +78,6 @@
 
 <h1>🦖🍣 DINO TERPZ 76</h1>
 
-<!-- ACCUEIL -->
 <div id="home">
   <div class="products">
     <div class="product">
@@ -112,7 +112,6 @@
   </div>
 </div>
 
-<!-- DÉTAIL -->
 <div id="productDetail" style="display:none;"></div>
 
 <script>
@@ -131,13 +130,7 @@ Nous sommes sur une gamme très solide et une farm réputée pour ses TERPS gour
 🍑🍓🍋🥭🍊
 
 Promotion 25% pour ouverture la famille !!!`,
-    prices: [
-      "2,5G : 50€",
-      "5G : 90€",
-      "10G : 180€",
-      "20G : 350€",
-      "25G : 400€"
-    ]
+    prices: ["2,5G : 50€","5G : 90€","10G : 180€","20G : 350€","25G : 400€"]
   },
   cali: {
     name: "Cali weed 🇺🇸🇺🇸",
@@ -145,16 +138,9 @@ Promotion 25% pour ouverture la famille !!!`,
     description: `- runtz 🌈 ✅ 
 - Tropicana strawbeery 🌴🍓 ✅ 
 
-Nous sommes sur une gamme 
-de qualité et prix accessible à tous. 
+Nous sommes sur une gamme de qualité et prix accessible à tous. 
 Une cali avec de très bons TERPS, niveau odor et high. La famille c’est du lourd !`,
-    prices: [
-      "3G : 40€",
-      "5G : 60€",
-      "10G : 120€",
-      "20G : 230€",
-      "25G : 300€"
-    ]
+    prices: ["3G : 40€","5G : 60€","10G : 120€","20G : 230€","25G : 300€"]
   },
   gaz: {
     name: "Gaz fruit 90u⚡️",
@@ -164,11 +150,7 @@ Une cali avec de très bons TERPS, niveau odor et high. La famille c’est du lo
 
 On est sur la farm du moment 
 On voit ça partout. Ça la team frais et fruité en bouche high carré la Team ! 💨`,
-    prices: [
-      "10G : 130€",
-      "25G : 240€",
-      "50G : 450€"
-    ]
+    prices: ["10G : 130€","25G : 240€","50G : 450€"]
   },
   calimountain: {
     name: "CALIMOUNTAIN FARM 🧑‍🌾⛰️ 120u PREMIUM ⭐️",
@@ -176,23 +158,13 @@ On voit ça partout. Ça la team frais et fruité en bouche high carré la Team 
     description: `- CANDY GAZ 🍬 ⛽️ ✅ 
 - GLITTER BOMB 💣 ✅ 
 - APPLE MINTZ 🍏 ✅`,
-    prices: [
-      "5G : 70€",
-      "10G : 140€",
-      "20G : 260€",
-      "25G : 310€"
-    ]
+    prices: ["5G : 70€","10G : 140€","20G : 260€","25G : 310€"]
   },
   farm: {
     name: "FRESH FROZEN SIF 🥶 KINGZ FARM 🧑‍🌾",
     video: "farm.mp4",
     description: `PERMANENT MAKER x GELATO 41 ⛽️ 🍦`,
-    prices: [
-      "5G : 70€",
-      "10G : 140€",
-      "20G : 250€",
-      "25G : 300€"
-    ]
+    prices: ["5G : 70€","10G : 140€","20G : 250€","25G : 300€"]
   }
 };
 
@@ -201,27 +173,13 @@ function openProduct(key) {
 
   let html = `<div class="detail">`;
 
-  // Ajouter la vidéo
-  if(p.video) {
-    html += `<video src="${p.video}" controls></video>`;
-  }
+  if(p.video) html += `<video src="${p.video}" controls></video>`;
 
-  html += `
-      <h2>${p.name}</h2>
-      <p>${p.description}</p>
-      <h4>💰 Tarifs</h4>
-  `;
+  html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
+  p.prices.forEach(price => html += `<p class="price">${price}</p>`);
 
-  p.prices.forEach(price => {
-    html += `<p class="price">${price}</p>`;
-  });
-
-  // Bouton commander -> juste ouvrir Telegram
-  html += `
-      <button onclick="order()">📩 Commander</button>
-      <button class="back" onclick="goBack()">⬅ Retour</button>
-    </div>
-  `;
+  html += `<button onclick="order()">📩 Commander</button>
+           <button class="back" onclick="goBack()">⬅ Retour</button></div>`;
 
   document.getElementById("home").style.display = "none";
   const detail = document.getElementById("productDetail");
