@@ -6,143 +6,167 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    margin: 0;
-    padding: 10px;
-    background: url('dino.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-  }
+/* === BODY === */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('dino.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
 
-  h1 {
-    text-align: center;
-    text-shadow: 1px 1px 4px #000;
-    margin-bottom: 15px;
-    font-size: 28px;
-  }
+/* === HOME === */
+#home {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
 
-  #home {
-    max-width: 900px;
-    margin: 0 auto;
-  }
+h1 {
+  text-align: center;
+  text-shadow: 1px 1px 4px #000;
+  margin-bottom: 15px;
+  font-size: 28px;
+}
 
-  .products {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
 
-  .product {
-    background: rgba(0,0,0,0.65);
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
+.product {
+  background: rgba(0,0,0,0.65);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: 200px;
+}
 
-  .product:hover {
-    transform: scale(1.05);
-  }
+.product:hover {
+  transform: scale(1.05);
+}
 
-  .product img {
-    width: 100%;
-    max-width: 250px;
-    border-radius: 12px;
-    margin-bottom: 6px;
-  }
+.product img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
 
-  .product h3 {
-    font-size: 18px;
-    margin: 5px 0;
-  }
+.product h3 {
+  font-size: 18px;
+  margin: 5px 0;
+}
 
-  .product p {
-    font-size: 14px;
-    color: #00ff9c;
-    margin: 4px 0;
-  }
+.product p {
+  font-size: 14px;
+  color: #00ff9c;
+  margin: 4px 0;
+}
 
-  .detail {
-    background: rgba(0,0,0,0.65);
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-  }
+.price {
+  font-weight: bold;
+  margin: 2px 0;
+}
 
-  .detail h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
+/* === DETAIL PRODUIT === */
+#productDetail {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
 
-  .detail p {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
+.detail {
+  background: rgba(0,0,0,0.85);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
 
-  .detail video {
-    width: 90%;
-    max-width: 350px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-  }
+.detail h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
 
-  .back {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    background: #444;
-    font-size: 14px;
-  }
+.detail p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
 
-  .price-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 8px;
-    margin-bottom: 15px;
-  }
+.detail video {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
 
-  .price-cell {
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 8px;
-    font-weight: bold;
-    font-size: 14px;
-  }
+.back {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #444;
+  font-size: 14px;
+  cursor: pointer;
+}
 
-  button.order-btn {
-    margin-top: 10px;
-    padding: 12px;
-    width: 60%;
-    border: none;
-    border-radius: 50px;
-    background: #ff6347;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 8px;
+  margin-bottom: 15px;
+}
 
+.price-cell {
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 8px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+button.order-btn {
+  margin-top: 10px;
+  padding: 12px;
+  width: 60%;
+  border: none;
+  border-radius: 50px;
+  background: #ff6347;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 </head>
 
 <body>
 
-<h1>🦖🍣 DINO 76</h1>
-
+<!-- PAGE D'ACCUEIL -->
 <div id="home">
+  <h1>🦖🍣 DINO 76</h1>
   <div class="products">
     <div class="product" onclick="openProduct('frozen')">
       <img src="caliplates-thumb.jpg" alt="FROZEN SIFT 🥶">
@@ -181,11 +205,13 @@
   </div>
 </div>
 
-<div id="productDetail" style="display:none; position: relative;"></div>
+<!-- DETAIL PRODUIT -->
+<div id="productDetail"></div>
 
 <script>
 const contact = "@DINOS76S";
 
+// PRODUITS
 const products = {
   frozen: {
     name: "FROZEN SIFT 🥶",
@@ -251,39 +277,33 @@ Farm du moment, frais et fruité.`,
   }
 };
 
+// OUVRIR PRODUIT
 function openProduct(key) {
   const p = products[key];
   let html = `<div class="detail">`;
-
-  // Bouton retour en haut à gauche
   html += `<button class="back" onclick="goBack()">⬅ Retour</button>`;
-
-  // Vidéo séparée
   if(p.video) html += `<video src="${p.video}" controls></video>`;
-
   html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
-
-  // Grille de prix
   html += `<div class="price-grid">`;
   p.prices.forEach(pr => {
     html += `<div class="price-cell">${pr.qty}<br>${pr.price}</div>`;
   });
   html += `</div>`;
-
-  // Bouton commander rond
   html += `<button class="order-btn" onclick="order()">📩 Commander</button></div>`;
 
   document.getElementById("home").style.display = "none";
   const detail = document.getElementById("productDetail");
   detail.innerHTML = html;
-  detail.style.display = "block";
+  detail.style.display = "flex"; // CENTRÉ
 }
 
+// RETOUR
 function goBack() {
   document.getElementById("productDetail").style.display = "none";
   document.getElementById("home").style.display = "block";
 }
 
+// COMMANDER
 function order() {
   window.open(`https://t.me/${contact.replace("@","")}`, "_blank");
 }
