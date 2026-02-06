@@ -2,42 +2,51 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>DINO 76</title>
+  <title>DINO 76 🍣</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
+    /* Corps avec fond sushi */
     body {
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: #ffffff;
+      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
       padding: 15px;
+      background: url('https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=1050&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
     }
 
+    /* Titre */
     h1 {
       text-align: center;
+      text-shadow: 1px 1px 4px #000;
+      margin-bottom: 20px;
     }
 
+    /* Conteneur des produits côte à côte */
     .products {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
     }
 
+    /* Cards produits et détails */
     .product, .detail {
-      background: #1c1c1c;
+      background: rgba(0,0,0,0.7); /* semi-transparent pour voir le fond */
       border-radius: 12px;
       padding: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px); /* flou du fond derrière */
     }
 
+    /* Boutons */
     button {
       margin-top: 10px;
       padding: 12px;
       width: 100%;
       border: none;
       border-radius: 10px;
-      background: #0088cc;
+      background: #ff6347;
       color: white;
       font-size: 16px;
       cursor: pointer;
@@ -47,6 +56,7 @@
       background: #444;
     }
 
+    /* Prix */
     .price {
       color: #00ff9c;
       font-weight: bold;
@@ -56,19 +66,19 @@
 
 <body>
 
-<h1>🦖 DINO 76</h1>
+<h1>🦖🍣 DINO 76 Sushi</h1>
 
 <!-- ACCUEIL -->
 <div id="home">
   <div class="products">
     <div class="product">
-      <h3>Produit Alpha</h3>
-      <button onclick="openProduct('alpha')">Voir</button>
+      <h3>🍣 Sushi Maki</h3>
+      <button onclick="openProduct('maki')">Voir</button>
     </div>
 
     <div class="product">
-      <h3>Produit Beta</h3>
-      <button onclick="openProduct('beta')">Voir</button>
+      <h3>🍤 Sushi Nigiri</h3>
+      <button onclick="openProduct('nigiri')">Voir</button>
     </div>
   </div>
 </div>
@@ -80,22 +90,22 @@
 const contact = "@DINOS76S";
 
 const products = {
-  alpha: {
-    name: "Produit Alpha",
-    description: "Produit Alpha premium, haute qualité, idéal pour clients exigeants.",
+  maki: {
+    name: "Sushi Maki 🍣",
+    description: "Délicieux Maki frais avec du riz, algue nori et garniture au choix. Idéal pour un snack gourmand.",
     prices: [
-      "1 unité : 20€",
-      "5 unités : 90€",
-      "10 unités : 160€"
+      "1 rouleau : 5€",
+      "3 rouleaux : 12€",
+      "6 rouleaux : 22€"
     ]
   },
-  beta: {
-    name: "Produit Beta",
-    description: "Produit Beta très populaire, excellent rapport qualité/prix.",
+  nigiri: {
+    name: "Sushi Nigiri 🍤",
+    description: "Sushi Nigiri premium avec poisson frais sur lit de riz vinaigré. Une explosion de saveurs !",
     prices: [
-      "1 unité : 30€",
-      "3 unités : 80€",
-      "10 unités : 250€"
+      "2 pièces : 6€",
+      "5 pièces : 14€",
+      "10 pièces : 26€"
     ]
   }
 };
