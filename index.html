@@ -8,7 +8,8 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      background: #0f0f0f;
+      color: #ffffff;
       margin: 0;
       padding: 15px;
     }
@@ -17,20 +18,25 @@
       text-align: center;
     }
 
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
     .product, .detail {
-      background: #fff;
-      border-radius: 10px;
+      background: #1c1c1c;
+      border-radius: 12px;
       padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
 
     button {
       margin-top: 10px;
-      padding: 10px;
+      padding: 12px;
       width: 100%;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       background: #0088cc;
       color: white;
       font-size: 16px;
@@ -38,12 +44,12 @@
     }
 
     .back {
-      background: #777;
+      background: #444;
     }
 
     .price {
+      color: #00ff9c;
       font-weight: bold;
-      margin: 5px 0;
     }
   </style>
 </head>
@@ -52,20 +58,22 @@
 
 <h1>🦖 DINO 76</h1>
 
-<!-- PAGE ACCUEIL -->
+<!-- ACCUEIL -->
 <div id="home">
-  <div class="product">
-    <h3>Produit Alpha</h3>
-    <button onclick="openProduct('alpha')">Voir le produit</button>
-  </div>
+  <div class="products">
+    <div class="product">
+      <h3>Produit Alpha</h3>
+      <button onclick="openProduct('alpha')">Voir</button>
+    </div>
 
-  <div class="product">
-    <h3>Produit Beta</h3>
-    <button onclick="openProduct('beta')">Voir le produit</button>
+    <div class="product">
+      <h3>Produit Beta</h3>
+      <button onclick="openProduct('beta')">Voir</button>
+    </div>
   </div>
 </div>
 
-<!-- PAGE PRODUIT -->
+<!-- DÉTAIL -->
 <div id="productDetail" style="display:none;"></div>
 
 <script>
@@ -74,7 +82,7 @@ const contact = "@DINOS76S";
 const products = {
   alpha: {
     name: "Produit Alpha",
-    description: "Description détaillée du produit Alpha. Qualité premium, livraison rapide.",
+    description: "Produit Alpha premium, haute qualité, idéal pour clients exigeants.",
     prices: [
       "1 unité : 20€",
       "5 unités : 90€",
@@ -83,7 +91,7 @@ const products = {
   },
   beta: {
     name: "Produit Beta",
-    description: "Produit Beta très demandé, idéal pour revente.",
+    description: "Produit Beta très populaire, excellent rapport qualité/prix.",
     prices: [
       "1 unité : 30€",
       "3 unités : 80€",
