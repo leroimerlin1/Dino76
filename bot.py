@@ -1,45 +1,145 @@
+import logging
 import os
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler
+from telegram.error import NetworkError, TimedOut
 
-# Récupère le token depuis l'environnement
-BOT_TOKEN = os.environ.get("8041091140:AAGdu3oR3Ag1L_mx_MHytlX4OjfB9wwJ5jo")
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
-if not BOT_TOKEN:
-    raise ValueError("Erreur : La variable d'environnement BOT_TOKEN n'est pas définie !")
+# === TES LIENS ===
+LIEN_CANAL_TELEGRAM = "https://t.me/+Bn-Ly265PCtkMTM0"
+LIEN_VITRINE = "https://callup.luffa.im/c/PtoS5qYZefe"
+LIEN_CONTACT = "https://t.me/Sav_qualityfarmz76"
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """
-    Fonction qui répond à la commande /start
-    en envoyant un bouton pour ouvrir la mini-app
-    """
+# === IMAGE LOCALE ===
+NOM_IMAGE = "quality.jpg"
+
+# Claviers
+def get_main_menu_keyboard():
     keyboard = [
+        [InlineKeyboardButton("📝 Menu", callback_data='menu')],
         [
-            InlineKeyboardButton(
-                text="🚀 Ouvrir Mini-App DINO 76",
-                web_app=WebAppInfo(url="https://leroimerlin1.github.io/Dino76/")
-            )
+            InlineKeyboardButton("📢 Canal Telegram", url=LIEN_CANAL_TELEGRAM)
+        ],
+        [
+            InlineKeyboardButton("📸 Vitrine", url=LIEN_VITRINE),
+            InlineKeyboardButton("✉️ Contact", url=LIEN_CONTACT)
         ]
     ]
+    return InlineKeyboardMarkup(keyboard)
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+def get_menu_with_back_keyboard():
+    keyboard = [
+        [InlineKeyboardButton("📝 Menu", callback_data='menu')],
+        [
+            InlineKeyboardButton("📢 Canal Telegram", url=LIEN_CANAL_TELEGRAM)
+        ],
+        [
+            InlineKeyboardButton("📸 Vitrine", url=LIEN_VITRINE),
+            InlineKeyboardButton("✉️ Contact", url=LIEN_CONTACT)
+        ],
+        [InlineKeyboardButton("🔙 Retour", callback_data='accueil')]
+    ]
+    return InlineKeyboardMarkup(keyboard)
 
-    await update.message.reply_text(
-        "🦖 Bienvenue sur DINO 76 ! Cliquez ci-dessous pour accéder à la mini-app :",
-        reply_markup=reply_markup
+# Textes
+TEXTE_ACCUEIL = """
+🌟 **Bienvenue !** 🌟
+
+Voici les liens utiles de **Qualityfarmz76**
+
+Choisis une option ci-dessous 👇
+"""
+
+TEXTE_MENU = """
+**📋 Menu principal**
+
+**🧽Jaune mousseux🧽**
+**Kinder Maxi🍫🥚**
+
+**10G = 50€**
+**25G = 110€**
+**50G = 150€**
+**100G = 280€**
+"""
+
+# Fonction accueil robuste
+async def envoyer_accueil(chat):
+    try:
+        if os.path.exists(NOM_IMAGE):
+            with open(NOM_IMAGE, 'rb') as photo:
+                await chat.send_photo(
+                    photo=photo,
+                    caption=TEXTE_ACCUEIL,
+                    parse_mode='Markdown',
+                    reply_markup=get_main_menu_keyboard()
+                )
+            return
+    except Exception as e:
+        logger.error(f"Erreur image accueil : {e}")
+
+    await chat.send_message(
+        TEXTE_ACCUEIL,
+        parse_mode='Markdown',
+        reply_markup=get_main_menu_keyboard()
     )
 
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Tapez /start pour ouvrir la mini-app DINO 76.")
+# /start et /menu
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await envoyer_accueil(update.message.chat)
 
-# Crée l'application du bot
-app = ApplicationBuilder().token(BOT_TOKEN).build()
+# Gestion des boutons (CORRIGÉE POUR LE RETOUR)
+async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
 
-# Ajouter les handlers
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("help", help_command))
+    # On essaie de supprimer l'ancien message, mais on ignore les erreurs
+    try:
+        await query.message.delete()
+    except:
+        pass  # Si ça échoue (message déjà supprimé ou trop vieux), on continue quand même
 
-print("🤖 Bot DINO 76 démarré !")
+    if query.data == 'menu':
+        try:
+            if os.path.exists(NOM_IMAGE):
+                with open(NOM_IMAGE, 'rb') as photo:
+                    await query.message.chat.send_photo(
+                        photo=photo,
+                        caption=TEXTE_MENU,
+                        parse_mode='Markdown',
+                        reply_markup=get_menu_with_back_keyboard()
+                    )
+                return
+        except Exception as e:
+            logger.error(f"Erreur image menu : {e}")
 
-# Lancement du polling
-app.run_polling()
+        await query.message.chat.send_message(
+            TEXTE_MENU,
+            parse_mode='Markdown',
+            reply_markup=get_menu_with_back_keyboard()
+        )
+
+    elif query.data == 'accueil':
+        # Retour forcé à l'accueil, même si suppression a échoué
+        await envoyer_accueil(query.message.chat)
+
+# Gestion erreurs globale
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
+    logger.error("Erreur inattendue :", exc_info=context.error)
+    # On n'envoie plus de message d'erreur pour les petites exceptions courantes
+    # (le bot gère déjà tout en interne)
+
+if __name__ == '__main__':
+    application = ApplicationBuilder().token("8433304578:AAHTAtyqw7ZnzK-2QymALBgohAZNTXmwa8g").build()
+
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CommandHandler('menu', start))
+    application.add_handler(CallbackQueryHandler(button_callback))
+    application.add_error_handler(error_handler)
+
+    print("🚀 Bot Qualityfarmz76 lancé – Bouton Retour corrigé !")
+    application.run_polling()
