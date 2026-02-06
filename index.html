@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>DINO 76 🍣</title>
+  <title>DINO TERPZ 76 🍣</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
@@ -63,8 +63,10 @@
       font-weight: bold;
     }
 
+    /* Réduction de la taille des vidéos */
     video {
-      width: 100%;
+      width: 90%;
+      max-width: 300px;
       border-radius: 12px;
       margin-bottom: 12px;
     }
@@ -73,7 +75,7 @@
 
 <body>
 
-<h1>🦖🍣 DINO 76</h1>
+<h1>🦖🍣 DINO TERPZ 76</h1>
 
 <!-- ACCUEIL -->
 <div id="home">
@@ -100,6 +102,12 @@
       <img src="120u-thumb.jpg" alt="CALIMOUNTAIN FARM 🧑‍🌾⛰️">
       <h3>🧑‍🌾⛰️ CALIMOUNTAIN FARM 120u</h3>
       <button onclick="openProduct('calimountain')">Voir</button>
+    </div>
+
+    <div class="product">
+      <img src="farm-thumb.jpg" alt="FRESH FROZEN SIF 🥶 KINGZ FARM 🧑‍🌾">
+      <h3>🥶 FRESH FROZEN SIF - KINGZ FARM 🧑‍🌾</h3>
+      <button onclick="openProduct('farm')">Voir</button>
     </div>
   </div>
 </div>
@@ -174,6 +182,17 @@ On voit ça partout. Ça la team frais et fruité en bouche high carré la Team 
       "20G : 260€",
       "25G : 310€"
     ]
+  },
+  farm: {
+    name: "FRESH FROZEN SIF 🥶 KINGZ FARM 🧑‍🌾",
+    video: "farm.mp4",
+    description: `PERMANENT MAKER x GELATO 41 ⛽️ 🍦`,
+    prices: [
+      "5G : 70€",
+      "10G : 140€",
+      "20G : 250€",
+      "25G : 300€"
+    ]
   }
 };
 
@@ -182,7 +201,7 @@ function openProduct(key) {
 
   let html = `<div class="detail">`;
 
-  // Ajouter la vidéo si elle existe
+  // Ajouter la vidéo
   if(p.video) {
     html += `<video src="${p.video}" controls></video>`;
   }
@@ -197,12 +216,9 @@ function openProduct(key) {
     html += `<p class="price">${price}</p>`;
   });
 
-  const message = encodeURIComponent(
-    `Bonjour, je souhaite commander : ${p.name}`
-  );
-
+  // Bouton commander -> juste ouvrir Telegram
   html += `
-      <button onclick="order('${message}')">📩 Commander</button>
+      <button onclick="order()">📩 Commander</button>
       <button class="back" onclick="goBack()">⬅ Retour</button>
     </div>
   `;
@@ -218,8 +234,8 @@ function goBack() {
   document.getElementById("home").style.display = "block";
 }
 
-function order(message) {
-  window.open(`https://t.me/${contact.replace("@","")}?text=${message}`, "_blank");
+function order() {
+  window.open(`https://t.me/${contact.replace("@","")}`, "_blank");
 }
 </script>
 
