@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # ---------------------- TOKEN ----------------------
-token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"  # <-- Remplace ici par ton vrai token
+token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"  # <-- Remplace ici par ton token
 CONTACT = "@DINOS76S"
 
 # ---------------------- PRODUITS ----------------------
@@ -10,7 +10,7 @@ products_choco = {
     "frozen": {
         "name": "🥶 FROZEN SIFT",
         "desc": "Garlic Cookie 🍪, Jelly Donuts 🍩, Cake 🍰\nPromo -25%",
-        "video": "videos/frozen.mp4",
+        "video": "videos/caliplates.mp4",
         "prices": ["2,5G 50€", "5G 90€", "10G 180€", "20G 350€", "25G 400€"]
     },
     "gaz": {
@@ -22,7 +22,7 @@ products_choco = {
     "calimountain": {
         "name": "🧑‍🌾 CALIMOUNTAIN 120u",
         "desc": "Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏",
-        "video": "videos/calimountain.mp4",
+        "video": "videos/120u.mp4",
         "prices": ["5G 70€", "10G 140€", "20G 260€", "25G 310€"]
     },
     "farm": {
@@ -41,6 +41,12 @@ cali = {
 }
 
 # ---------------------- COMMANDES ----------------------
+async def delete_current_message(message):
+    try:
+        await message.delete()
+    except:
+        pass  # ignore si déjà supprimé
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [[InlineKeyboardButton("Menu📝", callback_data="menu")]]
     
@@ -55,10 +61,8 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     
-    # Supprime le message précédent (photo)
-    await query.message.delete()
+    await delete_current_message(query.message)
     
-    # Nouveau message avec le menu
     keyboard = [
         [InlineKeyboardButton("🍫", callback_data="choco")],
         [InlineKeyboardButton("🌳", callback_data="tree")]
@@ -73,6 +77,8 @@ async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     
+    await delete_current_message(query.message)
+    
     keyboard = [[InlineKeyboardButton(p["name"], callback_data=f"prod_{k}")] for k, p in products_choco.items()]
     keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])
     
@@ -86,9 +92,10 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     
+    await delete_current_message(query.message)
+    
     keyboard = [
         [InlineKeyboardButton(cali["name"], callback_data="cali_detail")],
-        [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
         [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]
     ]
     
@@ -101,6 +108,9 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    
+    await delete_current_message(query.message)
+    
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
@@ -120,6 +130,8 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    
+    await delete_current_message(query.message)
     
     prices_text = "\n".join(cali["prices"])
     caption = f"*{cali['name']}*\n\n{cali['desc']}\n\n💰 *Tarifs*\n{prices_text}"
