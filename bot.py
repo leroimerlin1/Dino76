@@ -1,66 +1,139 @@
-import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-import os
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
-logger = logging.getLogger(__name__)
+TOKEN = "TON_TOKEN_ICI"
+CONTACT = "@DINOS76S"
 
-# === LIEN DE LA MINI-APP ===
-LIEN_MINI_APP = "https://leroimerlin1.github.io/Dino76/"
+# ---------- PRODUITS ----------
+products_choco = {
+    "frozen": {
+        "name": "🥶 FROZEN SIFT",
+        "desc": "Garlic Cookie 🍪, Jelly Donuts 🍩, Cake 🍰\nPromo -25%",
+        "video": "videos/frozen.mp4",
+        "prices": ["2,5G 50€", "5G 90€", "10G 180€", "20G 350€", "25G 400€"]
+    },
+    "gaz": {
+        "name": "⚡️ Gaz fruit 90u",
+        "desc": "Papaya Dolce 🥭, Mimi Cheese 🧀",
+        "video": "videos/gaz.mp4",
+        "prices": ["10G 130€", "25G 240€", "50G 450€"]
+    },
+    "calimountain": {
+        "name": "🧑‍🌾 CALIMOUNTAIN 120u",
+        "desc": "Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏",
+        "video": "videos/calimountain.mp4",
+        "prices": ["5G 70€", "10G 140€", "20G 260€", "25G 310€"]
+    },
+    "farm": {
+        "name": "🥶 FRESH FROZEN SIF",
+        "desc": "PERMANENT MAKER x GELATO 41 ⛽️🍦",
+        "video": "videos/farm.mp4",
+        "prices": ["5G 70€", "10G 140€", "20G 250€", "25G 300€"]
+    }
+}
 
-# Nom de l'image locale
-IMAGE_ACCUEIL = "dino.jpg"
+cali = {
+    "name": "🇺🇸 Cali weed",
+    "desc": "Runtz 🌈, Tropicana Strawberry 🌴🍓",
+    "video": "videos/cali.mp4",
+    "prices": ["3G 40€", "5G 60€", "10G 120€", "20G 230€", "25G 300€"]
+}
 
-# Clavier avec bouton web app
-def get_mini_app_keyboard():
-    keyboard = [
-        [
-            InlineKeyboardButton(
-                text="🚀 Ouvrir Mini-App DINO TERPZ 76",
-                web_app=WebAppInfo(url=LIEN_MINI_APP)
-            )
-        ]
-    ]
-    return InlineKeyboardMarkup(keyboard)
-
-# /start
+# ---------- COMMANDES ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    chat = update.message.chat
+    keyboard = [[InlineKeyboardButton("Menu📝", callback_data="menu")]]
+    
+    # Envoi image + texte + bouton
+    await update.message.reply_photo(
+        photo=open("dino.jpg", "rb"),
+        caption="🦖🍣 *Bienvenue sur DINO TERPS 76*\nAppuie sur les boutons ci-dessous pour voir le menu",
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        parse_mode="Markdown"
+    )
 
-    keyboard = get_mini_app_keyboard()
+async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    keyboard = [
+        [InlineKeyboardButton("🍫", callback_data="choco")],
+        [InlineKeyboardButton("🌳", callback_data="tree")]
+    ]
+    await query.edit_message_text(
+        "📋 *Menu📝*",
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        parse_mode="Markdown"
+    )
 
-    # Vérifie si l'image existe
-    if os.path.exists(IMAGE_ACCUEIL):
-        with open(IMAGE_ACCUEIL, 'rb') as photo:
-            await chat.send_photo(
-                photo=photo,
-                caption="🦖 Bienvenue sur 🍣DINO TERPZ 76 ! Cliquez ci-dessous pour accéder à la mini-app :",
-                parse_mode='Markdown',
-                reply_markup=keyboard
-            )
-    else:
-        # Si image manquante, envoie juste le texte
-        await chat.send_message(
-            "🦖 Bienvenue sur 🍣DINO TERPZ 76 ! Cliquez ci-dessous pour accéder à la mini-app :",
-            reply_markup=keyboard
-        )
+async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    keyboard = [[InlineKeyboardButton(p["name"], callback_data=f"prod_{k}")] for k, p in products_choco.items()]
+    keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])
+    await query.edit_message_text(
+        "🍫 *Produits*",
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        parse_mode="Markdown"
+    )
 
-# Gestion erreurs globale
-async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
-    logger.error("Erreur inattendue :", exc_info=context.error)
+async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    keyboard = [
+        [InlineKeyboardButton(cali["name"], callback_data="cali_detail")],
+        [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
+        [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]
+    ]
+    await query.edit_message_text(
+        "🌳 *Cali weed*",
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        parse_mode="Markdown"
+    )
 
-if __name__ == '__main__':
-    # Token du bot Telegram
-    token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
+async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    key = query.data.replace("prod_", "")
+    p = products_choco[key]
 
-    application = ApplicationBuilder().token(token).build()
+    # Préparer texte avec prix
+    prices_text = "\n".join(p["prices"])
+    caption = f"*{p['name']}*\n\n{p['desc']}\n\n💰 *Tarifs*\n{prices_text}"
 
-    application.add_handler(CommandHandler('start', start))
-    application.add_error_handler(error_handler)
+    # Envoie la vidéo avec caption + boutons
+    await query.message.reply_video(
+        video=open(p["video"], "rb"),
+        caption=caption,
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
+            [InlineKeyboardButton("⬅️ Retour", callback_data="choco")]
+        ])
+    )
 
-    print("🚀 Bot DINO 76 lancé !")
-    application.run_polling()
+async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    prices_text = "\n".join(cali["prices"])
+    caption = f"*{cali['name']}*\n\n{cali['desc']}\n\n💰 *Tarifs*\n{prices_text}"
+
+    await query.message.reply_video(
+        video=open(cali["video"], "rb"),
+        caption=caption,
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
+            [InlineKeyboardButton("⬅️ Retour", callback_data="tree")]
+        ])
+    )
+
+# ---------- MAIN ----------
+app = ApplicationBuilder().token(TOKEN).build()
+
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CallbackQueryHandler(menu, pattern="menu"))
+app.add_handler(CallbackQueryHandler(choco_menu, pattern="choco"))
+app.add_handler(CallbackQueryHandler(cali_menu, pattern="tree"))
+app.add_handler(CallbackQueryHandler(product_detail, pattern="prod_"))
+app.add_handler(CallbackQueryHandler(cali_detail, pattern="cali_detail"))
+
+app.run_polling()
