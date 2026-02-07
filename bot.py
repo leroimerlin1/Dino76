@@ -127,7 +127,7 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 # ---------- MAIN ----------
-app = ApplicationBuilder().token(TOKEN).build()
+app = ApplicationBuilder().token(token).build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CallbackQueryHandler(menu, pattern="menu"))
