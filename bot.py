@@ -1,8 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-# ---------------------- TOKEN ----------------------
-token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"  # <-- Remplace ici par ton token
+token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"  # <-- Remplace par ton token
 CONTACT = "@DINOS76S"
 
 # ---------------------- PRODUITS ----------------------
@@ -26,7 +25,7 @@ products_choco = {
         "prices": ["5G 70€", "10G 140€", "20G 260€", "25G 310€"]
     },
     "farm": {
-        "name": "🥶 FRESH FROZEN SIF",
+        "name": "🥶 FRESH FROZEN SIFT",
         "desc": "PERMANENT MAKER x GELATO 41 ⛽️🍦",
         "video": "videos/farm.mp4",
         "prices": ["5G 70€", "10G 140€", "20G 250€", "25G 300€"]
@@ -40,16 +39,16 @@ cali = {
     "prices": ["3G 40€", "5G 60€", "10G 120€", "20G 230€", "25G 300€"]
 }
 
-# ---------------------- COMMANDES ----------------------
+# ---------------------- UTIL ----------------------
 async def delete_current_message(message):
     try:
         await message.delete()
     except:
-        pass  # ignore si déjà supprimé
+        pass
 
+# ---------------------- COMMANDES ----------------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [[InlineKeyboardButton("Menu📝", callback_data="menu")]]
-    
     await update.message.reply_photo(
         photo=open("dino.jpg", "rb"),
         caption="🦖🍣 *Bienvenue sur DINO TERPS 76*\nAppuie sur les boutons ci-dessous pour voir le menu",
@@ -60,9 +59,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
     await delete_current_message(query.message)
-    
+
     keyboard = [
         [InlineKeyboardButton("🍫", callback_data="choco")],
         [InlineKeyboardButton("🌳", callback_data="tree")]
@@ -76,12 +74,11 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
     await delete_current_message(query.message)
-    
+
     keyboard = [[InlineKeyboardButton(p["name"], callback_data=f"prod_{k}")] for k, p in products_choco.items()]
     keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])
-    
+
     await query.message.reply_text(
         "🍫 *Produits*",
         reply_markup=InlineKeyboardMarkup(keyboard),
@@ -91,14 +88,12 @@ async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
     await delete_current_message(query.message)
-    
+
     keyboard = [
         [InlineKeyboardButton(cali["name"], callback_data="cali_detail")],
         [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]
     ]
-    
     await query.message.reply_text(
         "🌳 *Cali weed*",
         reply_markup=InlineKeyboardMarkup(keyboard),
@@ -108,42 +103,44 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
     await delete_current_message(query.message)
-    
+
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
     prices_text = "\n".join(p["prices"])
     caption = f"*{p['name']}*\n\n{p['desc']}\n\n💰 *Tarifs*\n{prices_text}"
 
+    keyboard = [
+        [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
+        [InlineKeyboardButton("⬅️ Retour", callback_data="choco")]
+    ]
+
     await query.message.reply_video(
         video=open(p["video"], "rb"),
         caption=caption,
         parse_mode="Markdown",
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
-            [InlineKeyboardButton("⬅️ Retour", callback_data="choco")]
-        ])
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
 async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    
     await delete_current_message(query.message)
-    
+
     prices_text = "\n".join(cali["prices"])
     caption = f"*{cali['name']}*\n\n{cali['desc']}\n\n💰 *Tarifs*\n{prices_text}"
+
+    keyboard = [
+        [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
+        [InlineKeyboardButton("⬅️ Retour", callback_data="tree")]
+    ]
 
     await query.message.reply_video(
         video=open(cali["video"], "rb"),
         caption=caption,
         parse_mode="Markdown",
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
-            [InlineKeyboardButton("⬅️ Retour", callback_data="tree")]
-        ])
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
 # ---------------------- MAIN ----------------------
