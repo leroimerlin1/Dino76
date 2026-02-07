@@ -63,7 +63,8 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
         [InlineKeyboardButton("🍫", callback_data="choco")],
-        [InlineKeyboardButton("🌳", callback_data="tree")]
+        [InlineKeyboardButton("🌳", callback_data="tree")],
+        [InlineKeyboardButton("⬅️ Retour", callback_data="start")]  # Bouton retour vers /start
     ]
     await query.message.reply_text(
         "📋 *Menu📝*",
@@ -77,7 +78,7 @@ async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await delete_current_message(query.message)
 
     keyboard = [[InlineKeyboardButton(p["name"], callback_data=f"prod_{k}")] for k, p in products_choco.items()]
-    keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])
+    keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])  # Retour vers menu
 
     await query.message.reply_text(
         "🍫 *Produits*",
@@ -92,7 +93,7 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
         [InlineKeyboardButton(cali["name"], callback_data="cali_detail")],
-        [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]
+        [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]  # Retour vers menu
     ]
     await query.message.reply_text(
         "🌳 *Cali weed*",
@@ -113,7 +114,7 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
-        [InlineKeyboardButton("⬅️ Retour", callback_data="choco")]
+        [InlineKeyboardButton("⬅️ Retour", callback_data="choco")]  # Retour vers sous-menu 🍫
     ]
 
     await query.message.reply_video(
@@ -133,7 +134,7 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
-        [InlineKeyboardButton("⬅️ Retour", callback_data="tree")]
+        [InlineKeyboardButton("⬅️ Retour", callback_data="tree")]  # Retour vers sous-menu 🌳
     ]
 
     await query.message.reply_video(
