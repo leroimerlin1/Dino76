@@ -8,19 +8,19 @@ CONTACT = "@DINOS76S"
 products_choco = {
     "frozen": {
         "name": "🥶 FROZEN SIFT",
-        "desc": "Garlic Cookie 🍪, Jelly Donuts 🍩, Cake 🍰\nPromo -25%",
+        "desc": "Garlic Cookie 🍪\nJelly Donuts 🍩\nCake 🍰\nPromo -25%",
         "video": "caliplates.mp4",
         "prices": ["2,5G 50€", "5G 90€", "10G 180€", "20G 350€", "25G 400€"]
     },
     "gaz": {
         "name": "⚡️ Gaz fruit 90u",
-        "desc": "Papaya Dolce 🥭, Mimi Cheese 🧀",
+        "desc": "Papaya Dolce 🥭\nMimi Cheese 🧀",
         "video": "gaz.mp4",
         "prices": ["10G 130€", "25G 240€", "50G 450€"]
     },
     "calimountain": {
         "name": "🧑‍🌾 CALIMOUNTAIN 120u",
-        "desc": "Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏",
+        "desc": "Candy Gaz 🍬\nGlitter Bomb 💣\nApple Mintz 🍏",
         "video": "120u.mp4",
         "prices": ["5G 70€", "10G 140€", "20G 260€", "25G 310€"]
     },
@@ -34,7 +34,7 @@ products_choco = {
 
 cali = {
     "name": "🇺🇸 Cali weed",
-    "desc": "Runtz 🌈, Tropicana Strawberry 🌴🍓",
+    "desc": "Runtz 🌈\nTropicana Strawberry 🌴🍓",
     "video": "cali.mp4",
     "prices": ["3G 40€", "5G 60€", "10G 120€", "20G 230€", "25G 300€"]
 }
