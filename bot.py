@@ -1,10 +1,11 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
-token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
+# ---------------------- TOKEN ----------------------
+token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"  # <-- Remplace ici par ton vrai token
 CONTACT = "@DINOS76S"
 
-# ---------- PRODUITS ----------
+# ---------------------- PRODUITS ----------------------
 products_choco = {
     "frozen": {
         "name": "🥶 FROZEN SIFT",
@@ -39,11 +40,10 @@ cali = {
     "prices": ["3G 40€", "5G 60€", "10G 120€", "20G 230€", "25G 300€"]
 }
 
-# ---------- COMMANDES ----------
+# ---------------------- COMMANDES ----------------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [[InlineKeyboardButton("Menu📝", callback_data="menu")]]
     
-    # Envoi image + texte + bouton
     await update.message.reply_photo(
         photo=open("dino.jpg", "rb"),
         caption="🦖🍣 *Bienvenue sur DINO TERPS 76*\nAppuie sur les boutons ci-dessous pour voir le menu",
@@ -54,11 +54,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    
+    # Supprime le message précédent (photo)
+    await query.message.delete()
+    
+    # Nouveau message avec le menu
     keyboard = [
         [InlineKeyboardButton("🍫", callback_data="choco")],
         [InlineKeyboardButton("🌳", callback_data="tree")]
     ]
-    await query.edit_message_text(
+    await query.message.reply_text(
         "📋 *Menu📝*",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown"
@@ -67,9 +72,11 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    
     keyboard = [[InlineKeyboardButton(p["name"], callback_data=f"prod_{k}")] for k, p in products_choco.items()]
     keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])
-    await query.edit_message_text(
+    
+    await query.message.reply_text(
         "🍫 *Produits*",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown"
@@ -78,12 +85,14 @@ async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    
     keyboard = [
         [InlineKeyboardButton(cali["name"], callback_data="cali_detail")],
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
         [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]
     ]
-    await query.edit_message_text(
+    
+    await query.message.reply_text(
         "🌳 *Cali weed*",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown"
@@ -95,11 +104,9 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
-    # Préparer texte avec prix
     prices_text = "\n".join(p["prices"])
     caption = f"*{p['name']}*\n\n{p['desc']}\n\n💰 *Tarifs*\n{prices_text}"
 
-    # Envoie la vidéo avec caption + boutons
     await query.message.reply_video(
         video=open(p["video"], "rb"),
         caption=caption,
@@ -113,6 +120,7 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    
     prices_text = "\n".join(cali["prices"])
     caption = f"*{cali['name']}*\n\n{cali['desc']}\n\n💰 *Tarifs*\n{prices_text}"
 
@@ -126,7 +134,7 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ])
     )
 
-# ---------- MAIN ----------
+# ---------------------- MAIN ----------------------
 app = ApplicationBuilder().token(token).build()
 
 app.add_handler(CommandHandler("start", start))
