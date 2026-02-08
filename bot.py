@@ -8,35 +8,41 @@ CONTACT = "@DINOS76S"
 products_choco = {
     "frozen": {
         "name": "🥶 FROZEN SIFT",
-        "desc": "Garlic Cookie 🍪\nJelly Donuts 🍩\nCake 🍰\nPromo -25%",
+        "desc": """🌈 Garlic Cookie
+🍩 Jelly Donuts
+🍰 Cake""",
         "video": "caliplates.mp4",
-        "prices": ["""-2,5G 50€\n\n-5G 90€\n\n-10G 180€\n\n-20G 350€\n\n-25G 400€"""]
+        "prices": ["2,5G — 50€", "5G — 90€", "10G — 180€", "20G — 350€", "25G — 400€"]
     },
     "gaz": {
         "name": "⚡️ Gaz fruit 90u",
-        "desc": "Papaya Dolce 🥭\nMimi Cheese 🧀",
+        "desc": """🥭 Papaya Dolce
+🧀 Mimi Cheese""",
         "video": "gaz.mp4",
-        "prices": ["""-10G 130€\n\n-25G 240€\n\n-50G 450€"""]
+        "prices": ["10G — 130€", "25G — 240€", "50G — 450€"]
     },
     "calimountain": {
         "name": "🧑‍🌾 CALIMOUNTAIN 120u",
-        "desc": "Candy Gaz 🍬\nGlitter Bomb 💣\nApple Mintz 🍏",
+        "desc": """🍬 Candy Gaz
+💣 Glitter Bomb
+🍏 Apple Mintz""",
         "video": "120u.mp4",
-        "prices": ["""-5G 70€\n\n-10G 140€\n\n-20G 260€\n\n-25G 310€"""]
+        "prices": ["5G — 70€", "10G — 140€", "20G — 260€", "25G — 310€"]
     },
     "farm": {
         "name": "🥶 FRESH FROZEN SIFT",
-        "desc": "PERMANENT MAKER x GELATO 41 ⛽️🍦",
+        "desc": """⛽️ Permanent Maker x Gelato 41""",
         "video": "farm.mp4",
-        "prices": ["""-5G 70€\n\n-10G 140€\n\n-20G 250€\n\n-25G 300€"]
+        "prices": ["5G — 70€", "10G — 140€", "20G — 250€", "25G — 300€"]
     }
 }
 
 cali = {
-    "name": "🇺🇸 Cali weed",
-    "desc": "Runtz 🌈\nTropicana Strawberry 🌴🍓",
+    "name": "🇺🇸 Cali Weed",
+    "desc": """🌈 Runtz
+🍓 Tropicana Strawberry""",
     "video": "cali.mp4",
-    "prices": [""-3G 40€\n\n-5G 60€\n\n-10G 120€\n\n-20G 230€\n\n-25G 300€"""]
+    "prices": ["3G — 40€", "5G — 60€", "10G — 120€", "20G — 230€", "25G — 300€"]
 }
 
 # ---------------------- UTIL ----------------------
@@ -74,19 +80,23 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await message.reply_photo(
         photo=open("dino.jpg", "rb"),
-        caption=(
-            "SALUT A TOUS LA TEAM BIENVENUE CHEZ NOUS L’EQUIPE 🔥🦾\n\n"
-            "DINO TERPS 76\n"
-            "🍓🍒🍋🍊🍈\n\n"
-            "The best of terps au rendez vous des produits exceptionnels\n"
-            "Prix imbattable dans toute la Normandie 🏆\n\n"
-            "Livraison 🚚 ✅\n"
-            "76 / 27 / 14 / 60\n\n"
-            "Meet-Up 🏠 76 ✅\n\n"
-            "Contact unique :\n"
-            "@dino76s 🍣\n\n"
-            "Toute ce passe ci-dessous 👇👇"
-        ),
+        caption="""SALUT A TOUS LA TEAM BIENVENUE CHEZ NOUS L’EQUIPE 🔥🦾
+
+DINO TERPS 76
+🍓🍒🍋🍊🍈
+
+The best of terps au rendez-vous des produits exceptionnels
+Prix imbattable dans toute la Normandie 🏆
+
+Livraison 🚚 ✅
+76 / 27 / 14 / 60
+
+Meet-Up 🏠 76 ✅
+
+Contact unique :
+@dino76s 🍣
+
+Toute ce passe ci-dessous 👇👇""",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
@@ -97,17 +107,21 @@ async def info_livraison(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await delete_current_message(query.message)
 
     await query.message.reply_text(
-        "SALUT A TOUS LA TEAM !\n\n"
-        "VOICI LES ZONES DE LIVRAISON 🚚 📦\n"
-        "76 / 27 / 14 / 60\n\n"
-        "76 centre et alentours\n\n"
-        "- 10 km : 50€\n"
-        "- 20 km : 80€\n"
-        "- 30 km : 120€\n"
-        "- 50 km : 350€\n"
-        "- 100 km : 420€\n\n"
-        "Paiement en espèce 💶\n\n"
-        "Contact : @dinos76s 🍱",
+        """SALUT A TOUS LA TEAM !
+
+VOICI LES ZONES DE LIVRAISON 🚚 📦 :
+76 / 27 / 14 / 60
+
+76 centre et alentours
+
+- 10 km : 50€
+- 20 km : 80€
+- 30 km : 120€
+- 50 km : 350€
+- 100 km : 420€
+
+Paiement en espèce 💶
+Contact : @dinos76s 🍱""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("⬅️ Retour", callback_data="start")]]
         )
@@ -120,13 +134,16 @@ async def info_meetup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await delete_current_message(query.message)
 
     await query.message.reply_text(
-        "SERVICE MEET-UP 🏠\n\n"
-        "Passe directement sur place\n"
-        "Contacte en privé avant avec l’heure et la commande\n\n"
-        "@dino76s 🍣\n\n"
-        "Paiement en espèce 💶\n\n"
-        "Ouvert 12h - 23h\n"
-        "SAV 24h/24",
+        """SERVICE MEET-UP 🏠 ✅
+
+Passe directement sur place
+Contacte en privé avant avec l’heure et la commande 🚶📦
+
+@dino76s 🍣
+
+Paiement en espèce 💶
+Ouvert 12h - 23h
+SAV 24h/24""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("⬅️ Retour", callback_data="start")]]
         )
@@ -143,11 +160,9 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🌳", callback_data="tree")],
         [InlineKeyboardButton("⬅️ Retour", callback_data="start")]
     ]
-    await query.message.reply_text(
-        "Menu",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    await query.message.reply_text("Menu", reply_markup=InlineKeyboardMarkup(keyboard))
 
+# ---------------------- SOUS-MENUS ----------------------
 async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -156,10 +171,7 @@ async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [[InlineKeyboardButton(p["name"], callback_data=f"prod_{k}")] for k, p in products_choco.items()]
     keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])
 
-    await query.message.reply_text(
-        "Produits",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    await query.message.reply_text("Produits", reply_markup=InlineKeyboardMarkup(keyboard))
 
 async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -170,11 +182,9 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton(cali["name"], callback_data="cali_detail")],
         [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]
     ]
-    await query.message.reply_text(
-        "Cali weed",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    await query.message.reply_text("Cali weed", reply_markup=InlineKeyboardMarkup(keyboard))
 
+# ---------------------- DETAILS PRODUITS ----------------------
 async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -183,7 +193,8 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
-    caption = f"{p['name']}\n\n{p['desc']}\n\nTarifs :\n" + "\n".join(p["prices"])
+    prices_text = "\n\n".join(f"💰 {price}" for price in p["prices"])
+    caption = f"{p['name']}\n\n{p['desc']}\n\n💰 TARIFS\n{prices_text}"
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
@@ -201,7 +212,8 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     await delete_current_message(query.message)
 
-    caption = f"{cali['name']}\n\n{cali['desc']}\n\nTarifs :\n" + "\n".join(cali["prices"])
+    prices_text = "\n\n".join(f"💰 {price}" for price in cali["prices"])
+    caption = f"{cali['name']}\n\n{cali['desc']}\n\n💰 TARIFS\n{prices_text}"
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
