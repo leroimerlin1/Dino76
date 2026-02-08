@@ -10,25 +10,25 @@ products_choco = {
         "name": "🥶 FROZEN SIFT",
         "desc": "Garlic Cookie 🍪\nJelly Donuts 🍩\nCake 🍰\nPromo -25%",
         "video": "caliplates.mp4",
-        "prices": ["2,5G 50€", "5G 90€", "10G 180€", "20G 350€", "25G 400€"]
+        "prices": ["-2,5G 50€", "-5G 90€", "-10G 180€", "-20G 350€", "-25G 400€"]
     },
     "gaz": {
         "name": "⚡️ Gaz fruit 90u",
         "desc": "Papaya Dolce 🥭\nMimi Cheese 🧀",
         "video": "gaz.mp4",
-        "prices": ["10G 130€", "25G 240€", "50G 450€"]
+        "prices": ["-10G 130€", "-25G 240€", "-50G 450€"]
     },
     "calimountain": {
         "name": "🧑‍🌾 CALIMOUNTAIN 120u",
         "desc": "Candy Gaz 🍬\nGlitter Bomb 💣\nApple Mintz 🍏",
         "video": "120u.mp4",
-        "prices": ["5G 70€", "10G 140€", "20G 260€", "25G 310€"]
+        "prices": ["-5G 70€", "-10G 140€", "-20G 260€", "-25G 310€"]
     },
     "farm": {
         "name": "🥶 FRESH FROZEN SIFT",
         "desc": "PERMANENT MAKER x GELATO 41 ⛽️🍦",
         "video": "farm.mp4",
-        "prices": ["5G 70€", "10G 140€", "20G 250€", "25G 300€"]
+        "prices": ["-5G 70€", "-10G 140€", "-20G 250€", "-25G 300€"]
     }
 }
 
@@ -36,7 +36,7 @@ cali = {
     "name": "🇺🇸 Cali weed",
     "desc": "Runtz 🌈\nTropicana Strawberry 🌴🍓",
     "video": "cali.mp4",
-    "prices": ["3G 40€", "5G 60€", "10G 120€", "20G 230€", "25G 300€"]
+    "prices": ["-3G 40€", "-5G 60€", "-10G 120€", "-20G 230€", "-25G 300€"]
 }
 
 # ---------------------- UTIL ----------------------
