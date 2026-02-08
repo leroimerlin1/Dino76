@@ -181,9 +181,9 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
-    # 🔹 Sauts de ligne pour les prix
+    # 🔹 Sauts de ligne et gras
     prices_text = "\n\n".join(p["prices"])
-    caption = f"{p['name']}\n\n{p['desc']}\n\n💰 TARIFS\n{prices_text}"
+    caption = f"*{p['name']}*\n\n{p['desc']}\n\n*💰 TARIFS*\n{prices_text}"
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
@@ -192,6 +192,7 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.message.reply_video(video=open(p["video"], "rb"),
                                     caption=caption,
+                                    parse_mode="Markdown",
                                     reply_markup=InlineKeyboardMarkup(keyboard))
 
 async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -200,7 +201,7 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await delete_current_message(query.message)
 
     prices_text = "\n\n".join(cali["prices"])
-    caption = f"{cali['name']}\n\n{cali['desc']}\n\n💰 TARIFS\n{prices_text}"
+    caption = f"*{cali['name']}*\n\n{cali['desc']}\n\n*💰 TARIFS*\n{prices_text}"
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
@@ -209,6 +210,7 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.message.reply_video(video=open(cali["video"], "rb"),
                                     caption=caption,
+                                    parse_mode="Markdown",
                                     reply_markup=InlineKeyboardMarkup(keyboard))
 
 # ---------------------- MAIN ----------------------
