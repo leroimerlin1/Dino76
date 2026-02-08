@@ -8,41 +8,35 @@ CONTACT = "@DINOS76S"
 products_choco = {
     "frozen": {
         "name": "🥶 FROZEN SIFT",
-        "desc": """🌈 Garlic Cookie
-🍩 Jelly Donuts
-🍰 Cake""",
+        "desc": "Garlic Cookie 🍪\nJelly Donuts 🍩\nCake 🍰",
         "video": "caliplates.mp4",
-        "prices": ["2,5G — 50€", "5G — 90€", "10G — 180€", "20G — 350€", "25G — 400€"]
+        "prices": ["2,5G 50€", "5G 90€", "10G 180€", "20G 350€", "25G 400€"]
     },
     "gaz": {
         "name": "⚡️ Gaz fruit 90u",
-        "desc": """🥭 Papaya Dolce
-🧀 Mimi Cheese""",
+        "desc": "Papaya Dolce 🥭\nMimi Cheese 🧀",
         "video": "gaz.mp4",
-        "prices": ["10G — 130€", "25G — 240€", "50G — 450€"]
+        "prices": ["10G 130€", "25G 240€", "50G 450€"]
     },
     "calimountain": {
         "name": "🧑‍🌾 CALIMOUNTAIN 120u",
-        "desc": """🍬 Candy Gaz
-💣 Glitter Bomb
-🍏 Apple Mintz""",
+        "desc": "Candy Gaz 🍬\nGlitter Bomb 💣\nApple Mintz 🍏",
         "video": "120u.mp4",
-        "prices": ["5G — 70€", "10G — 140€", "20G — 260€", "25G — 310€"]
+        "prices": ["5G 70€", "10G 140€", "20G 260€", "25G 310€"]
     },
     "farm": {
         "name": "🥶 FRESH FROZEN SIFT",
-        "desc": """⛽️ Permanent Maker x Gelato 41""",
+        "desc": "PERMANENT MAKER x GELATO 41 ⛽️🍦",
         "video": "farm.mp4",
-        "prices": ["5G — 70€", "10G — 140€", "20G — 250€", "25G — 300€"]
+        "prices": ["5G 70€", "10G 140€", "20G 250€", "25G 300€"]
     }
 }
 
 cali = {
-    "name": "🇺🇸 Cali Weed",
-    "desc": """🌈 Runtz
-🍓 Tropicana Strawberry""",
+    "name": "🇺🇸 Cali weed",
+    "desc": "Runtz 🌈\nTropicana Strawberry 🌴🍓",
     "video": "cali.mp4",
-    "prices": ["3G — 40€", "5G — 60€", "10G — 120€", "20G — 230€", "25G — 300€"]
+    "prices": ["3G 40€", "5G 60€", "10G 120€", "20G 230€", "25G 300€"]
 }
 
 # ---------------------- UTIL ----------------------
@@ -85,7 +79,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 DINO TERPS 76
 🍓🍒🍋🍊🍈
 
-The best of terps au rendez-vous des produits exceptionnels
+The best of terps au rendez vous des produits exceptionnels
 Prix imbattable dans toute la Normandie 🏆
 
 Livraison 🚚 ✅
@@ -100,7 +94,7 @@ Toute ce passe ci-dessous 👇👇""",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
-# ---------------------- INFO LIVRAISON ----------------------
+# ---------------------- INFO ----------------------
 async def info_livraison(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -122,12 +116,9 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 :
 
 Paiement en espèce 💶
 Contact : @dinos76s 🍱""",
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("⬅️ Retour", callback_data="start")]]
-        )
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Retour", callback_data="start")]])
     )
 
-# ---------------------- INFO MEET-UP ----------------------
 async def info_meetup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -144,9 +135,7 @@ Contacte en privé avant avec l’heure et la commande 🚶📦
 Paiement en espèce 💶
 Ouvert 12h - 23h
 SAV 24h/24""",
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("⬅️ Retour", callback_data="start")]]
-        )
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("⬅️ Retour", callback_data="start")]])
     )
 
 # ---------------------- MENUS ----------------------
@@ -162,7 +151,6 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     await query.message.reply_text("Menu", reply_markup=InlineKeyboardMarkup(keyboard))
 
-# ---------------------- SOUS-MENUS ----------------------
 async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -184,7 +172,7 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     await query.message.reply_text("Cali weed", reply_markup=InlineKeyboardMarkup(keyboard))
 
-# ---------------------- DETAILS PRODUITS ----------------------
+# ---------------------- DETAIL PRODUITS ----------------------
 async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -193,7 +181,8 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
-    prices_text = "\n\n".join(f"💰 {price}" for price in p["prices"])
+    # 🔹 Sauts de ligne pour les prix
+    prices_text = "\n\n".join(p["prices"])
     caption = f"{p['name']}\n\n{p['desc']}\n\n💰 TARIFS\n{prices_text}"
 
     keyboard = [
@@ -201,18 +190,16 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("⬅️ Retour", callback_data="choco")]
     ]
 
-    await query.message.reply_video(
-        video=open(p["video"], "rb"),
-        caption=caption,
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    await query.message.reply_video(video=open(p["video"], "rb"),
+                                    caption=caption,
+                                    reply_markup=InlineKeyboardMarkup(keyboard))
 
 async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
 
-    prices_text = "\n\n".join(f"💰 {price}" for price in cali["prices"])
+    prices_text = "\n\n".join(cali["prices"])
     caption = f"{cali['name']}\n\n{cali['desc']}\n\n💰 TARIFS\n{prices_text}"
 
     keyboard = [
@@ -220,11 +207,9 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("⬅️ Retour", callback_data="tree")]
     ]
 
-    await query.message.reply_video(
-        video=open(cali["video"], "rb"),
-        caption=caption,
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    await query.message.reply_video(video=open(cali["video"], "rb"),
+                                    caption=caption,
+                                    reply_markup=InlineKeyboardMarkup(keyboard))
 
 # ---------------------- MAIN ----------------------
 app = ApplicationBuilder().token(token).build()
