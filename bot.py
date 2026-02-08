@@ -48,6 +48,14 @@ async def delete_current_message(message):
 
 # ---------------------- START ----------------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.callback_query:
+        query = update.callback_query
+        await query.answer()
+        await delete_current_message(query.message)
+        message = query.message
+    else:
+        message = update.message
+
     keyboard = [
         [InlineKeyboardButton("Menu📝", callback_data="menu")],
         [
@@ -64,26 +72,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
     ]
 
-    await update.message.reply_photo(
+    await message.reply_photo(
         photo=open("dino.jpg", "rb"),
         caption=(
             "SALUT A TOUS LA TEAM BIENVENUE CHEZ NOUS L’EQUIPE 🔥🦾\n\n"
-            "*DINO TERPS 76*\n"
+            "DINO TERPS 76\n"
             "🍓🍒🍋🍊🍈\n\n"
-            "The best of terps au rendez vous des Pr*d*it exceptionnels "
-            "Et pr*x imbattable dans toute la Normandie ! 🏆\n\n"
-            "Livraison 🚚 ✅\n\n"
-            "76 / 27 / 14 / 60\n"
-            "Livraison dans toute la Normandie et c’est environ 🗺️ 🚚\n\n"
+            "The best of terps au rendez vous des produits exceptionnels\n"
+            "Prix imbattable dans toute la Normandie 🏆\n\n"
+            "Livraison 🚚 ✅\n"
+            "76 / 27 / 14 / 60\n\n"
             "Meet-Up 🏠 76 ✅\n\n"
-            "Seul et unique contact :\n"
+            "Contact unique :\n"
             "@dino76s 🍣\n\n"
-            "Toute ce passe ci-dessous 👇👇\n\n"
-            "( maintenance de la mini-App bientôt fini l’équipe "
-            "vous pouvez quand même commandé sans soucis !)"
+            "Toute ce passe ci-dessous 👇👇"
         ),
-        reply_markup=InlineKeyboardMarkup(keyboard),
-        parse_mode="Markdown"
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
 # ---------------------- INFO LIVRAISON ----------------------
@@ -94,15 +98,15 @@ async def info_livraison(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.message.reply_text(
         "SALUT A TOUS LA TEAM !\n\n"
-        "VOICI LES ZONE DE LIVRAISON 🚚 📦 :\n"
+        "VOICI LES ZONES DE LIVRAISON 🚚 📦\n"
         "76 / 27 / 14 / 60\n\n"
-        "76 Centre et alentours : 30 à 50\n\n"
-        "- 10klm 50e\n"
-        "- 20klm 80e\n"
-        "- 30klm 120e\n"
-        "- 50Klm 350e\n"
-        "- 100Klm 420e\n\n"
-        "Payement en Espèce 💶!\n\n"
+        "76 centre et alentours\n\n"
+        "- 10 km : 50€\n"
+        "- 20 km : 80€\n"
+        "- 30 km : 120€\n"
+        "- 50 km : 350€\n"
+        "- 100 km : 420€\n\n"
+        "Paiement en espèce 💶\n\n"
         "Contact : @dinos76s 🍱",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("⬅️ Retour", callback_data="start")]]
@@ -116,14 +120,13 @@ async def info_meetup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await delete_current_message(query.message)
 
     await query.message.reply_text(
-        "SERVICE MEET-UP 🏠 ✅\n\n"
-        "Vous pouvez passer directement sur place la famille,\n"
-        "avant de passer venir en privée et préciser votre heure d’arrivé "
-        "avec votre commande souhaitée au meet-up 🚶📦\n\n"
+        "SERVICE MEET-UP 🏠\n\n"
+        "Passe directement sur place\n"
+        "Contacte en privé avant avec l’heure et la commande\n\n"
         "@dino76s 🍣\n\n"
-        "Payement en Espèce 💶 !\n\n"
-        "Ouvert 12h 23h\n\n"
-        "SAV : 24h 24h ! 🕛",
+        "Paiement en espèce 💶\n\n"
+        "Ouvert 12h - 23h\n"
+        "SAV 24h/24",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("⬅️ Retour", callback_data="start")]]
         )
@@ -141,9 +144,8 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("⬅️ Retour", callback_data="start")]
     ]
     await query.message.reply_text(
-        "📋 *Menu📝*",
-        reply_markup=InlineKeyboardMarkup(keyboard),
-        parse_mode="Markdown"
+        "Menu",
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
 async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -155,9 +157,8 @@ async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard.append([InlineKeyboardButton("⬅️ Retour", callback_data="menu")])
 
     await query.message.reply_text(
-        "🍫 *Produits*",
-        reply_markup=InlineKeyboardMarkup(keyboard),
-        parse_mode="Markdown"
+        "Produits",
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
 async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -170,9 +171,8 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("⬅️ Retour", callback_data="menu")]
     ]
     await query.message.reply_text(
-        "🌳 *Cali weed*",
-        reply_markup=InlineKeyboardMarkup(keyboard),
-        parse_mode="Markdown"
+        "Cali weed",
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
 async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -183,8 +183,7 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
-    prices_text = "\n".join(p["prices"])
-    caption = f"*{p['name']}*\n\n{p['desc']}\n\n💰 *Tarifs*\n{prices_text}"
+    caption = f"{p['name']}\n\n{p['desc']}\n\nTarifs :\n" + "\n".join(p["prices"])
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
@@ -194,7 +193,6 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.message.reply_video(
         video=open(p["video"], "rb"),
         caption=caption,
-        parse_mode="Markdown",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
@@ -203,8 +201,7 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.answer()
     await delete_current_message(query.message)
 
-    prices_text = "\n".join(cali["prices"])
-    caption = f"*{cali['name']}*\n\n{cali['desc']}\n\n💰 *Tarifs*\n{prices_text}"
+    caption = f"{cali['name']}\n\n{cali['desc']}\n\nTarifs :\n" + "\n".join(cali["prices"])
 
     keyboard = [
         [InlineKeyboardButton("📩 Contact", url=f"https://t.me/{CONTACT.replace('@','')}")],
@@ -214,7 +211,6 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.message.reply_video(
         video=open(cali["video"], "rb"),
         caption=caption,
-        parse_mode="Markdown",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
@@ -222,6 +218,7 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
 app = ApplicationBuilder().token(token).build()
 
 app.add_handler(CommandHandler("start", start))
+app.add_handler(CallbackQueryHandler(start, pattern="start"))
 app.add_handler(CallbackQueryHandler(menu, pattern="menu"))
 app.add_handler(CallbackQueryHandler(choco_menu, pattern="choco"))
 app.add_handler(CallbackQueryHandler(cali_menu, pattern="tree"))
