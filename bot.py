@@ -2,7 +2,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
-CONTACT = "@DINOS76S"
+CONTACT = "@DINO76S"
 
 CHANNEL_ID = -1003733915057
 CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
