@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandle
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
 CONTACT = "@DINOS76S"
 
-CHANNEL_ID = -100XXXXXXXXXX
+CHANNEL_ID = -1003733915057
 CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
 
 # ---------------------- PRODUITS ----------------------
