@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandle
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
 CONTACT = "@DINOS76S"
 
-CHANNEL_ID = -1001234567890
+CHANNEL_ID = -100XXXXXXXXXX
 CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
 
 # ---------------------- PRODUITS ----------------------
@@ -62,16 +62,20 @@ async def ask_to_join(update, context):
         [InlineKeyboardButton("✅ J’ai rejoint", callback_data="check_sub")]
     ]
 
+    text = "Pour accéder au bot tu dois rejoindre le canal"
+
     if update.callback_query:
         await update.callback_query.answer()
         await delete_current_message(update.callback_query.message)
-        await update.callback_query.message.reply_text(
-            "Pour accéder au bot tu dois rejoindre le canal",
+        await update.callback_query.message.reply_photo(
+            photo=open("dino.jpg", "rb"),
+            caption=text,
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
     else:
-        await update.message.reply_text(
-            "Pour accéder au bot tu dois rejoindre le canal",
+        await update.message.reply_photo(
+            photo=open("dino.jpg", "rb"),
+            caption=text,
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
 
