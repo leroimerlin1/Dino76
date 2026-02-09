@@ -4,6 +4,9 @@ from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandle
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
 CONTACT = "@DINOS76S"
 
+CHANNEL_ID = -1001234567890
+CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
+
 # ---------------------- PRODUITS ----------------------
 products_choco = {
     "frozen": {
@@ -46,8 +49,43 @@ async def delete_current_message(message):
     except:
         pass
 
+async def is_user_subscribed(user_id, context):
+    try:
+        member = await context.bot.get_chat_member(CHANNEL_ID, user_id)
+        return member.status in ["member", "administrator", "creator"]
+    except:
+        return False
+
+async def ask_to_join(update, context):
+    keyboard = [
+        [InlineKeyboardButton("🔔 Rejoindre le canal", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("✅ J’ai rejoint", callback_data="check_sub")]
+    ]
+
+    if update.callback_query:
+        await update.callback_query.answer()
+        await delete_current_message(update.callback_query.message)
+        await update.callback_query.message.reply_text(
+            "Pour accéder au bot tu dois rejoindre le canal",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+    else:
+        await update.message.reply_text(
+            "Pour accéder au bot tu dois rejoindre le canal",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+
+async def guard(update, context):
+    if not await is_user_subscribed(update.effective_user.id, context):
+        await ask_to_join(update, context)
+        return False
+    return True
+
 # ---------------------- START ----------------------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     if update.callback_query:
         query = update.callback_query
         await query.answer()
@@ -96,6 +134,9 @@ Toute ce passe ci-dessous 👇👇""",
 
 # ---------------------- INFO ----------------------
 async def info_livraison(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
@@ -120,6 +161,9 @@ Contact : @dinos76s 🍱""",
     )
 
 async def info_meetup(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
@@ -140,6 +184,9 @@ SAV 24h/24""",
 
 # ---------------------- MENUS ----------------------
 async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
@@ -152,6 +199,9 @@ async def menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.message.reply_text("Menu", reply_markup=InlineKeyboardMarkup(keyboard))
 
 async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
@@ -162,6 +212,9 @@ async def choco_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await query.message.reply_text("Produits", reply_markup=InlineKeyboardMarkup(keyboard))
 
 async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
@@ -172,8 +225,11 @@ async def cali_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     await query.message.reply_text("Cali weed", reply_markup=InlineKeyboardMarkup(keyboard))
 
-# ---------------------- DETAIL PRODUITS ----------------------
+# ---------------------- DETAILS ----------------------
 async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
@@ -181,7 +237,6 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
     key = query.data.replace("prod_", "")
     p = products_choco[key]
 
-    # 🔹 Sauts de ligne et gras
     prices_text = "\n\n".join(p["prices"])
     caption = f"*{p['name']}*\n\n{p['desc']}\n\n*💰 TARIFS*\n{prices_text}"
 
@@ -190,12 +245,17 @@ async def product_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("⬅️ Retour", callback_data="choco")]
     ]
 
-    await query.message.reply_video(video=open(p["video"], "rb"),
-                                    caption=caption,
-                                    parse_mode="Markdown",
-                                    reply_markup=InlineKeyboardMarkup(keyboard))
+    await query.message.reply_video(
+        video=open(p["video"], "rb"),
+        caption=caption,
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
 
 async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await guard(update, context):
+        return
+
     query = update.callback_query
     await query.answer()
     await delete_current_message(query.message)
@@ -208,10 +268,15 @@ async def cali_detail(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("⬅️ Retour", callback_data="tree")]
     ]
 
-    await query.message.reply_video(video=open(cali["video"], "rb"),
-                                    caption=caption,
-                                    parse_mode="Markdown",
-                                    reply_markup=InlineKeyboardMarkup(keyboard))
+    await query.message.reply_video(
+        video=open(cali["video"], "rb"),
+        caption=caption,
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+
+async def check_sub(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await start(update, context)
 
 # ---------------------- MAIN ----------------------
 app = ApplicationBuilder().token(token).build()
@@ -225,5 +290,6 @@ app.add_handler(CallbackQueryHandler(product_detail, pattern="prod_"))
 app.add_handler(CallbackQueryHandler(cali_detail, pattern="cali_detail"))
 app.add_handler(CallbackQueryHandler(info_livraison, pattern="info_livraison"))
 app.add_handler(CallbackQueryHandler(info_meetup, pattern="info_meetup"))
+app.add_handler(CallbackQueryHandler(check_sub, pattern="check_sub"))
 
 app.run_polling()
