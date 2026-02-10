@@ -236,6 +236,23 @@
       text-decoration:underline;
     }
 
+    #reseaux-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
+    #reseaux-page h1 { color:#ff50b4; font-size:1.8rem; text-align:center; margin:20px 0 30px; text-shadow:0 0 10px rgba(255,80,180,0.8); }
+    .reseaux-card {
+      background:rgba(20,5,30,0.75);
+      border:1px solid rgba(255,80,180,0.5);
+      border-radius:12px;
+      padding:16px;
+      margin-bottom:16px;
+      backdrop-filter:blur(6px);
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .reseaux-card:hover { transform:scale(1.02); border-color:#ff50b4; box-shadow:0 0 15px rgba(255,80,180,0.4); }
+    .reseaux-card .icon { font-size:2.5rem; margin-bottom:10px; }
+    .reseaux-card h3 { color:#ff80d0; margin:8px 0; font-size:1.3rem; }
+    .reseaux-card p { color:#ffccdd; font-size:0.95rem; word-break:break-all; }
+
     #cart-page { display:none; padding:16px; padding-bottom:140px; }
     .cart-header {
       display:flex;
@@ -244,8 +261,8 @@
       margin-bottom:16px;
     }
     .cart-item {
-      background:rgba(15,25,15,0.65);
-      border:1px solid rgba(255,80,180,0.35);
+      background:rgba(20,5,30,0.7);
+      border:1px solid rgba(255,80,180,0.4);
       border-radius:10px;
       padding:12px;
       margin-bottom:12px;
@@ -255,6 +272,16 @@
     }
     .cart-item-name { font-size:1rem; color:#fff; }
     .cart-item-qty { color:#ff50b4; font-weight:bold; }
+    .delete-item {
+      background:#ff4444;
+      color:white;
+      border:none;
+      padding:4px 8px;
+      border-radius:4px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-left:10px;
+    }
     .clear-cart-btn {
       background:#ff4444;
       color:white;
@@ -326,8 +353,20 @@
       cursor:pointer;
       flex:1;
       max-width:25%;
+      position:relative;
     }
     .nav-item.active { color:#ff50b4; }
+    #cart-badge {
+      position:absolute;
+      top:-5px;
+      right:-5px;
+      background:red;
+      color:white;
+      border-radius:50%;
+      padding:2px 6px;
+      font-size:0.65rem;
+      display:none;
+    }
   </style>
 </head>
 <body>
@@ -564,6 +603,7 @@
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
         </svg>
         <span>Panier</span>
+        <span id="cart-badge"></span>
       </div>
       <div class="nav-item" id="nav-infos">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -722,10 +762,9 @@
     document.getElementById('page-title').textContent = 'DINO TERPS 76';
   };
 
-  // AJOUT AU PANIER
   document.getElementById('add-to-cart-btn').onclick = () => {
     const selected = document.querySelector('.qty-btn.selected');
-    if (!selected) return alert('Sélectionnez une quantité !');
+    if (!selected) return tg.showPopup({message: 'Sélectionnez une quantité !'});
 
     const title = document.getElementById('detail-title').textContent.trim();
     let key = null;
@@ -735,7 +774,7 @@
         break;
       }
     }
-    if (!key) return alert('Produit non trouvé !');
+    if (!key) return tg.showPopup({message: 'Produit non trouvé !'});
 
     const p = products[key];
     const idx = selected.dataset.index;
@@ -748,10 +787,20 @@
     });
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Ajouté au panier !');
+    tg.showPopup({message: 'Ajouté au panier !'});
+    updateBadge();
   };
 
-  // FONCTION D'AFFICHAGE DU PANIER (corrigée et renforcée)
+  function updateBadge() {
+    const badge = document.getElementById('cart-badge');
+    if (cart.length > 0) {
+      badge.textContent = cart.length;
+      badge.style.display = 'block';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
   function showCart() {
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
@@ -759,7 +808,7 @@
     document.getElementById('page-title').textContent = 'Panier';
 
     const itemsDiv = document.getElementById('cart-items');
-    itemsDiv.innerHTML = ''; // on vide avant de re-remplir
+    itemsDiv.innerHTML = '';
 
     const clearBtn = document.getElementById('clear-cart-btn');
 
@@ -768,10 +817,10 @@
       document.getElementById('questionnaire').style.display = 'none';
       clearBtn.style.display = 'none';
     } else {
-      cart.forEach(item => {
+      cart.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'cart-item';
-        div.innerHTML = `<span class="cart-item-name">${item.title}</span><span class="cart-item-qty">${item.qty} - ${item.price}</span>`;
+        div.innerHTML = `<span class="cart-item-name">${item.title}</span><span class="cart-item-qty">${item.qty} - ${item.price}</span><button class="delete-item" onclick="removeItem(${index})">X</button>`;
         itemsDiv.appendChild(div);
       });
       document.getElementById('questionnaire').style.display = 'block';
@@ -779,14 +828,20 @@
     }
   }
 
-  document.getElementById('nav-cart').addEventListener('click', showCart);
+  window.removeItem = function(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    showCart();
+    updateBadge();
+  };
 
   document.getElementById('clear-cart-btn').onclick = () => {
     if (confirm('Voulez-vous vraiment vider tout le panier ?')) {
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('Panier vidé !');
-      showCart(); // rafraîchit l'affichage immédiatement
+      showCart();
+      updateBadge();
     }
   };
 
@@ -828,6 +883,7 @@
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
     alert('Commande envoyée ! Panier vidé.');
+    updateBadge();
     document.getElementById('nav-home').click();
   };
 
@@ -837,6 +893,8 @@
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
   });
+
+  document.getElementById('nav-cart').addEventListener('click', showCart);
 
   document.getElementById('nav-infos').addEventListener('click', () => {
     hideAllPages();
@@ -855,6 +913,9 @@
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-reseaux').classList.add('active');
   });
+
+  // Initialiser le badge au chargement
+  updateBadge();
 </script>
 
 </body>
