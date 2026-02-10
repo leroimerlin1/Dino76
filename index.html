@@ -236,11 +236,16 @@
       text-decoration:underline;
     }
 
-    #cart-page { display:none; padding:16px; padding-bottom:160px; }
-    .cart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    #cart-page { display:none; padding:16px; padding-bottom:140px; }
+    .cart-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:16px;
+    }
     .cart-item {
-      background:rgba(20,5,30,0.7);
-      border:1px solid rgba(255,80,180,0.4);
+      background:rgba(15,25,15,0.65);
+      border:1px solid rgba(255,80,180,0.35);
       border-radius:10px;
       padding:12px;
       margin-bottom:12px;
@@ -476,7 +481,7 @@
         <div class="section-title"><span>📩</span> Contact</div>
         <div class="contact">
           Contactez-nous sur Telegram : 
-          <a href="https://t.me/DINO76S" onclick="tg.openTelegramLink('https://t.me/DINO76S'); return false;">@DINO76S</a>
+          <a href="#" onclick="tg.openTelegramLink('https://t.me/DINO76S'); return false;">@DINO76S</a>
         </div>
       </div>
     </div>
@@ -692,6 +697,7 @@
     document.getElementById('page-title').textContent = 'DINO TERPS 76';
   };
 
+  // Système de panier IDENTIQUE à ton ancien code
   document.getElementById('add-to-cart-btn').onclick = () => {
     const selected = document.querySelector('.qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
@@ -724,7 +730,7 @@
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('page-title').textContent = 'Votre Panier';
+    document.getElementById('page-title').textContent = 'Panier';
 
     const itemsDiv = document.getElementById('cart-items');
     itemsDiv.innerHTML = '';
