@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>The French Cali Farmz</title>
+  <title>Dino Terps 76</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
@@ -112,7 +112,7 @@
     #products-grid {
       padding:16px;
       display:grid;
-      grid-template-columns:repeat(2,1fr);
+      grid-template-columns:repeat(1,1fr); /* 1 seul produit pour l'instant */
       gap:14px;
       padding-bottom:90px;
     }
@@ -126,8 +126,16 @@
       cursor:pointer;
     }
     .card:hover { transform:scale(1.03); border-color:#39ff14; }
-    .card-img { height:170px; position:relative; }
-    .card-img img { width:100%; height:100%; object-fit:cover; }
+    .card-img { 
+      height:220px; 
+      position:relative; 
+      background:#000;
+    }
+    .card-img video {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
     .badge-star {
       position:absolute; top:6px; left:6px;
       background:#39ff14; color:#000; font-size:0.65rem; padding:3px 8px; border-radius:999px; font-weight:bold;
@@ -137,8 +145,8 @@
       background:rgba(0,0,0,0.75); color:#39ff14; font-size:0.7rem; padding:4px 9px; border-radius:6px;
     }
     .card-body { padding:10px; }
-    .card-title { font-size:1rem; color:#fff; margin-bottom:3px; font-weight:700; }
-    .card-info { font-size:0.75rem; color:#aaffaa; }
+    .card-title { font-size:1.2rem; color:#fff; margin-bottom:3px; font-weight:700; }
+    .card-info { font-size:0.85rem; color:#aaffaa; }
 
     #category-list, #farm-list {
       display:none;
@@ -163,13 +171,32 @@
     }
 
     #product-detail { display:none; padding:0 0 100px 0; }
-    .product-hero { height:260px; position:relative; }
-    .product-hero img { width:100%; height:100%; object-fit:cover; }
-    .product-title { padding:16px; font-size:1.5rem; font-weight:900; color:#39ff14; text-shadow:0 0 10px rgba(57,255,20,0.6); }
+    .product-hero { 
+      height:300px; 
+      position:relative; 
+      background:#000;
+    }
+    .product-hero video { 
+      width:100%; 
+      height:100%; 
+      object-fit:cover; 
+    }
+    .product-title { padding:16px; font-size:1.8rem; font-weight:900; color:#39ff14; text-shadow:0 0 10px rgba(57,255,20,0.6); }
     .badges { padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:8px; }
     .badge { padding:6px 12px; border-radius:999px; font-size:0.85rem; font-weight:bold; }
     .badge-strain { background:rgba(57,255,20,0.2); color:#39ff14; border:1px solid #39ff14; }
     .badge-farm { background:rgba(0,80,0,0.4); color:#aaffaa; border:1px solid #39ff14; }
+    .strain-section {
+      padding:0 16px 16px;
+      color:#39ff14;
+      font-size:1rem;
+      line-height:1.5;
+    }
+    .strain-title {
+      font-weight:bold;
+      margin-bottom:8px;
+      font-size:1.1rem;
+    }
     .info-diamond { padding:0 16px 16px; color:#39ff14; font-size:0.9rem; }
     .quantity-section { padding:16px; background:rgba(0,0,0,0.5); margin:12px 16px; border-radius:12px; border:1px solid rgba(57,255,20,0.4); }
     .quantity-title { font-size:1.1rem; color:#39ff14; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
@@ -285,14 +312,14 @@
 
     <header id="main-header">
       <button class="back-btn" id="btn-back" style="display:none;">← Retour</button>
-      <h1 id="page-title">The French Cali Farmz</h1>
+      <h1 id="page-title">Dino Terps 76</h1>
       <div id="user-info"></div>
     </header>
 
     <div id="home-page">
       <section class="welcome">
         <div class="welcome-inner">
-          <div class="welcome-emoji">👋</div>
+          <div class="welcome-emoji">🔥</div>
           <div>
             <h2 id="welcome-name">Chargement...</h2>
             <p>Bienvenue sur le shop premium</p>
@@ -300,33 +327,23 @@
         </div>
       </section>
 
-      <div class="filters">
-        <button class="filter-btn" id="btn-categories">Catégories</button>
-        <button class="filter-btn" id="btn-farms">Farms</button>
+      <div class="filters" style="display:none;"> <!-- Masqué car 1 seul produit -->
+        <!-- Les filtres peuvent être réactivés si + de produits -->
       </div>
 
       <div id="products-grid">
         <div class="card" data-key="cali">
           <div class="card-img">
-            <img src="caliplates.jpg" alt="Caliplates">
+            <video autoplay muted loop playsinline>
+              <source src="caliplates.mp4" type="video/mp4">
+              Ton navigateur ne supporte pas la vidéo.
+            </video>
             <div class="badge-star">★</div>
             <div class="badge-farm">Frozen Single Source 🇺🇸</div>
           </div>
           <div class="card-body">
             <div class="card-title">Caliplates🇺🇸</div>
-            <div class="card-info">Frozen Single Source 🇺🇸</div>
-          </div>
-        </div>
-
-        <div class="card" data-key="35u">
-          <div class="card-img">
-            <img src="35u.jpg" alt="35u KGF">
-            <div class="badge-star">★</div>
-            <div class="badge-farm">KGF 🦊</div>
-          </div>
-          <div class="card-body">
-            <div class="card-title">35u KGF🦊</div>
-            <div class="card-info">KGF 🦊</div>
+            <div class="card-info">🥶 FROZEN SIFT</div>
           </div>
         </div>
       </div>
@@ -336,11 +353,20 @@
     </div>
 
     <div id="product-detail" style="display:none;">
-      <div class="product-hero"><img id="detail-img" src="" alt="Produit"></div>
+      <div class="product-hero">
+        <video autoplay muted loop playsinline>
+          <source src="caliplates.mp4" type="video/mp4">
+          Ton navigateur ne supporte pas la vidéo.
+        </video>
+      </div>
       <div class="product-title" id="detail-title"></div>
       <div class="badges">
         <div class="badge badge-strain" id="detail-strain"></div>
         <div class="badge badge-farm" id="detail-farm"></div>
+      </div>
+      <div class="strain-section" id="detail-strain-desc">
+        <div class="strain-title">Strain</div>
+        Garlic Cookie 🍪✅<br>Jelly Donuts 🍩✅<br>Cake 🍰✅
       </div>
       <div class="info-diamond" id="detail-info"></div>
       <div class="quantity-section">
@@ -448,48 +474,40 @@
       key: 'cali',
       title: 'Caliplates🇺🇸',
       farm: 'Frozen Single Source 🇺🇸',
-      img: 'caliplates.jpg',
-      strain: 'Frozen Single Source 🇺🇸',
-      info: '◆ frozen single source 🇺🇸',
+      img: 'caliplates-thumb.jpg', // fallback si vidéo ne charge pas, mais vidéo prioritaire
+      video: 'caliplates.mp4',
+      strain: '🥶 FROZEN SIFT',
+      strainDesc: 'Garlic Cookie 🍪✅<br>Jelly Donuts 🍩✅<br>Cake 🍰✅',
+      info: '◆ frozen single source 🇺🇸 – ultra pur – terps max',
       quantities: [
-        { qty: '0.5g', price: '40 €' },
-        { qty: '1g',   price: '80 €' },
-        { qty: '2g',   price: '130 €' },
-        { qty: '5g',   price: '280 €' },
-        { qty: '10g',  price: '500 €' },
-        { qty: '20g',  price: '950 €' }
-      ]
-    },
-    '35u': {
-      key: '35u',
-      title: '35u KGF🦊',
-      farm: 'KGF 🦊',
-      img: '35u.jpg',
-      strain: 'KGF 🦊',
-      info: '◆ KGF 🦊',
-      quantities: [
-        { qty: '5g', price: '30 €' },
-        { qty: '10g', price: '60 €' },
-        { qty: '25g', price: '100 €' },
-        { qty: '50g', price: '180 €' },
-        { qty: '100g', price: '350 €' },
-        { qty: '500g', price: '1600 €' },
-        { qty: '1000g', price: '3200 €' }
+        { qty: '2,5G', price: '50 €' },
+        { qty: '5G',   price: '90 €' },
+        { qty: '10G',  price: '180 €' },
+        { qty: '20G',  price: '350 €' },
+        { qty: '25G',  price: '400 €' }
       ]
     }
   };
 
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  // OUVRIR DÉTAIL PRODUIT
   function openProductDetail(key) {
     const p = products[key];
     if (!p) return;
 
-    document.getElementById('detail-img').src = p.img;
+    // Hero avec vidéo
+    const hero = document.querySelector('.product-hero');
+    hero.innerHTML = `
+      <video autoplay muted loop playsinline>
+        <source src="${p.video}" type="video/mp4">
+        Ton navigateur ne supporte pas la vidéo.
+      </video>
+    `;
+
     document.getElementById('detail-title').textContent = p.title;
     document.getElementById('detail-strain').textContent = p.strain;
     document.getElementById('detail-farm').textContent = p.farm;
+    document.getElementById('detail-strain-desc').innerHTML = `<div class="strain-title">Strain</div>${p.strainDesc}`;
     document.getElementById('detail-info').textContent = p.info;
 
     const grid = document.getElementById('qty-grid');
@@ -512,73 +530,18 @@
     document.getElementById('page-title').textContent = p.title;
   }
 
-  // Clic carte produit grille
+  // Clic sur la carte
   document.querySelectorAll('#products-grid .card').forEach(card => {
     card.addEventListener('click', () => openProductDetail(card.dataset.key));
   });
 
-  // Bouton Retour général
+  // Bouton Retour
   document.getElementById('btn-back').onclick = () => {
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('product-detail').style.display = 'none';
     document.getElementById('cart-page').style.display = 'none';
-    document.getElementById('category-list').style.display = 'none';
-    document.getElementById('farm-list').style.display = 'none';
-    document.getElementById('products-grid').style.display = 'grid';
     document.getElementById('btn-back').style.display = 'none';
-    document.getElementById('page-title').textContent = 'The French Cali Farmz';
-    document.getElementById('btn-categories').classList.remove('active');
-    document.getElementById('btn-farms').classList.remove('active');
-  };
-
-  // FILTRE CATÉGORIES → liste titres
-  document.getElementById('btn-categories').onclick = function() {
-    this.classList.toggle('active');
-    document.getElementById('btn-farms').classList.remove('active');
-
-    if (this.classList.contains('active')) {
-      document.getElementById('products-grid').style.display = 'none';
-      document.getElementById('farm-list').style.display = 'none';
-      document.getElementById('category-list').style.display = 'block';
-      document.getElementById('category-list').innerHTML = '';
-
-      Object.keys(products).forEach(key => {
-        const p = products[key];
-        const div = document.createElement('div');
-        div.className = 'list-item';
-        div.textContent = p.title;
-        div.onclick = () => openProductDetail(key);
-        document.getElementById('category-list').appendChild(div);
-      });
-    } else {
-      document.getElementById('category-list').style.display = 'none';
-      document.getElementById('products-grid').style.display = 'grid';
-    }
-  };
-
-  // FILTRE FARMS → liste farms
-  document.getElementById('btn-farms').onclick = function() {
-    this.classList.toggle('active');
-    document.getElementById('btn-categories').classList.remove('active');
-
-    if (this.classList.contains('active')) {
-      document.getElementById('products-grid').style.display = 'none';
-      document.getElementById('category-list').style.display = 'none';
-      document.getElementById('farm-list').style.display = 'block';
-      document.getElementById('farm-list').innerHTML = '';
-
-      Object.keys(products).forEach(key => {
-        const p = products[key];
-        const div = document.createElement('div');
-        div.className = 'list-item';
-        div.textContent = p.farm;
-        div.onclick = () => openProductDetail(key);
-        document.getElementById('farm-list').appendChild(div);
-      });
-    } else {
-      document.getElementById('farm-list').style.display = 'none';
-      document.getElementById('products-grid').style.display = 'grid';
-    }
+    document.getElementById('page-title').textContent = 'Dino Terps 76';
   };
 
   // AJOUTER AU PANIER
@@ -586,9 +549,7 @@
     const selected = document.querySelector('.qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
 
-    const titleText = document.getElementById('detail-title').textContent;
-    const key = titleText.includes('Caliplates') ? 'cali' : '35u';
-    const p = products[key];
+    const p = products.cali;
     const idx = selected.dataset.index;
     const item = p.quantities[idx];
 
@@ -602,12 +563,10 @@
     alert('Ajouté au panier !');
   };
 
-  // OUVRIR PANIER
+  // OUVRIR PANIER (le reste reste identique)
   document.getElementById('nav-cart').addEventListener('click', () => {
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('product-detail').style.display = 'none';
-    document.getElementById('category-list').style.display = 'none';
-    document.getElementById('farm-list').style.display = 'none';
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = 'Panier';
@@ -632,18 +591,17 @@
     }
   });
 
-  // VIDER LE PANIER
+  // VIDER PANIER
   document.getElementById('clear-cart-btn').onclick = () => {
     if (confirm('Voulez-vous vraiment vider tout le panier ?')) {
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('Panier vidé !');
-      // Rafraîchir la vue panier
       document.getElementById('nav-cart').click();
     }
   };
 
-  // QUESTIONNAIRE + COMMANDER
+  // Le reste du questionnaire et submit-order reste inchangé (envoi vers @orderthefrenchcalifarmz26)
   let deliveryType = '';
   document.querySelectorAll('.option-btn').forEach(btn => {
     btn.onclick = () => {
@@ -682,7 +640,7 @@
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
     alert('Commande envoyée ! Panier vidé.');
-    document.getElementById('nav-home').click(); // Retour accueil
+    document.getElementById('nav-home').click();
   };
 </script>
 
