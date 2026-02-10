@@ -102,16 +102,8 @@
       cursor:pointer;
     }
     .card:hover { transform:scale(1.03); border-color:#ff50b4; }
-    .card-img {
-      height:240px;
-      position:relative;
-      background:#000;
-    }
-    .card-img video {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
+    .card-img { height:240px; position:relative; background:#000; }
+    .card-img video { width:100%; height:100%; object-fit:cover; }
     .badge-star {
       position:absolute; top:8px; left:8px;
       background:#ff50b4; color:#000; font-size:0.7rem; padding:4px 10px; border-radius:999px; font-weight:bold;
@@ -121,32 +113,14 @@
     .card-info { font-size:0.9rem; color:#ffccdd; font-weight:500; }
 
     #product-detail { display:none; padding:0 0 120px 0; }
-    .product-hero {
-      height:320px;
-      position:relative;
-      background:#000;
-    }
-    .product-hero video {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
+    .product-hero { height:320px; position:relative; background:#000; }
+    .product-hero video { width:100%; height:100%; object-fit:cover; }
     .product-title { padding:16px; font-size:1.9rem; font-weight:900; color:#ff50b4; text-shadow:0 0 12px rgba(255,80,180,0.75); }
     .badges { padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:8px; }
     .badge { padding:7px 14px; border-radius:999px; font-size:0.9rem; font-weight:bold; }
     .badge-strain { background:rgba(255,80,180,0.28); color:#ff50b4; border:1px solid #ff50b4; }
-    .strain-section {
-      padding:0 16px 20px;
-      color:#ff80d0;
-      font-size:1.05rem;
-      line-height:1.6;
-    }
-    .strain-title {
-      font-weight:bold;
-      color:#ff50b4;
-      margin-bottom:10px;
-      font-size:1.15rem;
-    }
+    .strain-section { padding:0 16px 20px; color:#ff80d0; font-size:1.05rem; line-height:1.6; }
+    .strain-title { font-weight:bold; color:#ff50b4; margin-bottom:10px; font-size:1.15rem; }
     .quantity-section { padding:16px; background:rgba(10,0,20,0.6); margin:12px 16px; border-radius:14px; border:1px solid rgba(255,80,180,0.45); }
     .quantity-title { font-size:1.15rem; color:#ff50b4; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
     .quantity-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
@@ -161,13 +135,27 @@
       box-shadow:0 0 18px rgba(255,80,180,0.65);
     }
 
-    #cart-page { display:none; padding:16px; padding-bottom:160px; }
-    .cart-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:16px;
+    #infos-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
+    #infos-page h2 { color:#ff50b4; font-size:1.4rem; margin:20px 0 10px; text-shadow:0 0 8px rgba(255,80,180,0.6); }
+    #infos-page p { margin:8px 0; }
+    #infos-page .highlight { color:#ff80d0; font-weight:bold; }
+    #infos-page .contact-btn {
+      margin:30px auto 0;
+      display:block;
+      background:#ff50b4;
+      color:#000;
+      border:none;
+      padding:16px 24px;
+      font-size:1.2rem;
+      font-weight:bold;
+      border-radius:12px;
+      cursor:pointer;
+      box-shadow:0 0 15px rgba(255,80,180,0.7);
+      width:fit-content;
     }
+
+    #cart-page { display:none; padding:16px; padding-bottom:160px; }
+    .cart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
     .cart-item {
       background:rgba(20,5,30,0.7);
       border:1px solid rgba(255,80,180,0.4);
@@ -315,6 +303,28 @@
       <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
+    <div id="infos-page">
+      <h2>SALUT A TOUS LA TEAM !</h2>
+      <p>VOICI LES ZONE DE LIVRAISON 🚚 📦 :</p>
+      <p class="highlight">76 / 27 / 14 / 60</p>
+
+      <h2>76 Centre et alentours :</h2>
+      <p>- 10klm 50€</p>
+      <p>- 20klm 80€</p>
+      <p>- 30klm 120€</p>
+      <p>- 50klm 350€</p>
+      <p>- 100klm 420€</p>
+      <p>Payement en Espèce 💶 !</p>
+
+      <h2>SERVICE MEET-UP 🏠 ✅</h2>
+      <p>Vous pouvez passer directement surplace la famille, avant de passer venir en privée et préciser votre heure d’arrivé avec votre commande souhaitée au meet-up avec 🚶📦</p>
+      <p>Payement en Espèce 💶 !</p>
+      <p>Ouvert 12h - 23h</p>
+      <p>SAV : 24h/24h ! 🕛</p>
+
+      <button class="contact-btn" id="contact-telegram">Contacter @DINO76S</button>
+    </div>
+
     <div id="cart-page" style="display:none;">
       <div class="cart-header">
         <h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
@@ -376,7 +386,7 @@
         </svg>
         <span>Panier</span>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" id="nav-infos">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <line x1="12" y1="16" x2="12" y2="12"/>
@@ -384,7 +394,7 @@
         </svg>
         <span>Infos</span>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" id="nav-contact">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
@@ -460,6 +470,8 @@
 
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('product-detail').style.display = 'block';
+    document.getElementById('infos-page').style.display = 'none';
+    document.getElementById('cart-page').style.display = 'none';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = p.title;
   }
@@ -471,11 +483,32 @@
   document.getElementById('btn-back').onclick = () => {
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('infos-page').style.display = 'none';
     document.getElementById('cart-page').style.display = 'none';
     document.getElementById('btn-back').style.display = 'none';
     document.getElementById('page-title').textContent = 'Dino Terps 76';
   };
 
+  // Ouvrir Infos
+  document.getElementById('nav-infos').addEventListener('click', () => {
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('cart-page').style.display = 'none';
+    document.getElementById('infos-page').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'inline-block';
+    document.getElementById('page-title').textContent = 'Infos';
+  });
+
+  // Contact Telegram direct
+  document.getElementById('nav-contact').addEventListener('click', () => {
+    tg.openTelegramLink('https://t.me/DINO76S');
+  });
+
+  document.getElementById('contact-telegram').addEventListener('click', () => {
+    tg.openTelegramLink('https://t.me/DINO76S');
+  });
+
+  // Ajouter au panier
   document.getElementById('add-to-cart-btn').onclick = () => {
     const selected = document.querySelector('.qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
@@ -494,9 +527,11 @@
     alert('Ajouté au panier !');
   };
 
+  // Ouvrir Panier
   document.getElementById('nav-cart').addEventListener('click', () => {
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('infos-page').style.display = 'none';
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = 'Votre Panier';
@@ -521,6 +556,7 @@
     }
   });
 
+  // Vider panier
   document.getElementById('clear-cart-btn').onclick = () => {
     if (confirm('Voulez-vous vraiment vider tout le panier ?')) {
       cart = [];
@@ -530,6 +566,7 @@
     }
   };
 
+  // Commander → envoi vers @DINO76S
   let deliveryType = '';
   document.querySelectorAll('.option-btn').forEach(btn => {
     btn.onclick = () => {
@@ -553,7 +590,7 @@
     if (deliveryType === 'pickup') {
       const time = document.getElementById('pickup-time').value;
       if (!time) return alert('Indiquez une heure !');
-      message += `\nMode : Venir sur place\nHeure : ${time}`;
+      message += `\nMode : Venir sur place (Meet-up)\nHeure : ${time}`;
     } else {
       const time = document.getElementById('delivery-time').value;
       const addr = document.getElementById('delivery-address').value;
@@ -563,7 +600,7 @@
     }
 
     const encoded = encodeURIComponent(message);
-    tg.openTelegramLink(`https://t.me/orderthefrenchcalifarmz26?text=${encoded}`);
+    tg.openTelegramLink(`https://t.me/DINO76S?text=${encoded}`);
 
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
