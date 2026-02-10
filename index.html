@@ -1,282 +1,689 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>DINO TERPS 76 🍣</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>The French Cali Farmz</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
-<style>
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    margin: 0;
-    padding: 10px;
-    background: url('dino.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-  }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background:#000;
+      color:#e0ffe0;
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .container {
+      position:relative;
+      min-height:100vh;
+      background:url('https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat fixed;
+    }
+    .overlay {
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.78);
+      backdrop-filter:blur(1.5px);
+      z-index:1;
+    }
+    .content {
+      position:relative;
+      z-index:2;
+      min-height:100vh;
+    }
 
-  h1 {
-    text-align: center;
-    text-shadow: 1px 1px 4px #000;
-    margin-bottom: 15px;
-    font-size: 28px;
-  }
+    header {
+      position:sticky;
+      top:0;
+      background:rgba(0,0,0,0.75);
+      backdrop-filter:blur(10px);
+      padding:10px 16px;
+      border-bottom:1px solid rgba(57,255,20,0.35);
+      z-index:10;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .back-btn {
+      background:rgba(57,255,20,0.15);
+      color:#39ff14;
+      border:1px solid #39ff14;
+      padding:8px 14px;
+      border-radius:8px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    h1 {
+      font-size:1.35rem;
+      font-weight:900;
+      letter-spacing:1.5px;
+      color:#39ff14;
+      text-shadow:0 0 12px rgba(57,255,20,0.7);
+    }
 
-  #home {
-    max-width: 900px;
-    margin: 0 auto;
-  }
+    .welcome {
+      padding:18px 16px;
+      background:linear-gradient(to right, rgba(0,0,0,0.65), rgba(10,50,10,0.35));
+      border-bottom:1px solid rgba(57,255,20,0.25);
+    }
+    .welcome-inner {
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .welcome-emoji {
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      background:rgba(57,255,20,0.12);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2rem;
+      box-shadow:0 0 16px rgba(57,255,20,0.35);
+    }
 
-  .products {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+    .filters {
+      padding:10px 16px;
+      display:flex;
+      gap:10px;
+      background:rgba(0,0,0,0.45);
+      border-bottom:1px solid rgba(57,255,20,0.2);
+    }
+    .filter-btn {
+      flex:1;
+      padding:10px;
+      background:rgba(57,255,20,0.15);
+      border:1px solid #39ff14;
+      border-radius:8px;
+      color:#39ff14;
+      font-weight:bold;
+      cursor:pointer;
+      text-align:center;
+      transition:0.2s;
+    }
+    .filter-btn.active {
+      background:#39ff14;
+      color:#000;
+    }
 
-  .product {
-    background: rgba(0,0,0,0.65);
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
+    #products-grid {
+      padding:16px;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      padding-bottom:90px;
+    }
+    .card {
+      background:rgba(15,25,15,0.65);
+      border:1px solid rgba(57,255,20,0.35);
+      border-radius:10px;
+      overflow:hidden;
+      backdrop-filter:blur(5px);
+      transition:all 0.2s;
+      cursor:pointer;
+    }
+    .card:hover { transform:scale(1.03); border-color:#39ff14; }
+    .card-img { height:170px; position:relative; }
+    .card-img img { width:100%; height:100%; object-fit:cover; }
+    .badge-star {
+      position:absolute; top:6px; left:6px;
+      background:#39ff14; color:#000; font-size:0.65rem; padding:3px 8px; border-radius:999px; font-weight:bold;
+    }
+    .badge-farm {
+      position:absolute; bottom:6px; right:6px;
+      background:rgba(0,0,0,0.75); color:#39ff14; font-size:0.7rem; padding:4px 9px; border-radius:6px;
+    }
+    .card-body { padding:10px; }
+    .card-title { font-size:1rem; color:#fff; margin-bottom:3px; font-weight:700; }
+    .card-info { font-size:0.75rem; color:#aaffaa; }
 
-  .product:hover {
-    transform: scale(1.05);
-  }
+    #category-list, #farm-list {
+      display:none;
+      padding:16px;
+      padding-bottom:100px;
+    }
+    .list-item {
+      background:rgba(15,25,15,0.7);
+      border:1px solid rgba(57,255,20,0.4);
+      border-radius:10px;
+      padding:16px;
+      margin-bottom:12px;
+      cursor:pointer;
+      font-size:1.1rem;
+      font-weight:bold;
+      transition:0.2s;
+    }
+    .list-item:hover {
+      background:#39ff14;
+      color:#000;
+      transform:translateX(6px);
+    }
 
-  .product img {
-    width: 100%;
-    max-width: 250px;
-    border-radius: 12px;
-    margin-bottom: 6px;
-  }
+    #product-detail { display:none; padding:0 0 100px 0; }
+    .product-hero { height:260px; position:relative; }
+    .product-hero img { width:100%; height:100%; object-fit:cover; }
+    .product-title { padding:16px; font-size:1.5rem; font-weight:900; color:#39ff14; text-shadow:0 0 10px rgba(57,255,20,0.6); }
+    .badges { padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:8px; }
+    .badge { padding:6px 12px; border-radius:999px; font-size:0.85rem; font-weight:bold; }
+    .badge-strain { background:rgba(57,255,20,0.2); color:#39ff14; border:1px solid #39ff14; }
+    .badge-farm { background:rgba(0,80,0,0.4); color:#aaffaa; border:1px solid #39ff14; }
+    .info-diamond { padding:0 16px 16px; color:#39ff14; font-size:0.9rem; }
+    .quantity-section { padding:16px; background:rgba(0,0,0,0.5); margin:12px 16px; border-radius:12px; border:1px solid rgba(57,255,20,0.4); }
+    .quantity-title { font-size:1.1rem; color:#39ff14; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .quantity-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .qty-btn {
+      background:rgba(57,255,20,0.15); border:1px solid #39ff14; color:#fff;
+      padding:12px 8px; border-radius:10px; text-align:center; cursor:pointer; font-weight:bold; transition:0.2s; line-height:1.3;
+    }
+    .qty-btn:hover, .qty-btn.selected { background:#39ff14; color:#000; }
+    .add-to-cart {
+      margin:16px; background:#39ff14; color:#000; border:none; padding:16px; font-size:1.1rem; font-weight:bold;
+      border-radius:12px; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer;
+      box-shadow:0 0 15px rgba(57,255,20,0.5);
+    }
 
-  .product h3 {
-    font-size: 18px;
-    margin: 5px 0;
-  }
+    #cart-page { display:none; padding:16px; padding-bottom:140px; }
+    .cart-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:16px;
+    }
+    .cart-item {
+      background:rgba(15,25,15,0.65);
+      border:1px solid rgba(57,255,20,0.35);
+      border-radius:10px;
+      padding:12px;
+      margin-bottom:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .cart-item-name { font-size:1rem; color:#fff; }
+    .cart-item-qty { color:#39ff14; font-weight:bold; }
+    .clear-cart-btn {
+      background:#ff4444;
+      color:white;
+      border:none;
+      padding:8px 16px;
+      border-radius:8px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    .questionnaire { margin-top:24px; }
+    .question { margin-bottom:20px; }
+    .question-label { font-size:1.1rem; color:#39ff14; margin-bottom:10px; display:block; }
+    .option-btn {
+      background:rgba(57,255,20,0.15);
+      border:1px solid #39ff14;
+      color:#fff;
+      padding:12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+      width:100%;
+      margin-bottom:8px;
+      text-align:center;
+    }
+    .option-btn.selected { background:#39ff14; color:#000; }
+    input, textarea {
+      background:rgba(0,0,0,0.5);
+      border:1px solid #39ff14;
+      color:#fff;
+      padding:12px;
+      border-radius:10px;
+      width:100%;
+      margin-bottom:12px;
+      font-family:inherit;
+    }
+    .submit-order {
+      background:#39ff14;
+      color:#000;
+      border:none;
+      padding:16px;
+      font-size:1.1rem;
+      font-weight:bold;
+      border-radius:12px;
+      cursor:pointer;
+      width:100%;
+      box-shadow:0 0 15px rgba(57,255,20,0.5);
+      margin-top:16px;
+    }
 
-  .product p {
-    font-size: 14px;
-    color: #00ff9c;
-    margin: 4px 0;
-  }
-
-  .detail {
-    background: rgba(0,0,0,0.65);
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-    position: relative;
-  }
-
-  .detail h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  .detail p {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-
-  .detail video {
-    width: 90%;
-    max-width: 350px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-  }
-
-  .back {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 8px 12px;
-    border-radius: 12px;
-    background: #444;
-    font-size: 14px;
-  }
-
-  .price-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 8px;
-    margin-bottom: 15px;
-  }
-
-  .price-cell {
-    background: rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 8px;
-    font-weight: bold;
-    font-size: 14px;
-  }
-
-  button.order-btn {
-    margin-top: 10px;
-    padding: 12px;
-    width: 60%;
-    border: none;
-    border-radius: 50px;
-    background: #ff6347;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-</style>
+    nav {
+      position:fixed;
+      bottom:0;
+      left:0; right:0;
+      background:rgba(5,15,5,0.92);
+      backdrop-filter:blur(14px);
+      border-top:1px solid rgba(57,255,20,0.25);
+      padding:8px 0;
+      display:flex;
+      justify-content:space-around;
+      z-index:20;
+    }
+    .nav-item {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      color:#88ff88;
+      font-size:0.7rem;
+      gap:3px;
+      cursor:pointer;
+    }
+    .nav-item.active { color:#39ff14; }
+  </style>
 </head>
-
 <body>
 
-<h1>🦖🍣 DINO TERPS 76</h1>
+<div class="container">
+  <div class="overlay"></div>
+  <div class="content">
 
-<div id="home">
-  <div class="products">
-    <div class="product" onclick="openProduct('frozen')">
-      <img src="caliplates-thumb.jpg" alt="FROZEN SIFT 🥶">
-      <h3>🥶 FROZEN SIFT</h3>
+    <header id="main-header">
+      <button class="back-btn" id="btn-back" style="display:none;">← Retour</button>
+      <h1 id="page-title">The French Cali Farmz</h1>
+      <div id="user-info"></div>
+    </header>
+
+    <div id="home-page">
+      <section class="welcome">
+        <div class="welcome-inner">
+          <div class="welcome-emoji">👋</div>
+          <div>
+            <h2 id="welcome-name">Chargement...</h2>
+            <p>Bienvenue sur le shop premium</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="filters">
+        <button class="filter-btn" id="btn-categories">Catégories</button>
+        <button class="filter-btn" id="btn-farms">Farms</button>
+      </div>
+
+      <div id="products-grid">
+        <div class="card" data-key="cali">
+          <div class="card-img">
+            <img src="caliplates.jpg" alt="Caliplates">
+            <div class="badge-star">★</div>
+            <div class="badge-farm">Frozen Single Source 🇺🇸</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Caliplates🇺🇸</div>
+            <div class="card-info">Frozen Single Source 🇺🇸</div>
+          </div>
+        </div>
+
+        <div class="card" data-key="35u">
+          <div class="card-img">
+            <img src="35u.jpg" alt="35u KGF">
+            <div class="badge-star">★</div>
+            <div class="badge-farm">KGF 🦊</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">35u KGF🦊</div>
+            <div class="card-info">KGF 🦊</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="category-list"></div>
+      <div id="farm-list"></div>
     </div>
 
-    <div class="product" onclick="openProduct('cali')">
-      <img src="cali-thumb.jpg" alt="Cali weed 🇺🇸">
-      <h3>🇺🇸 Cali weed</h3>
+    <div id="product-detail" style="display:none;">
+      <div class="product-hero"><img id="detail-img" src="" alt="Produit"></div>
+      <div class="product-title" id="detail-title"></div>
+      <div class="badges">
+        <div class="badge badge-strain" id="detail-strain"></div>
+        <div class="badge badge-farm" id="detail-farm"></div>
+      </div>
+      <div class="info-diamond" id="detail-info"></div>
+      <div class="quantity-section">
+        <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
+        <div class="quantity-grid" id="qty-grid"></div>
+      </div>
+      <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
-    <div class="product" onclick="openProduct('gaz')">
-      <img src="gaz-thumb.jpg" alt="Gaz fruit 90u⚡️">
-      <h3>⚡️ Gaz fruit 90u</h3>
+    <div id="cart-page" style="display:none;">
+      <div class="cart-header">
+        <h2 style="font-size:1.4rem; color:#39ff14;">Votre Panier</h2>
+        <button id="clear-cart-btn" class="clear-cart-btn" style="display:none;">Vider le panier</button>
+      </div>
+      <div id="cart-items"></div>
+      <div class="questionnaire" id="questionnaire" style="display:none;">
+        <div class="question">
+          <span class="question-label">Venir sur place ou Livré ?</span>
+          <button class="option-btn" data-type="pickup">Venir sur place</button>
+          <button class="option-btn" data-type="delivery">Livré</button>
+        </div>
+
+        <div id="pickup-questions" style="display:none;">
+          <div class="question">
+            <span class="question-label">Pour quelle heure ?</span>
+            <input type="time" id="pickup-time">
+          </div>
+        </div>
+
+        <div id="delivery-questions" style="display:none;">
+          <div class="question">
+            <span class="question-label">Pour quelle heure ?</span>
+            <input type="time" id="delivery-time">
+          </div>
+          <div class="question">
+            <span class="question-label">Votre adresse :</span>
+            <input type="text" id="delivery-address" placeholder="Adresse complète">
+          </div>
+          <div class="question">
+            <span class="question-label">Détails / questions livraison :</span>
+            <textarea id="delivery-details" placeholder="Précisez ici..."></textarea>
+          </div>
+        </div>
+
+        <button class="submit-order" id="submit-order-btn">Commander</button>
+      </div>
     </div>
 
-    <div class="product" onclick="openProduct('calimountain')">
-      <img src="120u-thumb.jpg" alt="CALIMOUNTAIN FARM 120u">
-      <h3>🧑‍🌾 CALIMOUNTAIN 120u</h3>
-    </div>
+    <nav>
+      <div class="nav-item active" id="nav-home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Accueil</span>
+      </div>
+      <div class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        <span>Avis</span>
+      </div>
+      <div class="nav-item" id="nav-cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span>Panier</span>
+      </div>
+      <div class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <span>Infos</span>
+      </div>
+      <div class="nav-item">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Contact</span>
+      </div>
+    </nav>
 
-    <div class="product" onclick="openProduct('farm')">
-      <img src="farm-thumb.jpg" alt="FRESH FROZEN SIF KINGZ FARM">
-      <h3>🥶 FRESH FROZEN SIF</h3>
-    </div>
   </div>
 </div>
 
-<div id="productDetail" style="display:none; position: relative;"></div>
-
 <script>
-const contact = "@DINOS76S";
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
 
-const products = {
-  frozen: {
-    name: "FROZEN SIFT 🥶",
-    video: "caliplates.mp4",
-    description: `🧑‍⚕️ Garlic coockie 🍪, Jelly Donuts 🍩, Cake 🍰
-
-Gamme solide et TERPS gourmands. Promotion 25%!`,
-    prices: [
-      {qty:"2,5G", price:"50€"},
-      {qty:"5G", price:"90€"},
-      {qty:"10G", price:"180€"},
-      {qty:"20G", price:"350€"},
-      {qty:"25G", price:"400€"}
-    ]
-  },
-  cali: {
-    name: "Cali weed 🇺🇸",
-    video: "cali.mp4",
-    description: `Runtz 🌈, Tropicana Strawberry 🌴🍓
-
-Gamme qualité prix accessible.`,
-    prices: [
-      {qty:"3G", price:"40€"},
-      {qty:"5G", price:"60€"},
-      {qty:"10G", price:"120€"},
-      {qty:"20G", price:"230€"},
-      {qty:"25G", price:"300€"}
-    ]
-  },
-  gaz: {
-    name: "Gaz fruit 90u⚡️",
-    video: "gaz.mp4",
-    description: `Papaya Dolce 🥭, Mimi Cheese 🧀
-
-Farm du moment, frais et fruité.`,
-    prices: [
-      {qty:"10G", price:"130€"},
-      {qty:"25G", price:"240€"},
-      {qty:"50G", price:"450€"}
-    ]
-  },
-  calimountain: {
-    name: "CALIMOUNTAIN FARM 120u PREMIUM",
-    video: "120u.mp4",
-    description: `Candy Gaz 🍬, Glitter Bomb 💣, Apple Mintz 🍏`,
-    prices: [
-      {qty:"5G", price:"70€"},
-      {qty:"10G", price:"140€"},
-      {qty:"20G", price:"260€"},
-      {qty:"25G", price:"310€"}
-    ]
-  },
-  farm: {
-    name: "FRESH FROZEN SIF 🥶 KINGZ FARM",
-    video: "farm.mp4",
-    description: `PERMANENT MAKER x GELATO 41 ⛽️🍦`,
-    prices: [
-      {qty:"5G", price:"70€"},
-      {qty:"10G", price:"140€"},
-      {qty:"20G", price:"250€"},
-      {qty:"25G", price:"300€"}
-    ]
+  const user = tg.initDataUnsafe?.user;
+  if (user) {
+    document.getElementById('welcome-name').textContent = `Salut ${user.first_name || 'Farmer'} !`;
+    document.getElementById('user-info').textContent = `@${user.username || 'anonyme'}`;
+  } else {
+    document.getElementById('welcome-name').textContent = 'Bienvenue !';
   }
-};
 
-function openProduct(key) {
-  const p = products[key];
-  let html = `<div class="detail">`;
+  const products = {
+    cali: {
+      key: 'cali',
+      title: 'Caliplates🇺🇸',
+      farm: 'Frozen Single Source 🇺🇸',
+      img: 'caliplates.jpg',
+      strain: 'Frozen Single Source 🇺🇸',
+      info: '◆ frozen single source 🇺🇸',
+      quantities: [
+        { qty: '0.5g', price: '40 €' },
+        { qty: '1g',   price: '80 €' },
+        { qty: '2g',   price: '130 €' },
+        { qty: '5g',   price: '280 €' },
+        { qty: '10g',  price: '500 €' },
+        { qty: '20g',  price: '950 €' }
+      ]
+    },
+    '35u': {
+      key: '35u',
+      title: '35u KGF🦊',
+      farm: 'KGF 🦊',
+      img: '35u.jpg',
+      strain: 'KGF 🦊',
+      info: '◆ KGF 🦊',
+      quantities: [
+        { qty: '5g', price: '30 €' },
+        { qty: '10g', price: '60 €' },
+        { qty: '25g', price: '100 €' },
+        { qty: '50g', price: '180 €' },
+        { qty: '100g', price: '350 €' },
+        { qty: '500g', price: '1600 €' },
+        { qty: '1000g', price: '3200 €' }
+      ]
+    }
+  };
 
-  // Bouton retour en haut à gauche
-  html += `<button class="back" onclick="goBack()">⬅ Retour</button>`;
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  // Vidéo séparée
-  if(p.video) html += `<video src="${p.video}" controls></video>`;
+  // OUVRIR DÉTAIL PRODUIT
+  function openProductDetail(key) {
+    const p = products[key];
+    if (!p) return;
 
-  html += `<h2>${p.name}</h2><p>${p.description}</p><h4>💰 Tarifs</h4>`;
+    document.getElementById('detail-img').src = p.img;
+    document.getElementById('detail-title').textContent = p.title;
+    document.getElementById('detail-strain').textContent = p.strain;
+    document.getElementById('detail-farm').textContent = p.farm;
+    document.getElementById('detail-info').textContent = p.info;
 
-  // Grille de prix
-  html += `<div class="price-grid">`;
-  p.prices.forEach(pr => {
-    html += `<div class="price-cell">${pr.qty}<br>${pr.price}</div>`;
+    const grid = document.getElementById('qty-grid');
+    grid.innerHTML = '';
+    p.quantities.forEach((item, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'qty-btn';
+      btn.dataset.index = idx;
+      btn.innerHTML = `${item.qty}<br>${item.price}`;
+      btn.onclick = () => {
+        grid.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      };
+      grid.appendChild(btn);
+    });
+
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('product-detail').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'inline-block';
+    document.getElementById('page-title').textContent = p.title;
+  }
+
+  // Clic carte produit grille
+  document.querySelectorAll('#products-grid .card').forEach(card => {
+    card.addEventListener('click', () => openProductDetail(card.dataset.key));
   });
-  html += `</div>`;
 
-  // Bouton commander rond
-  html += `<button class="order-btn" onclick="order()">📩 Commander</button></div>`;
+  // Bouton Retour général
+  document.getElementById('btn-back').onclick = () => {
+    document.getElementById('home-page').style.display = 'block';
+    document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('cart-page').style.display = 'none';
+    document.getElementById('category-list').style.display = 'none';
+    document.getElementById('farm-list').style.display = 'none';
+    document.getElementById('products-grid').style.display = 'grid';
+    document.getElementById('btn-back').style.display = 'none';
+    document.getElementById('page-title').textContent = 'The French Cali Farmz';
+    document.getElementById('btn-categories').classList.remove('active');
+    document.getElementById('btn-farms').classList.remove('active');
+  };
 
-  document.getElementById("home").style.display = "none";
-  const detail = document.getElementById("productDetail");
-  detail.innerHTML = html;
-  detail.style.display = "block";
-}
+  // FILTRE CATÉGORIES → liste titres
+  document.getElementById('btn-categories').onclick = function() {
+    this.classList.toggle('active');
+    document.getElementById('btn-farms').classList.remove('active');
 
-function goBack() {
-  document.getElementById("productDetail").style.display = "none";
-  document.getElementById("home").style.display = "block";
-}
+    if (this.classList.contains('active')) {
+      document.getElementById('products-grid').style.display = 'none';
+      document.getElementById('farm-list').style.display = 'none';
+      document.getElementById('category-list').style.display = 'block';
+      document.getElementById('category-list').innerHTML = '';
 
-function order() {
-  window.open(`https://t.me/${contact.replace("@","")}`, "_blank");
-}
+      Object.keys(products).forEach(key => {
+        const p = products[key];
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.textContent = p.title;
+        div.onclick = () => openProductDetail(key);
+        document.getElementById('category-list').appendChild(div);
+      });
+    } else {
+      document.getElementById('category-list').style.display = 'none';
+      document.getElementById('products-grid').style.display = 'grid';
+    }
+  };
+
+  // FILTRE FARMS → liste farms
+  document.getElementById('btn-farms').onclick = function() {
+    this.classList.toggle('active');
+    document.getElementById('btn-categories').classList.remove('active');
+
+    if (this.classList.contains('active')) {
+      document.getElementById('products-grid').style.display = 'none';
+      document.getElementById('category-list').style.display = 'none';
+      document.getElementById('farm-list').style.display = 'block';
+      document.getElementById('farm-list').innerHTML = '';
+
+      Object.keys(products).forEach(key => {
+        const p = products[key];
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.textContent = p.farm;
+        div.onclick = () => openProductDetail(key);
+        document.getElementById('farm-list').appendChild(div);
+      });
+    } else {
+      document.getElementById('farm-list').style.display = 'none';
+      document.getElementById('products-grid').style.display = 'grid';
+    }
+  };
+
+  // AJOUTER AU PANIER
+  document.getElementById('add-to-cart-btn').onclick = () => {
+    const selected = document.querySelector('.qty-btn.selected');
+    if (!selected) return alert('Sélectionnez une quantité !');
+
+    const titleText = document.getElementById('detail-title').textContent;
+    const key = titleText.includes('Caliplates') ? 'cali' : '35u';
+    const p = products[key];
+    const idx = selected.dataset.index;
+    const item = p.quantities[idx];
+
+    cart.push({
+      title: p.title,
+      qty: item.qty,
+      price: item.price
+    });
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Ajouté au panier !');
+  };
+
+  // OUVRIR PANIER
+  document.getElementById('nav-cart').addEventListener('click', () => {
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('category-list').style.display = 'none';
+    document.getElementById('farm-list').style.display = 'none';
+    document.getElementById('cart-page').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'inline-block';
+    document.getElementById('page-title').textContent = 'Panier';
+
+    const itemsDiv = document.getElementById('cart-items');
+    itemsDiv.innerHTML = '';
+
+    const clearBtn = document.getElementById('clear-cart-btn');
+    if (cart.length === 0) {
+      itemsDiv.innerHTML = '<p style="text-align:center; color:#888; padding:40px 0;">Votre panier est vide</p>';
+      document.getElementById('questionnaire').style.display = 'none';
+      clearBtn.style.display = 'none';
+    } else {
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `<span class="cart-item-name">${item.title}</span><span class="cart-item-qty">${item.qty} - ${item.price}</span>`;
+        itemsDiv.appendChild(div);
+      });
+      document.getElementById('questionnaire').style.display = 'block';
+      clearBtn.style.display = 'inline-block';
+    }
+  });
+
+  // VIDER LE PANIER
+  document.getElementById('clear-cart-btn').onclick = () => {
+    if (confirm('Voulez-vous vraiment vider tout le panier ?')) {
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Panier vidé !');
+      // Rafraîchir la vue panier
+      document.getElementById('nav-cart').click();
+    }
+  };
+
+  // QUESTIONNAIRE + COMMANDER
+  let deliveryType = '';
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      deliveryType = btn.dataset.type;
+
+      document.getElementById('pickup-questions').style.display = deliveryType === 'pickup' ? 'block' : 'none';
+      document.getElementById('delivery-questions').style.display = deliveryType === 'delivery' ? 'block' : 'none';
+    };
+  });
+
+  document.getElementById('submit-order-btn').onclick = () => {
+    if (!deliveryType) return alert('Choisissez un mode de récupération !');
+
+    let message = 'NOUVELLE COMMANDE\n\n';
+    cart.forEach(item => {
+      message += `• ${item.title} : ${item.qty} (${item.price})\n`;
+    });
+
+    if (deliveryType === 'pickup') {
+      const time = document.getElementById('pickup-time').value;
+      if (!time) return alert('Indiquez une heure !');
+      message += `\nMode : Venir sur place\nHeure : ${time}`;
+    } else {
+      const time = document.getElementById('delivery-time').value;
+      const addr = document.getElementById('delivery-address').value;
+      const details = document.getElementById('delivery-details').value;
+      if (!time || !addr) return alert('Heure et adresse obligatoires !');
+      message += `\nMode : Livraison\nHeure : ${time}\nAdresse : ${addr}\nDétails : ${details || 'aucun'}`;
+    }
+
+    const encoded = encodeURIComponent(message);
+    tg.openTelegramLink(`https://t.me/orderthefrenchcalifarmz26?text=${encoded}`);
+
+    cart = [];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Commande envoyée ! Panier vidé.');
+    document.getElementById('nav-home').click(); // Retour accueil
+  };
 </script>
 
 </body>
