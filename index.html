@@ -486,6 +486,30 @@
       </div>
     </div>
 
+    <div id="reseaux-page" style="display:none;">
+      <h1>Nos réseaux</h1>
+      <div class="reseaux-card" onclick="tg.openLink('https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr')">
+        <div class="icon">📸</div>
+        <h3>Instagram</h3>
+        <p>https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr</p>
+      </div>
+      <div class="reseaux-card" onclick="tg.openLink('https://duanym138.org/DINOfslmogx8')">
+        <div class="icon">🥔</div>
+        <h3>Patato</h3>
+        <p>https://duanym138.org/DINOfslmogx8</p>
+      </div>
+      <div class="reseaux-card" onclick="tg.openLink('https://t.me/+j7EMkLSIaV83ZmU8')">
+        <div class="icon">📢</div>
+        <h3>Canal telegram</h3>
+        <p>https://t.me/+j7EMkLSIaV83ZmU8</p>
+      </div>
+      <div class="reseaux-card" onclick="tg.openLink('https://snapchat.com/t/EZAiDCkN')">
+        <div class="icon">👻</div>
+        <h3>Snap chat</h3>
+        <p>https://snapchat.com/t/EZAiDCkN</p>
+      </div>
+    </div>
+
     <div id="cart-page" style="display:none;">
       <div class="cart-header">
         <h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
@@ -553,7 +577,7 @@
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
-        <span>réseaux We📲</span>
+        <span>Réseaux</span>
       </div>
     </nav>
 
@@ -683,6 +707,7 @@
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('product-detail').style.display = 'none';
     document.getElementById('infos-page').style.display = 'none';
+    document.getElementById('reseaux-page').style.display = 'none';
     document.getElementById('cart-page').style.display = 'none';
   }
 
@@ -697,7 +722,7 @@
     document.getElementById('page-title').textContent = 'DINO TERPS 76';
   };
 
-  // AJOUT AU PANIER (comme dans ton code)
+  // AJOUT AU PANIER
   document.getElementById('add-to-cart-btn').onclick = () => {
     const selected = document.querySelector('.qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
@@ -726,7 +751,7 @@
     alert('Ajouté au panier !');
   };
 
-  // AFFICHAGE PANIER (corrigé pour être sûr que ça s'actualise)
+  // FONCTION D'AFFICHAGE DU PANIER (corrigée et renforcée)
   function showCart() {
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
@@ -734,7 +759,7 @@
     document.getElementById('page-title').textContent = 'Panier';
 
     const itemsDiv = document.getElementById('cart-items');
-    itemsDiv.innerHTML = '';
+    itemsDiv.innerHTML = ''; // on vide avant de re-remplir
 
     const clearBtn = document.getElementById('clear-cart-btn');
 
@@ -761,7 +786,7 @@
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('Panier vidé !');
-      showCart(); // Rafraîchit immédiatement l'affichage
+      showCart(); // rafraîchit l'affichage immédiatement
     }
   };
 
@@ -820,6 +845,15 @@
     document.getElementById('page-title').textContent = 'Infos';
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-infos').classList.add('active');
+  });
+
+  document.getElementById('nav-reseaux').addEventListener('click', () => {
+    hideAllPages();
+    document.getElementById('reseaux-page').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'inline-block';
+    document.getElementById('page-title').textContent = 'Réseaux';
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.getElementById('nav-reseaux').classList.add('active');
   });
 </script>
 
