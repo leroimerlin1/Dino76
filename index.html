@@ -224,7 +224,80 @@
       box-shadow:0 0 18px rgba(255,80,180,0.65);
     }
 
-    #infos-page, #reseaux-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
+    #infos-page {
+      display:none;
+      padding:16px;
+      padding-bottom:140px;
+      color:#ffe0f0;
+      font-size:1.05rem;
+      line-height:1.5;
+    }
+    #infos-page .section {
+      background:rgba(20,5,30,0.75);
+      border:1px solid rgba(255,80,180,0.5);
+      border-radius:12px;
+      padding:16px;
+      margin-bottom:16px;
+      backdrop-filter:blur(6px);
+    }
+    #infos-page .section-title {
+      font-size:1.4rem;
+      color:#ff50b4;
+      margin-bottom:12px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      text-shadow:0 0 8px rgba(255,80,180,0.6);
+    }
+    #infos-page .subsection {
+      margin-bottom:12px;
+    }
+    #infos-page .subsection-title {
+      font-size:1.1rem;
+      color:#ff80d0;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    #infos-page .list {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    #infos-page .list-item {
+      background:rgba(255,80,180,0.15);
+      border:1px solid #ff50b4;
+      padding:6px 12px;
+      border-radius:8px;
+      font-weight:bold;
+    }
+    #infos-page .time-list {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+    #infos-page .time-item {
+      background:rgba(255,80,180,0.15);
+      border:1px solid #ff50b4;
+      padding:8px;
+      border-radius:8px;
+      text-align:center;
+    }
+    #infos-page .note {
+      font-size:0.95rem;
+      color:#ffccdd;
+      margin-top:8px;
+    }
+    #infos-page .minimum {
+      font-size:1.1rem;
+      color:#ff50b4;
+      text-align:center;
+      margin-top:12px;
+      font-weight:bold;
+    }
+
+    #reseaux-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
     #reseaux-page h1 { color:#ff50b4; font-size:1.8rem; text-align:center; margin:20px 0 30px; text-shadow:0 0 10px rgba(255,80,180,0.8); }
     .reseaux-card {
       background:rgba(20,5,30,0.75);
@@ -441,7 +514,7 @@
 
     <div id="product-detail" style="display:none;">
       <div class="product-hero">
-        <video id="detail-video" autoplay muted loop playsinline poster=""></video>
+        <video id="detail-video" autoplay muted loop playsinline></video>
       </div>
       <div class="product-title" id="detail-title"></div>
       <div class="badges">
@@ -455,25 +528,46 @@
       <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
-    <div id="infos-page" style="display:none;">
-      <h2>SALUT A TOUS LA TEAM !</h2>
-      <p>VOICI LES ZONE DE LIVRAISON 🚚 📦 :</p>
-      <p class="highlight">76 / 27 / 14 / 60</p>
-      <h2>76 Centre et alentours :</h2>
-      <p>- 10klm 50€</p>
-      <p>- 20klm 80€</p>
-      <p>- 30klm 120€</p>
-      <p>- 50klm 350€</p>
-      <p>- 100klm 420€</p>
-      <p>Payement en Espèce 💶 !</p>
-      <h2>SERVICE MEET-UP 🏠 ✅</h2>
-      <p>Vous pouvez passer directement surplace la famille, avant de passer venir en privée et préciser votre heure d’arrivé avec votre commande souhaitée au meet-up avec 🚶📦</p>
-      <p>Payement en Espèce 💶 !</p>
-      <p>Ouvert 12h - 23h</p>
-      <p>SAV : 24h/24h ! 🕛</p>
+    <div id="infos-page">
+      <div class="section">
+        <div class="section-title"><span>🚚</span> Livraison</div>
+        <div class="subsection">
+          <div class="subsection-title"><span>📍</span> Départements desservis</div>
+          <div class="list">
+            <div class="list-item">76</div>
+            <div class="list-item">27</div>
+            <div class="list-item">14</div>
+            <div class="list-item">60</div>
+          </div>
+        </div>
+        <div class="subsection">
+          <div class="subsection-title"><span>🕒</span> Horaires de tournée</div>
+          <div class="time-list">
+            <div class="time-item">1ère tournée 14h</div>
+            <div class="time-item">2ème tournée 17h</div>
+            <div class="time-item">3ème tournée 20h</div>
+            <div class="time-item">4ème tournée 22h30</div>
+          </div>
+        </div>
+        <div class="note">Frais en + à prévoir pour les départements voisins et minimum de commande selon distances</div>
+        <div class="minimum">Minimum 50 €</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><span>👥</span> Meetup</div>
+        <div class="subsection">
+          <div class="subsection-title"><span>📍</span> Rouen</div>
+          <div class="list-item">Disponible</div>
+        </div>
+        <div class="subsection">
+          <div class="subsection-title"><span>🕒</span> Horaires</div>
+          <div class="time-item">12h - 23h</div>
+        </div>
+        <div class="minimum">Minimum 50 €</div>
+      </div>
     </div>
 
-    <div id="reseaux-page" style="display:none;">
+    <div id="reseaux-page">
       <h1>Nos réseaux</h1>
       <div class="reseaux-card" onclick="tg.openLink('https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr')">
         <div class="icon">📸</div>
@@ -562,7 +656,7 @@
       </div>
       <div class="nav-item" id="nav-reseaux">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          <path d="M21 15a2 0 0 1-2 2H7l-4 4V5a2 0 0 1 2-2h14a2 0 0 1 2 2z"></path>
         </svg>
         <span>réseaux We📲</span>
       </div>
@@ -661,10 +755,7 @@
 
   function openProductDetail(key) {
     const p = products[key];
-    if (!p) {
-      alert("Produit non trouvé (clé invalide)");
-      return;
-    }
+    if (!p) return;
 
     const hero = document.getElementById('detail-video');
     hero.innerHTML = `<source src="${p.video}" type="video/mp4">`;
@@ -691,104 +782,99 @@
     hideAllPages();
     document.getElementById('product-detail').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('page-title').textContent = p.title;
+    document.getElementById('header-title').textContent = p.title;
   }
 
   function hideAllPages() {
-    ['home-page', 'product-detail', 'infos-page', 'reseaux-page', 'cart-page', 'category-list', 'farm-list'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('infos-page').style.display = 'none';
+    document.getElementById('reseaux-page').style.display = 'none';
+    document.getElementById('cart-page').style.display = 'none';
+    document.getElementById('category-list').style.display = 'none';
+    document.getElementById('farm-list').style.display = 'none';
   }
 
-  // Clic sur les cartes de la grille
   document.querySelectorAll('#products-grid .card').forEach(card => {
-    card.addEventListener('click', () => {
-      const key = card.dataset.key;
-      if (key) openProductDetail(key);
-    });
+    card.addEventListener('click', () => openProductDetail(card.dataset.key));
   });
 
   document.getElementById('btn-back').onclick = () => {
     hideAllPages();
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'none';
-    document.getElementById('page-title').textContent = 'Dino Terps 76';
+    document.getElementById('header-title').textContent = 'Dino Terps 76';
     document.getElementById('btn-categories').classList.remove('active');
     document.getElementById('btn-farms').classList.remove('active');
   };
 
-  // Catégories accordéon
   document.getElementById('btn-categories').onclick = function() {
     this.classList.toggle('active');
     document.getElementById('btn-farms').classList.remove('active');
 
-    const content = document.getElementById('cat-content');
+    const catContent = document.getElementById('cat-content');
     if (this.classList.contains('active')) {
       hideAllPages();
       document.getElementById('category-list').style.display = 'block';
-      content.innerHTML = '';
+      catContent.innerHTML = '';
       Object.keys(products).forEach(key => {
         const p = products[key];
         const item = document.createElement('div');
         item.className = 'list-item';
         item.textContent = p.title;
         item.onclick = () => openProductDetail(key);
-        content.appendChild(item);
+        catContent.appendChild(item);
       });
-      content.style.maxHeight = content.scrollHeight + 'px';
+      catContent.style.maxHeight = catContent.scrollHeight + 'px';
     } else {
-      content.style.maxHeight = '0';
+      catContent.style.maxHeight = '0';
       setTimeout(() => {
         document.getElementById('category-list').style.display = 'none';
         document.getElementById('home-page').style.display = 'block';
-      }, 400);
+      }, 300);
     }
   };
 
-  // Farms accordéon
   document.getElementById('btn-farms').onclick = function() {
     this.classList.toggle('active');
     document.getElementById('btn-categories').classList.remove('active');
 
-    const content = document.getElementById('farm-content');
+    const farmContent = document.getElementById('farm-content');
     if (this.classList.contains('active')) {
       hideAllPages();
       document.getElementById('farm-list').style.display = 'block';
-      content.innerHTML = '';
+      farmContent.innerHTML = '';
       Object.keys(products).forEach(key => {
         const p = products[key];
         const item = document.createElement('div');
         item.className = 'list-item';
         item.textContent = p.farm;
         item.onclick = () => openProductDetail(key);
-        content.appendChild(item);
+        farmContent.appendChild(item);
       });
-      content.style.maxHeight = content.scrollHeight + 'px';
+      farmContent.style.maxHeight = farmContent.scrollHeight + 'px';
     } else {
-      content.style.maxHeight = '0';
+      farmContent.style.maxHeight = '0';
       setTimeout(() => {
         document.getElementById('farm-list').style.display = 'none';
         document.getElementById('home-page').style.display = 'block';
-      }, 400);
+      }, 300);
     }
   };
 
-  // Ajout au panier (clé détectée via title)
   document.getElementById('add-to-cart-btn').onclick = () => {
-    const selected = document.querySelector('#qty-grid .qty-btn.selected');
+    const selected = document.querySelector('.qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
 
-    const title = document.getElementById('detail-title').textContent.trim();
+    const title = document.getElementById('detail-title').textContent;
     let key = null;
     for (const k in products) {
-      if (title === products[k].title) {
+      if (products[k].title === title) {
         key = k;
         break;
       }
     }
-
-    if (!key) return alert('Erreur : produit non reconnu');
+    if (!key) return alert('Produit non trouvé !');
 
     const p = products[key];
     const idx = selected.dataset.index;
@@ -804,12 +890,11 @@
     alert('Ajouté au panier !');
   };
 
-  // Affichage panier
   document.getElementById('nav-cart').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('page-title').textContent = 'Votre Panier';
+    document.getElementById('header-title').textContent = 'Votre Panier';
 
     const itemsDiv = document.getElementById('cart-items');
     itemsDiv.innerHTML = '';
@@ -881,7 +966,7 @@
     document.getElementById('nav-home').click();
   };
 
-  // Navigation bas
+  // Navigation
   document.getElementById('nav-home').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('home-page').style.display = 'block';
@@ -893,7 +978,7 @@
     hideAllPages();
     document.getElementById('infos-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('page-title').textContent = 'Infos';
+    document.getElementById('header-title').textContent = 'Infos';
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-infos').classList.add('active');
   });
@@ -902,7 +987,7 @@
     hideAllPages();
     document.getElementById('reseaux-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('page-title').textContent = 'Nos réseaux';
+    document.getElementById('header-title').textContent = 'Nos réseaux';
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-reseaux').classList.add('active');
   });
