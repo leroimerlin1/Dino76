@@ -338,12 +338,10 @@
 
     <header id="main-header">
       <button class="back-btn" id="btn-back" style="display:none;">← Retour</button>
-      
       <div class="header-inner">
         <img src="dino.jpg" alt="Dino Logo" class="header-logo">
         <div class="header-title">Dino Terps 76</div>
       </div>
-      
       <div id="user-info"></div>
     </header>
 
@@ -443,7 +441,7 @@
 
     <div id="product-detail" style="display:none;">
       <div class="product-hero">
-        <video id="detail-video" autoplay muted loop playsinline></video>
+        <video id="detail-video" autoplay muted loop playsinline poster=""></video>
       </div>
       <div class="product-title" id="detail-title"></div>
       <div class="badges">
@@ -457,7 +455,7 @@
       <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
-    <div id="infos-page">
+    <div id="infos-page" style="display:none;">
       <h2>SALUT A TOUS LA TEAM !</h2>
       <p>VOICI LES ZONE DE LIVRAISON 🚚 📦 :</p>
       <p class="highlight">76 / 27 / 14 / 60</p>
@@ -475,7 +473,7 @@
       <p>SAV : 24h/24h ! 🕛</p>
     </div>
 
-    <div id="reseaux-page">
+    <div id="reseaux-page" style="display:none;">
       <h1>Nos réseaux</h1>
       <div class="reseaux-card" onclick="tg.openLink('https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr')">
         <div class="icon">📸</div>
@@ -663,7 +661,10 @@
 
   function openProductDetail(key) {
     const p = products[key];
-    if (!p) return;
+    if (!p) {
+      alert("Produit non trouvé (clé invalide)");
+      return;
+    }
 
     const hero = document.getElementById('detail-video');
     hero.innerHTML = `<source src="${p.video}" type="video/mp4">`;
@@ -694,17 +695,18 @@
   }
 
   function hideAllPages() {
-    document.getElementById('home-page').style.display = 'none';
-    document.getElementById('product-detail').style.display = 'none';
-    document.getElementById('infos-page').style.display = 'none';
-    document.getElementById('reseaux-page').style.display = 'none';
-    document.getElementById('cart-page').style.display = 'none';
-    document.getElementById('category-list').style.display = 'none';
-    document.getElementById('farm-list').style.display = 'none';
+    ['home-page', 'product-detail', 'infos-page', 'reseaux-page', 'cart-page', 'category-list', 'farm-list'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
   }
 
+  // Clic sur les cartes de la grille
   document.querySelectorAll('#products-grid .card').forEach(card => {
-    card.addEventListener('click', () => openProductDetail(card.dataset.key));
+    card.addEventListener('click', () => {
+      const key = card.dataset.key;
+      if (key) openProductDetail(key);
+    });
   });
 
   document.getElementById('btn-back').onclick = () => {
@@ -716,71 +718,77 @@
     document.getElementById('btn-farms').classList.remove('active');
   };
 
+  // Catégories accordéon
   document.getElementById('btn-categories').onclick = function() {
     this.classList.toggle('active');
     document.getElementById('btn-farms').classList.remove('active');
 
-    const catContent = document.getElementById('cat-content');
+    const content = document.getElementById('cat-content');
     if (this.classList.contains('active')) {
       hideAllPages();
       document.getElementById('category-list').style.display = 'block';
-      catContent.innerHTML = '';
+      content.innerHTML = '';
       Object.keys(products).forEach(key => {
         const p = products[key];
         const item = document.createElement('div');
         item.className = 'list-item';
         item.textContent = p.title;
         item.onclick = () => openProductDetail(key);
-        catContent.appendChild(item);
+        content.appendChild(item);
       });
-      catContent.style.maxHeight = catContent.scrollHeight + 'px';
+      content.style.maxHeight = content.scrollHeight + 'px';
     } else {
-      catContent.style.maxHeight = '0';
+      content.style.maxHeight = '0';
       setTimeout(() => {
         document.getElementById('category-list').style.display = 'none';
         document.getElementById('home-page').style.display = 'block';
-      }, 300);
+      }, 400);
     }
   };
 
+  // Farms accordéon
   document.getElementById('btn-farms').onclick = function() {
     this.classList.toggle('active');
     document.getElementById('btn-categories').classList.remove('active');
 
-    const farmContent = document.getElementById('farm-content');
+    const content = document.getElementById('farm-content');
     if (this.classList.contains('active')) {
       hideAllPages();
       document.getElementById('farm-list').style.display = 'block';
-      farmContent.innerHTML = '';
+      content.innerHTML = '';
       Object.keys(products).forEach(key => {
         const p = products[key];
         const item = document.createElement('div');
         item.className = 'list-item';
         item.textContent = p.farm;
         item.onclick = () => openProductDetail(key);
-        farmContent.appendChild(item);
+        content.appendChild(item);
       });
-      farmContent.style.maxHeight = farmContent.scrollHeight + 'px';
+      content.style.maxHeight = content.scrollHeight + 'px';
     } else {
-      farmContent.style.maxHeight = '0';
+      content.style.maxHeight = '0';
       setTimeout(() => {
         document.getElementById('farm-list').style.display = 'none';
         document.getElementById('home-page').style.display = 'block';
-      }, 300);
+      }, 400);
     }
   };
 
+  // Ajout au panier (clé détectée via title)
   document.getElementById('add-to-cart-btn').onclick = () => {
-    const selected = document.querySelector('.qty-btn.selected');
+    const selected = document.querySelector('#qty-grid .qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
 
-    const title = document.getElementById('detail-title').textContent;
-    let key = '';
-    if (title.includes('Cali')) key = 'cali';
-    else if (title.includes('Dry 90u')) key = 'gaz';
-    else if (title.includes('FROZEN SIFT')) key = 'farm';
-    else if (title.includes('Dry 120u')) key = '120u';
-    else key = 'french';
+    const title = document.getElementById('detail-title').textContent.trim();
+    let key = null;
+    for (const k in products) {
+      if (title === products[k].title) {
+        key = k;
+        break;
+      }
+    }
+
+    if (!key) return alert('Erreur : produit non reconnu');
 
     const p = products[key];
     const idx = selected.dataset.index;
@@ -796,6 +804,7 @@
     alert('Ajouté au panier !');
   };
 
+  // Affichage panier
   document.getElementById('nav-cart').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
@@ -872,6 +881,7 @@
     document.getElementById('nav-home').click();
   };
 
+  // Navigation bas
   document.getElementById('nav-home').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('home-page').style.display = 'block';
