@@ -88,7 +88,7 @@
     #products-grid {
       padding:16px;
       display:grid;
-      grid-template-columns:repeat(1,1fr);
+      grid-template-columns:repeat(2, 1fr); /* 2 colonnes maintenant */
       gap:14px;
       padding-bottom:100px;
     }
@@ -102,15 +102,15 @@
       cursor:pointer;
     }
     .card:hover { transform:scale(1.03); border-color:#ff50b4; }
-    .card-img { height:240px; position:relative; background:#000; }
+    .card-img { height:220px; position:relative; background:#000; }
     .card-img video { width:100%; height:100%; object-fit:cover; }
     .badge-star {
       position:absolute; top:8px; left:8px;
       background:#ff50b4; color:#000; font-size:0.7rem; padding:4px 10px; border-radius:999px; font-weight:bold;
     }
     .card-body { padding:12px; }
-    .card-title { font-size:1.25rem; color:#fff; margin-bottom:4px; font-weight:700; }
-    .card-info { font-size:0.9rem; color:#ffccdd; font-weight:500; }
+    .card-title { font-size:1.15rem; color:#fff; margin-bottom:4px; font-weight:700; }
+    .card-info { font-size:0.85rem; color:#ffccdd; font-weight:500; }
 
     #product-detail { display:none; padding:0 0 120px 0; }
     .product-hero { height:320px; position:relative; background:#000; }
@@ -265,17 +265,59 @@
       </section>
 
       <div id="products-grid">
+        <!-- Produit 1 -->
         <div class="card" data-key="cali">
           <div class="card-img">
-            <video autoplay muted loop playsinline poster="caliplates-thumb.jpg">
-              <source src="caliplates.mp4" type="video/mp4">
-              Ton navigateur ne supporte pas la vidéo.
+            <video autoplay muted loop playsinline poster="cali-thumb.jpg">
+              <source src="cali.mp4" type="video/mp4">
             </video>
             <div class="badge-star">★</div>
           </div>
           <div class="card-body">
-            <div class="card-title">Caliplates🇺🇸</div>
-            <div class="card-info">🥶 FROZEN SIFT</div>
+            <div class="card-title">🇺🇸 Cali weed🌳</div>
+            <div class="card-info">Runtz / Tropicana Strawberry</div>
+          </div>
+        </div>
+
+        <!-- Produit 2 -->
+        <div class="card" data-key="gaz">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="gaz-thumb.jpg">
+              <source src="gaz.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">⚡️ Dry 90u</div>
+            <div class="card-info">Gaz fruit🍇</div>
+          </div>
+        </div>
+
+        <!-- Produit 3 -->
+        <div class="card" data-key="farm">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="farm-thumb.jpg">
+              <source src="farm.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">🥶 FRESH FROZEN SIFT</div>
+            <div class="card-info">KINGZ FARM 🧑‍🌾</div>
+          </div>
+        </div>
+
+        <!-- Produit 4 -->
+        <div class="card" data-key="120u">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="120u-thumb.jpg">
+              <source src="120u.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Dry 120u⚡️</div>
+            <div class="card-info">🧑‍🌾 CALIMOUNTAIN</div>
           </div>
         </div>
       </div>
@@ -283,19 +325,13 @@
 
     <div id="product-detail" style="display:none;">
       <div class="product-hero">
-        <video autoplay muted loop playsinline poster="caliplates-thumb.jpg">
-          <source src="caliplates.mp4" type="video/mp4">
-          Ton navigateur ne supporte pas la vidéo.
-        </video>
+        <video id="detail-video" autoplay muted loop playsinline></video>
       </div>
       <div class="product-title" id="detail-title"></div>
       <div class="badges">
         <div class="badge badge-strain" id="detail-strain"></div>
       </div>
-      <div class="strain-section" id="detail-strain-desc">
-        <div class="strain-title">Strain</div>
-        Garlic Cookie 🍪✅<br>Jelly Donuts 🍩✅<br>Cake 🍰✅
-      </div>
+      <div class="strain-section" id="detail-strain-desc"></div>
       <div class="quantity-section">
         <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
         <div class="quantity-grid" id="qty-grid"></div>
@@ -303,11 +339,11 @@
       <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
+    <!-- Infos, Réseaux, Panier (inchangés, je les garde pour complétude) -->
     <div id="infos-page">
       <h2>SALUT A TOUS LA TEAM !</h2>
       <p>VOICI LES ZONE DE LIVRAISON 🚚 📦 :</p>
       <p class="highlight">76 / 27 / 14 / 60</p>
-
       <h2>76 Centre et alentours :</h2>
       <p>- 10klm 50€</p>
       <p>- 20klm 80€</p>
@@ -315,7 +351,6 @@
       <p>- 50klm 350€</p>
       <p>- 100klm 420€</p>
       <p>Payement en Espèce 💶 !</p>
-
       <h2>SERVICE MEET-UP 🏠 ✅</h2>
       <p>Vous pouvez passer directement surplace la famille, avant de passer venir en privée et préciser votre heure d’arrivé avec votre commande souhaitée au meet-up avec 🚶📦</p>
       <p>Payement en Espèce 💶 !</p>
@@ -325,25 +360,21 @@
 
     <div id="reseaux-page">
       <h1>Nos réseaux</h1>
-
       <div class="reseaux-card" onclick="tg.openLink('https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr')">
         <div class="icon">📸</div>
         <h3>Instagram</h3>
         <p>https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr</p>
       </div>
-
       <div class="reseaux-card" onclick="tg.openLink('https://duanym138.org/DINOfslmogx8')">
         <div class="icon">🥔</div>
         <h3>Patato</h3>
         <p>https://duanym138.org/DINOfslmogx8</p>
       </div>
-
       <div class="reseaux-card" onclick="tg.openLink('https://t.me/+j7EMkLSIaV83ZmU8')">
         <div class="icon">📢</div>
         <h3>Canal telegram</h3>
         <p>https://t.me/+j7EMkLSIaV83ZmU8</p>
       </div>
-
       <div class="reseaux-card" onclick="tg.openLink('https://snapchat.com/t/EZAiDCkN')">
         <div class="icon">👻</div>
         <h3>Snap chat</h3>
@@ -441,17 +472,54 @@
   const products = {
     cali: {
       key: 'cali',
-      title: 'Caliplates🇺🇸',
-      strain: '🥶 FROZEN SIFT',
-      strainDesc: 'Garlic Cookie 🍪✅<br>Jelly Donuts 🍩✅<br>Cake 🍰✅',
-      video: 'caliplates.mp4',
-      poster: 'caliplates-thumb.jpg',
+      title: '🇺🇸 Cali weed🌳',
+      strain: 'Runtz 🌈✅ Tropicana Strawberry 🌴🍓✅',
+      video: 'cali.mp4',
+      poster: 'cali-thumb.jpg', // tu peux mettre une image de fallback si besoin
       quantities: [
-        { qty: '2,5G', price: '50 €' },
-        { qty: '5G',   price: '90 €' },
-        { qty: '10G',  price: '180 €' },
-        { qty: '20G',  price: '350 €' },
-        { qty: '25G',  price: '400 €' }
+        { qty: '3G', price: '40 €' },
+        { qty: '5G', price: '60 €' },
+        { qty: '10G', price: '120 €' },
+        { qty: '20G', price: '230 €' },
+        { qty: '25G', price: '300 €' }
+      ]
+    },
+    gaz: {
+      key: 'gaz',
+      title: '⚡️ Dry 90u',
+      strain: 'Papaya Dolce 🥭✅ Mimi Cheese 🧀✅',
+      video: 'gaz.mp4',
+      poster: 'gaz-thumb.jpg',
+      quantities: [
+        { qty: '10G', price: '130 €' },
+        { qty: '25G', price: '240 €' },
+        { qty: '50G', price: '450 €' }
+      ]
+    },
+    farm: {
+      key: 'farm',
+      title: '🥶 FRESH FROZEN SIFT',
+      strain: 'PERMANENT MAKER x GELATO 41 ⛽️🍦✅',
+      video: 'farm.mp4',
+      poster: 'farm-thumb.jpg',
+      quantities: [
+        { qty: '5G', price: '70 €' },
+        { qty: '10G', price: '140 €' },
+        { qty: '20G', price: '250 €' },
+        { qty: '25G', price: '300 €' }
+      ]
+    },
+    '120u': {
+      key: '120u',
+      title: 'Dry 120u⚡️',
+      strain: 'Candy Gaz 🍬✅ Glitter Bomb 💣✅ Apple Mintz 🍏✅',
+      video: '120u.mp4',
+      poster: '120u-thumb.jpg',
+      quantities: [
+        { qty: '5G', price: '70 €' },
+        { qty: '10G', price: '140 €' },
+        { qty: '20G', price: '260 €' },
+        { qty: '25G', price: '310 €' }
       ]
     }
   };
@@ -462,17 +530,16 @@
     const p = products[key];
     if (!p) return;
 
-    const hero = document.querySelector('.product-hero');
+    const hero = document.getElementById('detail-video');
     hero.innerHTML = `
-      <video autoplay muted loop playsinline poster="${p.poster}">
-        <source src="${p.video}" type="video/mp4">
-        Ton navigateur ne supporte pas la vidéo.
-      </video>
+      <source src="${p.video}" type="video/mp4">
+      Ton navigateur ne supporte pas la vidéo.
     `;
+    hero.poster = p.poster || '';
 
     document.getElementById('detail-title').textContent = p.title;
-    document.getElementById('detail-strain').textContent = p.strain;
-    document.getElementById('detail-strain-desc').innerHTML = `<div class="strain-title">Strain</div>${p.strainDesc}`;
+    document.getElementById('detail-strain').textContent = p.strain.split('✅').join('✅ '); // pour lisibilité
+    document.getElementById('detail-strain-desc').innerHTML = `<div class="strain-title">Strain</div>${p.strain}`;
 
     const grid = document.getElementById('qty-grid');
     grid.innerHTML = '';
@@ -484,6 +551,7 @@
       btn.onclick = () => {
         grid.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
+        btn.dataset.selectedItem = JSON.stringify(item); // pour l'ajout au panier
       };
       grid.appendChild(btn);
     });
@@ -513,11 +581,21 @@
     document.getElementById('page-title').textContent = 'Dino Terps 76';
   };
 
+  // NAVIGATION
+  document.getElementById('nav-home').addEventListener('click', () => {
+    hideAllPages();
+    document.getElementById('home-page').style.display = 'block';
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.getElementById('nav-home').classList.add('active');
+  });
+
   document.getElementById('nav-infos').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('infos-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = 'Infos';
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.getElementById('nav-infos').classList.add('active');
   });
 
   document.getElementById('nav-reseaux').addEventListener('click', () => {
@@ -525,6 +603,8 @@
     document.getElementById('reseaux-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = 'Nos réseaux';
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.getElementById('nav-reseaux').classList.add('active');
   });
 
   document.getElementById('nav-cart').addEventListener('click', () => {
@@ -532,6 +612,8 @@
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = 'Votre Panier';
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.getElementById('nav-cart').classList.add('active');
 
     const itemsDiv = document.getElementById('cart-items');
     itemsDiv.innerHTML = '';
@@ -553,12 +635,17 @@
     }
   });
 
+  // Ajout au panier
   document.getElementById('add-to-cart-btn').onclick = () => {
-    const selected = document.querySelector('.qty-btn.selected');
-    if (!selected) return alert('Sélectionnez une quantité !');
+    const selectedBtn = document.querySelector('.qty-btn.selected');
+    if (!selectedBtn) return alert('Sélectionnez une quantité !');
 
-    const p = products.cali;
-    const idx = selected.dataset.index;
+    const key = document.getElementById('detail-title').textContent.includes('Cali') ? 'cali' :
+                 document.getElementById('detail-title').textContent.includes('Dry 90u') ? 'gaz' :
+                 document.getElementById('detail-title').textContent.includes('FROZEN SIFT') ? 'farm' : '120u';
+
+    const p = products[key];
+    const idx = selectedBtn.dataset.index;
     const item = p.quantities[idx];
 
     cart.push({
