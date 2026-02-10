@@ -698,20 +698,13 @@
   };
 
   // Système de panier IDENTIQUE à ton ancien code
+    // AJOUTER AU PANIER
   document.getElementById('add-to-cart-btn').onclick = () => {
     const selected = document.querySelector('.qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
 
-    const title = document.getElementById('detail-title').textContent.trim();
-    let key = null;
-    for (const k in products) {
-      if (products[k].title === title) {
-        key = k;
-        break;
-      }
-    }
-    if (!key) return alert('Produit non trouvé !');
-
+    const titleText = document.getElementById('detail-title').textContent;
+    const key = titleText.includes('Caliplates') ? 'cali' : '35u';
     const p = products[key];
     const idx = selected.dataset.index;
     const item = p.quantities[idx];
@@ -726,8 +719,12 @@
     alert('Ajouté au panier !');
   };
 
+  // OUVRIR PANIER
   document.getElementById('nav-cart').addEventListener('click', () => {
-    hideAllPages();
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('category-list').style.display = 'none';
+    document.getElementById('farm-list').style.display = 'none';
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = 'Panier';
@@ -752,15 +749,18 @@
     }
   });
 
+  // VIDER LE PANIER
   document.getElementById('clear-cart-btn').onclick = () => {
     if (confirm('Voulez-vous vraiment vider tout le panier ?')) {
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       alert('Panier vidé !');
+      // Rafraîchir la vue panier
       document.getElementById('nav-cart').click();
     }
   };
 
+  // QUESTIONNAIRE + COMMANDER
   let deliveryType = '';
   document.querySelectorAll('.option-btn').forEach(btn => {
     btn.onclick = () => {
@@ -776,7 +776,7 @@
   document.getElementById('submit-order-btn').onclick = () => {
     if (!deliveryType) return alert('Choisissez un mode de récupération !');
 
-    let message = 'NOUVELLE COMMANDE DINO TERPS 76\n\n';
+    let message = 'NOUVELLE COMMANDE\n\n';
     cart.forEach(item => {
       message += `• ${item.title} : ${item.qty} (${item.price})\n`;
     });
@@ -784,7 +784,7 @@
     if (deliveryType === 'pickup') {
       const time = document.getElementById('pickup-time').value;
       if (!time) return alert('Indiquez une heure !');
-      message += `\nMode : Venir sur place (Meet-up)\nHeure : ${time}`;
+      message += `\nMode : Venir sur place\nHeure : ${time}`;
     } else {
       const time = document.getElementById('delivery-time').value;
       const addr = document.getElementById('delivery-address').value;
@@ -794,29 +794,13 @@
     }
 
     const encoded = encodeURIComponent(message);
-    tg.openTelegramLink(`https://t.me/DINO76S?text=${encoded}`);
+    tg.openTelegramLink(`https://t.me/orderthefrenchcalifarmz26?text=${encoded}`);
 
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
     alert('Commande envoyée ! Panier vidé.');
-    document.getElementById('nav-home').click();
+    document.getElementById('nav-home').click(); // Retour accueil
   };
-
-  document.getElementById('nav-home').addEventListener('click', () => {
-    hideAllPages();
-    document.getElementById('home-page').style.display = 'block';
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    document.getElementById('nav-home').classList.add('active');
-  });
-
-  document.getElementById('nav-infos').addEventListener('click', () => {
-    hideAllPages();
-    document.getElementById('infos-page').style.display = 'block';
-    document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('page-title').textContent = 'Infos';
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    document.getElementById('nav-infos').classList.add('active');
-  });
 </script>
 
 </body>
