@@ -235,6 +235,8 @@
       font-size:0.75rem;
       gap:4px;
       cursor:pointer;
+      flex:1;
+      max-width:25%;
     }
     .nav-item.active { color:#ff50b4; }
   </style>
@@ -251,7 +253,6 @@
       <div id="user-info"></div>
     </header>
 
-    <!-- Accueil et détail produit (inchangés) -->
     <div id="home-page">
       <section class="welcome">
         <div class="welcome-inner">
@@ -302,7 +303,6 @@
       <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
-    <!-- Page Infos (inchangée) -->
     <div id="infos-page">
       <h2>SALUT A TOUS LA TEAM !</h2>
       <p>VOICI LES ZONE DE LIVRAISON 🚚 📦 :</p>
@@ -323,7 +323,6 @@
       <p>SAV : 24h/24h ! 🕛</p>
     </div>
 
-    <!-- Nouvelle page Réseaux -->
     <div id="reseaux-page">
       <h1>Nos réseaux</h1>
 
@@ -352,7 +351,6 @@
       </div>
     </div>
 
-    <!-- Panier (inchangé) -->
     <div id="cart-page" style="display:none;">
       <div class="cart-header">
         <h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
@@ -399,12 +397,6 @@
           <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
         <span>Accueil</span>
-      </div>
-      <div class="nav-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-        </svg>
-        <span>Avis</span>
       </div>
       <div class="nav-item" id="nav-cart">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -521,7 +513,6 @@
     document.getElementById('page-title').textContent = 'Dino Terps 76';
   };
 
-  // Ouvrir Infos
   document.getElementById('nav-infos').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('infos-page').style.display = 'block';
@@ -529,7 +520,6 @@
     document.getElementById('page-title').textContent = 'Infos';
   });
 
-  // Ouvrir Réseaux
   document.getElementById('nav-reseaux').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('reseaux-page').style.display = 'block';
@@ -537,7 +527,6 @@
     document.getElementById('page-title').textContent = 'Nos réseaux';
   });
 
-  // Ouvrir Panier
   document.getElementById('nav-cart').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
@@ -564,7 +553,6 @@
     }
   });
 
-  // Ajout au panier, clear panier, commander (inchangés, mais je les garde complets)
   document.getElementById('add-to-cart-btn').onclick = () => {
     const selected = document.querySelector('.qty-btn.selected');
     if (!selected) return alert('Sélectionnez une quantité !');
