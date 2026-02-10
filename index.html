@@ -154,105 +154,6 @@
       box-shadow:0 0 18px rgba(255,80,180,0.65);
     }
 
-    #infos-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
-    #infos-page .section {
-      background:rgba(20,5,30,0.75);
-      border:1px solid rgba(255,80,180,0.5);
-      border-radius:12px;
-      padding:16px;
-      margin-bottom:16px;
-      backdrop-filter:blur(6px);
-    }
-    #infos-page .section-title {
-      font-size:1.4rem;
-      color:#ff50b4;
-      margin-bottom:12px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      text-shadow:0 0 8px rgba(255,80,180,0.6);
-    }
-    #infos-page .subsection-title {
-      font-size:1.15rem;
-      color:#ff80d0;
-      margin:12px 0 8px;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    #infos-page .departements {
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin:8px 0;
-    }
-    #infos-page .depart-item {
-      background:rgba(255,80,180,0.15);
-      border:1px solid #ff50b4;
-      padding:6px 12px;
-      border-radius:8px;
-      font-weight:bold;
-    }
-    #infos-page .horaires {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin:8px 0;
-    }
-    #infos-page .horaire-item {
-      background:rgba(255,80,180,0.15);
-      border:1px solid #ff50b4;
-      padding:10px;
-      border-radius:8px;
-      text-align:center;
-      font-weight:bold;
-    }
-    #infos-page .minimum {
-      text-align:center;
-      font-size:1.2rem;
-      color:#ff50b4;
-      margin-top:12px;
-      font-weight:bold;
-    }
-    #infos-page .note {
-      font-size:0.95rem;
-      color:#ffccdd;
-      margin-top:8px;
-      font-style:italic;
-    }
-    #infos-page .contact {
-      text-align:center;
-      margin-top:20px;
-      font-size:1.3rem;
-      color:#ff50b4;
-      font-weight:bold;
-    }
-    #infos-page .contact a {
-      color:#ff80d0;
-      text-decoration:none;
-      cursor:pointer;
-    }
-    #infos-page .contact a:hover {
-      text-decoration:underline;
-    }
-
-    #reseaux-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
-    #reseaux-page h1 { color:#ff50b4; font-size:1.8rem; text-align:center; margin:20px 0 30px; text-shadow:0 0 10px rgba(255,80,180,0.8); }
-    .reseaux-card {
-      background:rgba(20,5,30,0.75);
-      border:1px solid rgba(255,80,180,0.5);
-      border-radius:12px;
-      padding:16px;
-      margin-bottom:16px;
-      backdrop-filter:blur(6px);
-      cursor:pointer;
-      transition:0.2s;
-    }
-    .reseaux-card:hover { transform:scale(1.02); border-color:#ff50b4; box-shadow:0 0 15px rgba(255,80,180,0.4); }
-    .reseaux-card .icon { font-size:2.5rem; margin-bottom:10px; }
-    .reseaux-card h3 { color:#ff80d0; margin:8px 0; font-size:1.3rem; }
-    .reseaux-card p { color:#ffccdd; font-size:0.95rem; word-break:break-all; }
-
     #cart-page { display:none; padding:16px; padding-bottom:140px; }
     .cart-header {
       display:flex;
@@ -270,17 +171,17 @@
       justify-content:space-between;
       align-items:center;
     }
-    .cart-item-name { font-size:1rem; color:#fff; }
-    .cart-item-qty { color:#ff50b4; font-weight:bold; }
+    .cart-item-name { font-size:1rem; color:#fff; flex:1; }
+    .cart-item-qty { color:#ff50b4; font-weight:bold; margin:0 10px; white-space:nowrap; }
     .delete-item {
       background:#ff4444;
       color:white;
       border:none;
-      padding:4px 8px;
-      border-radius:4px;
+      padding:6px 10px;
+      border-radius:6px;
       font-weight:bold;
       cursor:pointer;
-      margin-left:10px;
+      font-size:0.9rem;
     }
     .clear-cart-btn {
       background:#ff4444;
@@ -358,15 +259,23 @@
     .nav-item.active { color:#ff50b4; }
     #cart-badge {
       position:absolute;
-      top:-5px;
-      right:-5px;
-      background:red;
+      top:-8px;
+      right:-8px;
+      background:#ff4444;
       color:white;
       border-radius:50%;
-      padding:2px 6px;
-      font-size:0.65rem;
+      min-width:18px;
+      height:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:0.7rem;
+      font-weight:bold;
+      padding:0 4px;
       display:none;
     }
+
+    #infos-page, #reseaux-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
   </style>
 </head>
 <body>
@@ -478,88 +387,17 @@
       <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
-    <div id="infos-page" style="display:none;">
-      <div class="section">
-        <div class="section-title"><span>🚚</span> Livraison</div>
-        <div class="subsection">
-          <div class="subsection-title"><span>📍</span> Départements desservis</div>
-          <div class="departements">
-            <div class="depart-item">76</div>
-            <div class="depart-item">27</div>
-            <div class="depart-item">14</div>
-            <div class="depart-item">60</div>
-          </div>
-        </div>
-        <div class="subsection">
-          <div class="subsection-title"><span>🕒</span> Horaires de tournée</div>
-          <div class="horaires">
-            <div class="horaire-item">1ère tournée 14h</div>
-            <div class="horaire-item">2ème tournée 17h</div>
-            <div class="horaire-item">3ème tournée 20h</div>
-            <div class="horaire-item">4ème tournée 22h30</div>
-          </div>
-        </div>
-        <div class="note">Frais en + à prévoir pour les départements voisins et minimum de commande selon distances</div>
-        <div class="minimum">Minimum 50 €</div>
-      </div>
-
-      <div class="section">
-        <div class="section-title"><span>👥</span> Meetup</div>
-        <div class="subsection">
-          <div class="subsection-title"><span>📍</span> Rouen</div>
-          <div class="depart-item">Disponible</div>
-        </div>
-        <div class="subsection">
-          <div class="subsection-title"><span>🕒</span> Horaires</div>
-          <div class="horaire-item">12h - 23h</div>
-        </div>
-        <div class="minimum">Minimum 50 €</div>
-      </div>
-
-      <div class="section">
-        <div class="section-title"><span>📩</span> Contact</div>
-        <div class="contact">
-          Contactez-nous sur Telegram : 
-          <a href="#" onclick="tg.openTelegramLink('https://t.me/DINO76S'); return false;">@DINO76S</a>
-        </div>
-      </div>
-    </div>
-
-    <div id="reseaux-page" style="display:none;">
-      <h1>Nos réseaux</h1>
-      <div class="reseaux-card" onclick="tg.openLink('https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr')">
-        <div class="icon">📸</div>
-        <h3>Instagram</h3>
-        <p>https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr</p>
-      </div>
-      <div class="reseaux-card" onclick="tg.openLink('https://duanym138.org/DINOfslmogx8')">
-        <div class="icon">🥔</div>
-        <h3>Patato</h3>
-        <p>https://duanym138.org/DINOfslmogx8</p>
-      </div>
-      <div class="reseaux-card" onclick="tg.openLink('https://t.me/+j7EMkLSIaV83ZmU8')">
-        <div class="icon">📢</div>
-        <h3>Canal telegram</h3>
-        <p>https://t.me/+j7EMkLSIaV83ZmU8</p>
-      </div>
-      <div class="reseaux-card" onclick="tg.openLink('https://snapchat.com/t/EZAiDCkN')">
-        <div class="icon">👻</div>
-        <h3>Snap chat</h3>
-        <p>https://snapchat.com/t/EZAiDCkN</p>
-      </div>
-    </div>
-
     <div id="cart-page" style="display:none;">
       <div class="cart-header">
         <h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
-        <button id="clear-cart-btn" class="clear-cart-btn" style="display:none;">Vider le panier</button>
+        <button id="clear-cart-btn" class="clear-cart-btn" style="display:none;">Vider tout</button>
       </div>
       <div id="cart-items"></div>
       <div class="questionnaire" id="questionnaire" style="display:none;">
         <div class="question">
-          <span class="question-label">Venir sur place ou Livré ?</span>
+          <span class="question-label">Mode de récupération :</span>
           <button class="option-btn" data-type="pickup">Venir sur place</button>
-          <button class="option-btn" data-type="delivery">Livré</button>
+          <button class="option-btn" data-type="delivery">Livraison</button>
         </div>
 
         <div id="pickup-questions" style="display:none;">
@@ -575,12 +413,12 @@
             <input type="time" id="delivery-time">
           </div>
           <div class="question">
-            <span class="question-label">Votre adresse :</span>
-            <input type="text" id="delivery-address" placeholder="Adresse complète">
+            <span class="question-label">Adresse complète :</span>
+            <input type="text" id="delivery-address" placeholder="Rue, numéro, ville...">
           </div>
           <div class="question">
-            <span class="question-label">Détails / questions livraison :</span>
-            <textarea id="delivery-details" placeholder="Précisez ici..."></textarea>
+            <span class="question-label">Détails / remarques livraison :</span>
+            <textarea id="delivery-details" placeholder="Étage, code porte, remarques..."></textarea>
           </div>
         </div>
 
@@ -603,7 +441,7 @@
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
         </svg>
         <span>Panier</span>
-        <span id="cart-badge"></span>
+        <span id="cart-badge">0</span>
       </div>
       <div class="nav-item" id="nav-infos">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -711,55 +549,51 @@
 
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  function openProductDetail(key) {
-    const p = products[key];
-    if (!p) return;
-
-    const hero = document.getElementById('detail-video');
-    hero.innerHTML = `<source src="${p.video}" type="video/mp4">`;
-    hero.poster = p.poster || '';
-
-    document.getElementById('detail-title').textContent = p.title;
-    document.getElementById('detail-strain').textContent = p.strain;
-    document.getElementById('detail-strain-desc').innerHTML = `<div class="strain-title">Strain</div>${p.strain}`;
-
-    const grid = document.getElementById('qty-grid');
-    grid.innerHTML = '';
-    p.quantities.forEach((item, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'qty-btn';
-      btn.dataset.index = idx;
-      btn.innerHTML = `${item.qty}<br>${item.price}`;
-      btn.onclick = () => {
-        grid.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-      };
-      grid.appendChild(btn);
-    });
-
-    hideAllPages();
-    document.getElementById('product-detail').style.display = 'block';
-    document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('page-title').textContent = p.title;
+  function updateBadge() {
+    const badge = document.getElementById('cart-badge');
+    const count = cart.length;
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
   }
 
-  function hideAllPages() {
-    document.getElementById('home-page').style.display = 'none';
-    document.getElementById('product-detail').style.display = 'none';
-    document.getElementById('infos-page').style.display = 'none';
-    document.getElementById('reseaux-page').style.display = 'none';
-    document.getElementById('cart-page').style.display = 'none';
+  function renderCart() {
+    const itemsDiv = document.getElementById('cart-items');
+    itemsDiv.innerHTML = '';
+
+    if (cart.length === 0) {
+      itemsDiv.innerHTML = '<p style="text-align:center; color:#888; padding:60px 0;">Votre panier est vide</p>';
+      document.getElementById('questionnaire').style.display = 'none';
+      document.getElementById('clear-cart-btn').style.display = 'none';
+    } else {
+      cart.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <span class="cart-item-name">${item.title}</span>
+          <span class="cart-item-qty">${item.qty} – ${item.price}</span>
+          <button class="delete-item" onclick="deleteItem(${index})">×</button>
+        `;
+        itemsDiv.appendChild(div);
+      });
+      document.getElementById('questionnaire').style.display = 'block';
+      document.getElementById('clear-cart-btn').style.display = 'inline-block';
+    }
   }
 
-  document.querySelectorAll('#products-grid .card').forEach(card => {
-    card.addEventListener('click', () => openProductDetail(card.dataset.key));
-  });
+  window.deleteItem = function(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+    updateBadge();
+  };
 
-  document.getElementById('btn-back').onclick = () => {
-    hideAllPages();
-    document.getElementById('home-page').style.display = 'block';
-    document.getElementById('btn-back').style.display = 'none';
-    document.getElementById('page-title').textContent = 'DINO TERPS 76';
+  document.getElementById('clear-cart-btn').onclick = () => {
+    if (confirm('Vider tout le panier ?')) {
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+      updateBadge();
+    }
   };
 
   document.getElementById('add-to-cart-btn').onclick = () => {
@@ -787,63 +621,17 @@
     });
 
     localStorage.setItem('cart', JSON.stringify(cart));
-    tg.showPopup({message: 'Ajouté au panier !'});
+    tg.showPopup({message: 'Produit ajouté au panier !'});
     updateBadge();
   };
 
-  function updateBadge() {
-    const badge = document.getElementById('cart-badge');
-    if (cart.length > 0) {
-      badge.textContent = cart.length;
-      badge.style.display = 'block';
-    } else {
-      badge.style.display = 'none';
-    }
-  }
-
-  function showCart() {
+  document.getElementById('nav-cart').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
     document.getElementById('page-title').textContent = 'Panier';
-
-    const itemsDiv = document.getElementById('cart-items');
-    itemsDiv.innerHTML = '';
-
-    const clearBtn = document.getElementById('clear-cart-btn');
-
-    if (cart.length === 0) {
-      itemsDiv.innerHTML = '<p style="text-align:center; color:#888; padding:40px 0;">Votre panier est vide</p>';
-      document.getElementById('questionnaire').style.display = 'none';
-      clearBtn.style.display = 'none';
-    } else {
-      cart.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `<span class="cart-item-name">${item.title}</span><span class="cart-item-qty">${item.qty} - ${item.price}</span><button class="delete-item" onclick="removeItem(${index})">X</button>`;
-        itemsDiv.appendChild(div);
-      });
-      document.getElementById('questionnaire').style.display = 'block';
-      clearBtn.style.display = 'inline-block';
-    }
-  }
-
-  window.removeItem = function(index) {
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    showCart();
-    updateBadge();
-  };
-
-  document.getElementById('clear-cart-btn').onclick = () => {
-    if (confirm('Voulez-vous vraiment vider tout le panier ?')) {
-      cart = [];
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert('Panier vidé !');
-      showCart();
-      updateBadge();
-    }
-  };
+    renderCart();
+  });
 
   let deliveryType = '';
   document.querySelectorAll('.option-btn').forEach(btn => {
@@ -858,7 +646,7 @@
   });
 
   document.getElementById('submit-order-btn').onclick = () => {
-    if (!deliveryType) return alert('Choisissez un mode de récupération !');
+    if (!deliveryType) return tg.showPopup({message: 'Choisissez un mode de récupération !'});
 
     let message = 'NOUVELLE COMMANDE DINO TERPS 76\n\n';
     cart.forEach(item => {
@@ -867,13 +655,13 @@
 
     if (deliveryType === 'pickup') {
       const time = document.getElementById('pickup-time').value;
-      if (!time) return alert('Indiquez une heure !');
+      if (!time) return tg.showPopup({message: 'Indiquez une heure !'});
       message += `\nMode : Venir sur place (Meet-up)\nHeure : ${time}`;
     } else {
       const time = document.getElementById('delivery-time').value;
       const addr = document.getElementById('delivery-address').value;
       const details = document.getElementById('delivery-details').value;
-      if (!time || !addr) return alert('Heure et adresse obligatoires !');
+      if (!time || !addr) return tg.showPopup({message: 'Heure et adresse obligatoires !'});
       message += `\nMode : Livraison\nHeure : ${time}\nAdresse : ${addr}\nDétails : ${details || 'aucun'}`;
     }
 
@@ -882,9 +670,29 @@
 
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Commande envoyée ! Panier vidé.');
+    tg.showPopup({message: 'Commande envoyée ! Panier vidé.'});
     updateBadge();
     document.getElementById('nav-home').click();
+  };
+
+  // Fonctions communes
+  function hideAllPages() {
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('infos-page').style.display = 'none';
+    document.getElementById('reseaux-page').style.display = 'none';
+    document.getElementById('cart-page').style.display = 'none';
+  }
+
+  document.querySelectorAll('#products-grid .card').forEach(card => {
+    card.addEventListener('click', () => openProductDetail(card.dataset.key));
+  });
+
+  document.getElementById('btn-back').onclick = () => {
+    hideAllPages();
+    document.getElementById('home-page').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'none';
+    document.getElementById('page-title').textContent = 'DINO TERPS 76';
   };
 
   document.getElementById('nav-home').addEventListener('click', () => {
@@ -893,8 +701,6 @@
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
   });
-
-  document.getElementById('nav-cart').addEventListener('click', showCart);
 
   document.getElementById('nav-infos').addEventListener('click', () => {
     hideAllPages();
@@ -914,7 +720,7 @@
     document.getElementById('nav-reseaux').classList.add('active');
   });
 
-  // Initialiser le badge au chargement
+  // Initialisation
   updateBadge();
 </script>
 
