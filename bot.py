@@ -24,7 +24,7 @@ from telegram.ext import (
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"                     # ← Remplace par TON VRAI TOKEN BOT
 
 # URL de ta Mini App (obtenue via @BotFather → Menu Button ou Web App)
-MINI_APP_URL = "https://ton-site.com/miniapp/index.html"   # ← METS TON VRAI LIEN ICI
+MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"   # ← METS TON VRAI LIEN ICI
 
 # Chemin vers l'image (local ou URL)
 DINO_IMAGE_PATH = "dino.jpg"        # fichier local
