@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Dino Terps 76</title>
+  <title>The French Cali Farmz</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap');
 
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'M PLUS Rounded 1c', 'Orbitron', sans-serif;
+      font-family: 'Orbitron', sans-serif;
       background:#000;
-      color:#ffe0f0;
+      color:#e0ffe0;
       min-height:100vh;
       overflow-x:hidden;
     }
@@ -25,8 +25,8 @@
     .overlay {
       position:absolute;
       inset:0;
-      background:rgba(10,0,20,0.82);
-      backdrop-filter:blur(2.5px);
+      background:rgba(0,0,0,0.78);
+      backdrop-filter:blur(1.5px);
       z-index:1;
     }
     .content {
@@ -38,60 +38,37 @@
     header {
       position:sticky;
       top:0;
-      background:rgba(20,0,30,0.92);
-      backdrop-filter:blur(14px);
+      background:rgba(0,0,0,0.75);
+      backdrop-filter:blur(10px);
       padding:10px 16px;
-      border-bottom:1px solid rgba(255,80,180,0.4);
+      border-bottom:1px solid rgba(57,255,20,0.35);
       z-index:10;
       display:flex;
       align-items:center;
-      justify-content:center;
-    }
-    .header-inner {
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:100%;
-      max-width:400px;
-    }
-    .header-logo {
-      width:38px;
-      height:38px;
-      border-radius:50%;
-      object-fit:cover;
-      margin-right:12px;
-      box-shadow:0 0 12px rgba(255,80,180,0.6);
-      border:2px solid #ff50b4;
-    }
-    .header-title {
-      font-size:1.35rem;
-      font-weight:900;
-      letter-spacing:1.5px;
-      color:#ff50b4;
-      text-shadow:0 0 12px rgba(255,80,180,0.7);
+      justify-content:space-between;
     }
     .back-btn {
-      position:absolute;
-      left:16px;
-      background:rgba(255,80,180,0.2);
-      color:#ff50b4;
-      border:1px solid #ff50b4;
+      background:rgba(57,255,20,0.15);
+      color:#39ff14;
+      border:1px solid #39ff14;
       padding:8px 14px;
       border-radius:8px;
       font-weight:bold;
       cursor:pointer;
     }
-    #user-info {
-      position:absolute;
-      right:16px;
-      color:#ff50b4;
-      font-size:0.9rem;
+    h1 {
+      font-size:1.35rem;
+      font-weight:900;
+      letter-spacing:1.5px;
+      color:#39ff14;
+      text-shadow:0 0 12px rgba(57,255,20,0.7);
+      margin:0;
     }
 
     .welcome {
       padding:18px 16px;
-      background:linear-gradient(to right, rgba(20,0,30,0.8), rgba(50,0,60,0.4));
-      border-bottom:1px solid rgba(255,80,180,0.3);
+      background:linear-gradient(to right, rgba(0,0,0,0.65), rgba(10,50,10,0.35));
+      border-bottom:1px solid rgba(57,255,20,0.25);
     }
     .welcome-inner {
       display:flex;
@@ -102,12 +79,12 @@
       width:52px;
       height:52px;
       border-radius:50%;
-      background:rgba(255,80,180,0.15);
+      background:rgba(57,255,20,0.12);
       display:flex;
       align-items:center;
       justify-content:center;
       font-size:2rem;
-      box-shadow:0 0 16px rgba(255,80,180,0.4);
+      box-shadow:0 0 16px rgba(57,255,20,0.35);
     }
 
     #products-grid {
@@ -115,62 +92,53 @@
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
       gap:14px;
-      padding-bottom:100px;
+      padding-bottom:90px;
     }
     .card {
-      background:rgba(20,5,30,0.7);
-      border:1px solid rgba(255,80,180,0.4);
-      border-radius:12px;
+      background:rgba(15,25,15,0.65);
+      border:1px solid rgba(57,255,20,0.35);
+      border-radius:10px;
       overflow:hidden;
-      backdrop-filter:blur(6px);
-      transition:all 0.22s;
+      backdrop-filter:blur(5px);
+      transition:all 0.2s;
       cursor:pointer;
     }
-    .card:hover { transform:scale(1.03); border-color:#ff50b4; }
-    .card-img { height:220px; position:relative; background:#000; }
+    .card:hover { transform:scale(1.03); border-color:#39ff14; }
+    .card-img { height:170px; position:relative; }
     .card-img video { width:100%; height:100%; object-fit:cover; }
     .badge-star {
-      position:absolute; top:8px; left:8px;
-      background:#ff50b4; color:#000; font-size:0.7rem; padding:4px 10px; border-radius:999px; font-weight:bold;
+      position:absolute; top:6px; left:6px;
+      background:#39ff14; color:#000; font-size:0.65rem; padding:3px 8px; border-radius:999px; font-weight:bold;
     }
-    .card-body { padding:12px; }
-    .card-title { font-size:1.1rem; color:#fff; margin-bottom:4px; font-weight:700; }
-    .card-info { font-size:0.85rem; color:#ffccdd; font-weight:500; }
+    .card-body { padding:10px; }
+    .card-title { font-size:1rem; color:#fff; margin-bottom:3px; font-weight:700; }
+    .card-info { font-size:0.75rem; color:#aaffaa; }
 
-    #product-detail { display:none; padding:0 0 120px 0; }
-    .product-hero { height:320px; position:relative; background:#000; }
+    #product-detail { display:none; padding:0 0 100px 0; }
+    .product-hero { height:260px; position:relative; background:#000; }
     .product-hero video { width:100%; height:100%; object-fit:cover; }
-    .product-title { padding:16px; font-size:1.9rem; font-weight:900; color:#ff50b4; text-shadow:0 0 12px rgba(255,80,180,0.75); }
+    .product-title { padding:16px; font-size:1.5rem; font-weight:900; color:#39ff14; text-shadow:0 0 10px rgba(57,255,20,0.6); }
     .badges { padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:8px; }
-    .badge { padding:7px 14px; border-radius:999px; font-size:0.9rem; font-weight:bold; }
-    .badge-strain { background:rgba(255,80,180,0.28); color:#ff50b4; border:1px solid #ff50b4; }
-    .strain-section { padding:0 16px 20px; color:#ff80d0; font-size:1.05rem; line-height:1.6; }
-    .strain-title { font-weight:bold; color:#ff50b4; margin-bottom:10px; font-size:1.15rem; }
-    .quantity-section { padding:16px; background:rgba(10,0,20,0.6); margin:12px 16px; border-radius:14px; border:1px solid rgba(255,80,180,0.45); }
-    .quantity-title { font-size:1.15rem; color:#ff50b4; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
-    .quantity-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .badge { padding:6px 12px; border-radius:999px; font-size:0.85rem; font-weight:bold; }
+    .badge-strain { background:rgba(57,255,20,0.2); color:#39ff14; border:1px solid #39ff14; }
+    .quantity-section { padding:16px; background:rgba(0,0,0,0.5); margin:12px 16px; border-radius:12px; border:1px solid rgba(57,255,20,0.4); }
+    .quantity-title { font-size:1.1rem; color:#39ff14; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .quantity-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
     .qty-btn {
-      background:rgba(255,80,180,0.2); border:1px solid #ff50b4; color:#fff;
-      padding:14px 10px; border-radius:12px; text-align:center; cursor:pointer; font-weight:bold; transition:0.2s;
+      background:rgba(57,255,20,0.15); border:1px solid #39ff14; color:#fff;
+      padding:12px 8px; border-radius:10px; text-align:center; cursor:pointer; font-weight:bold; transition:0.2s; line-height:1.3;
     }
-    .qty-btn:hover, .qty-btn.selected { background:#ff50b4; color:#000; }
+    .qty-btn:hover, .qty-btn.selected { background:#39ff14; color:#000; }
     .add-to-cart {
-      margin:16px; background:#ff50b4; color:#000; border:none; padding:18px; font-size:1.15rem; font-weight:bold;
-      border-radius:14px; display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer;
-      box-shadow:0 0 18px rgba(255,80,180,0.65);
+      margin:16px; background:#39ff14; color:#000; border:none; padding:16px; font-size:1.1rem; font-weight:bold;
+      border-radius:12px; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer;
+      box-shadow:0 0 15px rgba(57,255,20,0.5);
     }
 
-    #infos-page {
-      display:none;
-      padding:16px;
-      padding-bottom:140px;
-      color:#ffe0f0;
-      font-size:1.05rem;
-      line-height:1.5;
-    }
+    #infos-page { display:none; padding:16px; padding-bottom:140px; color:#e0ffe0; font-size:1.05rem; line-height:1.5; }
     #infos-page .section {
       background:rgba(0,30,0,0.85);
-      border:1px solid rgba(0,255,100,0.5);
+      border:1px solid rgba(57,255,20,0.5);
       border-radius:12px;
       padding:16px;
       margin-bottom:20px;
@@ -178,12 +146,11 @@
     }
     #infos-page .section-title {
       font-size:1.4rem;
-      color:#00ff64;
+      color:#39ff14;
       margin-bottom:12px;
       display:flex;
       align-items:center;
       gap:8px;
-      text-shadow:0 0 8px rgba(0,255,100,0.6);
     }
     #infos-page .subsection-title {
       font-size:1.15rem;
@@ -200,8 +167,8 @@
       margin:8px 0;
     }
     #infos-page .depart-item {
-      background:rgba(0,255,100,0.2);
-      border:1px solid #00ff64;
+      background:rgba(57,255,20,0.2);
+      border:1px solid #39ff14;
       padding:6px 12px;
       border-radius:8px;
       font-weight:bold;
@@ -213,8 +180,8 @@
       margin:8px 0;
     }
     #infos-page .horaire-item {
-      background:rgba(0,255,100,0.2);
-      border:1px solid #00ff64;
+      background:rgba(57,255,20,0.2);
+      border:1px solid #39ff14;
       padding:10px;
       border-radius:8px;
       text-align:center;
@@ -223,7 +190,7 @@
     #infos-page .minimum {
       text-align:center;
       font-size:1.2rem;
-      color:#00ff64;
+      color:#39ff14;
       margin-top:12px;
       font-weight:bold;
     }
@@ -234,28 +201,16 @@
       font-style:italic;
     }
 
-    #reseaux-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
-    #reseaux-page h1 { color:#ff50b4; font-size:1.8rem; text-align:center; margin:20px 0 30px; text-shadow:0 0 10px rgba(255,80,180,0.8); }
-    .reseaux-card {
-      background:rgba(20,5,30,0.75);
-      border:1px solid rgba(255,80,180,0.5);
-      border-radius:12px;
-      padding:16px;
+    #cart-page { display:none; padding:16px; padding-bottom:140px; }
+    .cart-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
       margin-bottom:16px;
-      backdrop-filter:blur(6px);
-      cursor:pointer;
-      transition:0.2s;
     }
-    .reseaux-card:hover { transform:scale(1.02); border-color:#ff50b4; box-shadow:0 0 15px rgba(255,80,180,0.4); }
-    .reseaux-card .icon { font-size:2.5rem; margin-bottom:10px; }
-    .reseaux-card h3 { color:#ff80d0; margin:8px 0; font-size:1.3rem; }
-    .reseaux-card p { color:#ffccdd; font-size:0.95rem; word-break:break-all; }
-
-    #cart-page { display:none; padding:16px; padding-bottom:160px; }
-    .cart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
     .cart-item {
-      background:rgba(20,5,30,0.7);
-      border:1px solid rgba(255,80,180,0.4);
+      background:rgba(15,25,15,0.65);
+      border:1px solid rgba(57,255,20,0.35);
       border-radius:10px;
       padding:12px;
       margin-bottom:12px;
@@ -264,7 +219,7 @@
       align-items:center;
     }
     .cart-item-name { font-size:1rem; color:#fff; }
-    .cart-item-qty { color:#ff50b4; font-weight:bold; }
+    .cart-item-qty { color:#39ff14; font-weight:bold; }
     .clear-cart-btn {
       background:#ff4444;
       color:white;
@@ -276,10 +231,10 @@
     }
     .questionnaire { margin-top:24px; }
     .question { margin-bottom:20px; }
-    .question-label { font-size:1.1rem; color:#ff50b4; margin-bottom:10px; display:block; }
+    .question-label { font-size:1.1rem; color:#39ff14; margin-bottom:10px; display:block; }
     .option-btn {
-      background:rgba(255,80,180,0.18);
-      border:1px solid #ff50b4;
+      background:rgba(57,255,20,0.15);
+      border:1px solid #39ff14;
       color:#fff;
       padding:12px;
       border-radius:10px;
@@ -289,10 +244,10 @@
       margin-bottom:8px;
       text-align:center;
     }
-    .option-btn.selected { background:#ff50b4; color:#000; }
+    .option-btn.selected { background:#39ff14; color:#000; }
     input, textarea {
-      background:rgba(10,0,20,0.6);
-      border:1px solid #ff50b4;
+      background:rgba(0,0,0,0.5);
+      border:1px solid #39ff14;
       color:#fff;
       padding:12px;
       border-radius:10px;
@@ -301,16 +256,16 @@
       font-family:inherit;
     }
     .submit-order {
-      background:#ff50b4;
+      background:#39ff14;
       color:#000;
       border:none;
-      padding:18px;
-      font-size:1.15rem;
+      padding:16px;
+      font-size:1.1rem;
       font-weight:bold;
-      border-radius:14px;
+      border-radius:12px;
       cursor:pointer;
       width:100%;
-      box-shadow:0 0 18px rgba(255,80,180,0.65);
+      box-shadow:0 0 15px rgba(57,255,20,0.5);
       margin-top:16px;
     }
 
@@ -318,10 +273,10 @@
       position:fixed;
       bottom:0;
       left:0; right:0;
-      background:rgba(15,0,25,0.95);
-      backdrop-filter:blur(16px);
-      border-top:1px solid rgba(255,80,180,0.35);
-      padding:10px 0;
+      background:rgba(5,15,5,0.92);
+      backdrop-filter:blur(14px);
+      border-top:1px solid rgba(57,255,20,0.25);
+      padding:8px 0;
       display:flex;
       justify-content:space-around;
       z-index:20;
@@ -330,14 +285,12 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      color:#ff88cc;
-      font-size:0.75rem;
-      gap:4px;
+      color:#88ff88;
+      font-size:0.7rem;
+      gap:3px;
       cursor:pointer;
-      flex:1;
-      max-width:25%;
     }
-    .nav-item.active { color:#ff50b4; }
+    .nav-item.active { color:#39ff14; }
   </style>
 </head>
 <body>
@@ -348,17 +301,14 @@
 
     <header id="main-header">
       <button class="back-btn" id="btn-back" style="display:none;">← Retour</button>
-      <div class="header-inner">
-        <img src="dino.jpg" alt="Dino Logo" class="header-logo">
-        <div class="header-title">Dino Terps 76</div>
-      </div>
-      <div id="user-info"></div>
+      <h1 id="page-title">The French Cali Farmz</h1>
+      <!-- username supprimé -->
     </header>
 
     <div id="home-page">
       <section class="welcome">
         <div class="welcome-inner">
-          <div class="welcome-emoji">🍣</div>
+          <div class="welcome-emoji">👋</div>
           <div>
             <h2 id="welcome-name">Chargement...</h2>
             <p>Bienvenue sur le shop premium</p>
@@ -489,33 +439,9 @@
       </div>
     </div>
 
-    <div id="reseaux-page" style="display:none;">
-      <h1>Nos réseaux</h1>
-      <div class="reseaux-card" onclick="tg.openLink('https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr')">
-        <div class="icon">📸</div>
-        <h3>Instagram</h3>
-        <p>https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr</p>
-      </div>
-      <div class="reseaux-card" onclick="tg.openLink('https://duanym138.org/DINOfslmogx8')">
-        <div class="icon">🥔</div>
-        <h3>Patato</h3>
-        <p>https://duanym138.org/DINOfslmogx8</p>
-      </div>
-      <div class="reseaux-card" onclick="tg.openLink('https://t.me/+j7EMkLSIaV83ZmU8')">
-        <div class="icon">📢</div>
-        <h3>Canal telegram</h3>
-        <p>https://t.me/+j7EMkLSIaV83ZmU8</p>
-      </div>
-      <div class="reseaux-card" onclick="tg.openLink('https://snapchat.com/t/EZAiDCkN')">
-        <div class="icon">👻</div>
-        <h3>Snap chat</h3>
-        <p>https://snapchat.com/t/EZAiDCkN</p>
-      </div>
-    </div>
-
     <div id="cart-page" style="display:none;">
       <div class="cart-header">
-        <h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
+        <h2 style="font-size:1.4rem; color:#39ff14;">Votre Panier</h2>
         <button id="clear-cart-btn" class="clear-cart-btn" style="display:none;">Vider le panier</button>
       </div>
       <div id="cart-items"></div>
@@ -595,7 +521,6 @@
   const user = tg.initDataUnsafe?.user;
   if (user) {
     document.getElementById('welcome-name').textContent = `Salut ${user.first_name || 'Farmer'} !`;
-    document.getElementById('user-info').textContent = `@${user.username || 'anonyme'}`;
   } else {
     document.getElementById('welcome-name').textContent = 'Bienvenue !';
   }
@@ -704,14 +629,13 @@
     hideAllPages();
     document.getElementById('product-detail').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('header-title').textContent = p.title;
+    document.getElementById('page-title').textContent = p.title;
   }
 
   function hideAllPages() {
     document.getElementById('home-page').style.display = 'none';
     document.getElementById('product-detail').style.display = 'none';
     document.getElementById('infos-page').style.display = 'none';
-    document.getElementById('reseaux-page').style.display = 'none';
     document.getElementById('cart-page').style.display = 'none';
   }
 
@@ -723,7 +647,7 @@
     hideAllPages();
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'none';
-    document.getElementById('header-title').textContent = 'Dino Terps 76';
+    document.getElementById('page-title').textContent = 'The French Cali Farmz';
   };
 
   document.getElementById('add-to-cart-btn').onclick = () => {
@@ -758,7 +682,7 @@
     hideAllPages();
     document.getElementById('cart-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('header-title').textContent = 'Votre Panier';
+    document.getElementById('page-title').textContent = 'Panier';
 
     const itemsDiv = document.getElementById('cart-items');
     itemsDiv.innerHTML = '';
@@ -841,18 +765,9 @@
     hideAllPages();
     document.getElementById('infos-page').style.display = 'block';
     document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('header-title').textContent = 'Infos';
+    document.getElementById('page-title').textContent = 'Infos';
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-infos').classList.add('active');
-  });
-
-  document.getElementById('nav-reseaux').addEventListener('click', () => {
-    hideAllPages();
-    document.getElementById('reseaux-page').style.display = 'block';
-    document.getElementById('btn-back').style.display = 'inline-block';
-    document.getElementById('header-title').textContent = 'Nos réseaux';
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    document.getElementById('nav-reseaux').classList.add('active');
   });
 </script>
 
