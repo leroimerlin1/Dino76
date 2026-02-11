@@ -9,20 +9,22 @@ from telegram import (
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
+    CallbackQueryHandler,
     ContextTypes
 )
 
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
-CHANNEL_USERNAME = "https://t.me/+j7EMkLSIaV83ZmU8"  # ex: @dinoterps76
-MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"  # URL de ta mini app
+CHANNEL_ID = -1003733915057  # ← REMPLACE PAR TON VRAI ID
+CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
+MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"
 
 logging.basicConfig(level=logging.INFO)
 
 
-# Vérifier abonnement
+# Vérification abonnement
 async def check_subscription(user_id, context):
     try:
-        member = await context.bot.get_chat_member(CHANNEL_USERNAME, user_id)
+        member = await context.bot.get_chat_member(CHANNEL_ID, user_id)
         return member.status in ["member", "administrator", "creator"]
     except:
         return False
@@ -34,20 +36,26 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     is_subscribed = await check_subscription(user.id, context)
 
+    # Image envoyée dans TOUS les cas
     if not is_subscribed:
         keyboard = [
-            [InlineKeyboardButton("🔔 Rejoindre le canal", url=f"https://t.me/{CHANNEL_USERNAME.replace('@','')}")],
-            [InlineKeyboardButton("✅ Vérifier", callback_data="check_sub")]
+            [InlineKeyboardButton("🔔 Rejoindre le canal", url=CHANNEL_LINK)],
+            [InlineKeyboardButton("✅ Vérifier l'abonnement", callback_data="check_sub")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await update.message.reply_text(
-            "⚠️ Tu dois rejoindre notre canal pour accéder à la boutique.",
+        await update.message.reply_photo(
+            photo=InputFile("dino.jpg"),
+            caption=(
+                "🦖 DINO TERPS 76\n\n"
+                "🔥 Boutique privée premium\n\n"
+                "⚠️ Pour accéder à la Mini App, tu dois rejoindre notre canal officiel."
+            ),
             reply_markup=reply_markup
         )
         return
 
-    # S'il est abonné → envoyer image + texte + mini app
+    # Si abonné
     keyboard = [
         [InlineKeyboardButton("🛍 Ouvrir la boutique", web_app=WebAppInfo(url=MINI_APP_URL))]
     ]
@@ -55,12 +63,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_photo(
         photo=InputFile("dino.jpg"),
-        caption="🍱 Bienvenue chez DINO TERPS 76\n\n🔥 Accède à notre boutique exclusive ci-dessous 👇",
+        caption=(
+            "🍱 Bienvenue chez DINO TERPS 76\n\n"
+            "🔥 Accès autorisé\n\n"
+            "Clique ci-dessous pour ouvrir la boutique 👇"
+        ),
         reply_markup=reply_markup
     )
 
 
-# Vérification bouton
+# Bouton Vérifier
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -68,9 +80,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     is_subscribed = await check_subscription(query.from_user.id, context)
 
     if not is_subscribed:
-        await query.edit_message_text(
-            "❌ Tu n'es toujours pas abonné au canal."
-        )
+        await query.answer("❌ Tu n'es pas encore abonné.", show_alert=True)
         return
 
     keyboard = [
@@ -80,7 +90,10 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.message.reply_photo(
         photo=InputFile("dino.jpg"),
-        caption="🍱 Accès autorisé !\n\n🔥 Clique ci-dessous pour entrer dans la boutique 👇",
+        caption=(
+            "🍱 Accès confirmé !\n\n"
+            "🔥 Bienvenue dans la boutique exclusive 👇"
+        ),
         reply_markup=reply_markup
     )
 
@@ -89,10 +102,9 @@ def main():
     app = ApplicationBuilder().token(token).build()
 
     app.add_handler(CommandHandler("start", start))
-    from telegram.ext import CallbackQueryHandler
     app.add_handler(CallbackQueryHandler(button_handler, pattern="check_sub"))
 
-    print("Bot lancé...")
+    print("Bot lancé 🚀")
     app.run_polling()
 
 
