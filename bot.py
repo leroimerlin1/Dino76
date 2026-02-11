@@ -14,7 +14,7 @@ from telegram.ext import (
 
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
 CHANNEL_USERNAME = "https://t.me/+j7EMkLSIaV83ZmU8"  # ex: @dinoterps76
-MINI_APP_URL = "https://tonsite.com"  # URL de ta mini app
+MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"  # URL de ta mini app
 
 logging.basicConfig(level=logging.INFO)
 
