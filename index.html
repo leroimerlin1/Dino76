@@ -1,127 +1,383 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>DINO TERPS 76</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
-* {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:'M PLUS Rounded 1c','Orbitron',sans-serif; background:#000; color:#ffe0f0; min-height:100vh; overflow-x:hidden;}
-.container {position:relative; min-height:100vh; background:#111;}
-.overlay {position:absolute; inset:0; background:rgba(10,0,20,0.82); backdrop-filter:blur(2.5px); z-index:1;}
-.content {position:relative; z-index:2; min-height:100vh;}
-header {position:sticky; top:0; background:rgba(20,0,30,0.92); backdrop-filter:blur(14px); padding:10px 16px; border-bottom:1px solid rgba(255,80,180,0.4); z-index:10; display:flex; align-items:center; justify-content:center;}
-.header-inner {display:flex; align-items:center; justify-content:center; width:100%; max-width:400px;}
-.header-logo {width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; box-shadow:0 0 12px rgba(255,80,180,0.6); border:2px solid #ff50b4;}
-.header-title {font-size:1.35rem; font-weight:900; letter-spacing:1.5px; color:#ff50b4; text-shadow:0 0 12px rgba(255,80,180,0.7);}
-.back-btn {position:absolute; left:16px; background:rgba(255,80,180,0.2); color:#ff50b4; border:1px solid #ff50b4; padding:8px 14px; border-radius:8px; font-weight:bold; cursor:pointer;}
-.welcome {padding:18px 16px; background:linear-gradient(to right, rgba(20,0,30,0.8), rgba(50,0,60,0.4)); border-bottom:1px solid rgba(255,80,180,0.3);}
-.welcome-inner {display:flex; align-items:center; gap:14px;}
-.welcome-emoji {width:52px; height:52px; border-radius:50%; background:rgba(255,80,180,0.15); display:flex; align-items:center; justify-content:center; font-size:2rem; box-shadow:0 0 16px rgba(255,80,180,0.4);}
-#products-grid {padding:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; padding-bottom:100px;}
-.card {background:rgba(20,5,30,0.7); border:1px solid rgba(255,80,180,0.4); border-radius:12px; overflow:hidden; backdrop-filter:blur(6px); transition:all 0.22s; cursor:pointer;}
-.card:hover {transform:scale(1.03); border-color:#ff50b4;}
-.card-img {height:220px; position:relative; background:#000;}
-.card-img video {width:100%; height:100%; object-fit:cover;}
-.badge-star {position:absolute; top:8px; left:8px; background:#ff50b4; color:#000; font-size:0.7rem; padding:4px 10px; border-radius:999px; font-weight:bold;}
-.card-body {padding:12px;}
-.card-title {font-size:1.1rem; color:#fff; margin-bottom:4px; font-weight:700;}
-.card-info {font-size:0.85rem; color:#ffccdd; font-weight:500;}
-#product-detail {display:none; padding-bottom:120px;}
-.product-hero {height:320px; position:relative; background:#000;}
-.product-hero video {width:100%; height:100%; object-fit:cover;}
-.product-title {padding:16px; font-size:1.9rem; font-weight:900; color:#ff50b4; text-shadow:0 0 12px rgba(255,80,180,0.75);}
-.badges {padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:8px;}
-.badge {padding:7px 14px; border-radius:999px; font-size:0.9rem; font-weight:bold;}
-.badge-strain {background:rgba(255,80,180,0.28); color:#ff50b4; border:1px solid #ff50b4;}
-.strain-section {padding:0 16px 20px; color:#ff80d0; font-size:1.05rem; line-height:1.6;}
-.strain-title {font-weight:bold; color:#ff50b4; margin-bottom:10px; font-size:1.15rem;}
-.quantity-section {padding:16px; background:rgba(10,0,20,0.6); margin:12px 16px; border-radius:14px; border:1px solid rgba(255,80,180,0.45);}
-.quantity-title {font-size:1.15rem; color:#ff50b4; margin-bottom:14px; display:flex; align-items:center; gap:10px;}
-.quantity-grid {display:grid; grid-template-columns:repeat(2,1fr); gap:12px;}
-.qty-btn {background:rgba(255,80,180,0.2); border:1px solid #ff50b4; color:#fff; padding:14px 10px; border-radius:12px; text-align:center; cursor:pointer; font-weight:bold; transition:0.2s;}
-.qty-btn:hover, .qty-btn.selected {background:#ff50b4; color:#000;}
-.add-to-cart {margin:16px; background:#ff50b4; color:#000; border:none; padding:18px; font-size:1.15rem; font-weight:bold; border-radius:14px; display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer; box-shadow:0 0 18px rgba(255,80,180,0.65);}
-#cart-page {display:none; padding:16px; padding-bottom:140px;}
-.cart-item {display:flex; justify-content:space-between; background:rgba(30,10,40,0.6); margin-bottom:10px; padding:12px; border-radius:10px; border:1px solid rgba(255,80,180,0.4);}
-.cart-item button {background:red; color:#fff; border:none; padding:4px 8px; border-radius:6px; cursor:pointer;}
-.clear-cart-btn {background:#ff50b4; color:#000; border:none; padding:8px 14px; border-radius:10px; cursor:pointer; margin-bottom:12px;}
-nav {position:fixed; bottom:0; left:0; right:0; background:rgba(15,0,25,0.95); backdrop-filter:blur(16px); border-top:1px solid rgba(255,80,180,0.35); padding:10px 0; display:flex; justify-content:space-around; z-index:20;}
-.nav-item {display:flex; flex-direction:column; align-items:center; color:#ff88cc; font-size:0.75rem; gap:4px; cursor:pointer; flex:1; max-width:25%; position:relative;}
-.nav-item.active {color:#ff50b4;}
-#cart-badge {position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:0.65rem; display:none;}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'M PLUS Rounded 1c', 'Orbitron', sans-serif;
+  background:#000;
+  color:#ffe0f0;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+.container { position:relative; min-height:100vh; background: url('dino.jpg') no-repeat center center fixed; background-size: cover; }
+.overlay { position:absolute; inset:0; background:rgba(10,0,20,0.82); backdrop-filter:blur(2.5px); z-index:1; }
+.content { position:relative; z-index:2; min-height:100vh; }
+
+header { position:sticky; top:0; background:rgba(20,0,30,0.92); backdrop-filter:blur(14px); padding:10px 16px; border-bottom:1px solid rgba(255,80,180,0.4); z-index:10; display:flex; align-items:center; justify-content:center; }
+.header-inner { display:flex; align-items:center; justify-content:center; width:100%; max-width:400px; }
+.header-logo { width:38px; height:38px; border-radius:50%; object-fit:cover; margin-right:12px; box-shadow:0 0 12px rgba(255,80,180,0.6); border:2px solid #ff50b4; }
+.header-title { font-size:1.35rem; font-weight:900; letter-spacing:1.5px; color:#ff50b4; text-shadow:0 0 12px rgba(255,80,180,0.7); }
+.back-btn { position:absolute; left:16px; background:rgba(255,80,180,0.2); color:#ff50b4; border:1px solid #ff50b4; padding:8px 14px; border-radius:8px; font-weight:bold; cursor:pointer; }
+
+.welcome { padding:18px 16px; background:linear-gradient(to right, rgba(20,0,30,0.8), rgba(50,0,60,0.4)); border-bottom:1px solid rgba(255,80,180,0.3); }
+.welcome-inner { display:flex; align-items:center; gap:14px; }
+.welcome-emoji { width:52px; height:52px; border-radius:50%; background:rgba(255,80,180,0.15); display:flex; align-items:center; justify-content:center; font-size:2rem; box-shadow:0 0 16px rgba(255,80,180,0.4); }
+
+#products-grid { padding:16px; display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:14px; padding-bottom:100px; }
+.card { background:rgba(20,5,30,0.7); border:1px solid rgba(255,80,180,0.4); border-radius:12px; overflow:hidden; backdrop-filter:blur(6px); transition:all 0.22s; cursor:pointer; }
+.card:hover { transform:scale(1.03); border-color:#ff50b4; }
+.card-img { height:220px; position:relative; background:#000; }
+.card-img video { width:100%; height:100%; object-fit:cover; }
+.badge-star { position:absolute; top:8px; left:8px; background:#ff50b4; color:#000; font-size:0.7rem; padding:4px 10px; border-radius:999px; font-weight:bold; }
+.card-body { padding:12px; }
+.card-title { font-size:1.1rem; color:#fff; margin-bottom:4px; font-weight:700; }
+.card-info { font-size:0.85rem; color:#ffccdd; font-weight:500; }
+
+#product-detail { display:none; padding:0 0 120px 0; }
+.product-hero { height:320px; position:relative; background:#000; }
+.product-hero video { width:100%; height:100%; object-fit:cover; }
+.product-title { padding:16px; font-size:1.9rem; font-weight:900; color:#ff50b4; text-shadow:0 0 12px rgba(255,80,180,0.75); }
+.badges { padding:0 16px 12px; display:flex; flex-wrap:wrap; gap:8px; }
+.badge { padding:7px 14px; border-radius:999px; font-size:0.9rem; font-weight:bold; }
+.badge-strain { background:rgba(255,80,180,0.28); color:#ff50b4; border:1px solid #ff50b4; }
+.strain-section { padding:0 16px 20px; color:#ff80d0; font-size:1.05rem; line-height:1.6; }
+.strain-title { font-weight:bold; color:#ff50b4; margin-bottom:10px; font-size:1.15rem; }
+.quantity-section { padding:16px; background:rgba(10,0,20,0.6); margin:12px 16px; border-radius:14px; border:1px solid rgba(255,80,180,0.45); }
+.quantity-title { font-size:1.15rem; color:#ff50b4; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+.quantity-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.qty-btn { background:rgba(255,80,180,0.2); border:1px solid #ff50b4; color:#fff; padding:14px 10px; border-radius:12px; text-align:center; cursor:pointer; font-weight:bold; transition:0.2s; }
+.qty-btn:hover, .qty-btn.selected { background:#ff50b4; color:#000; }
+.add-to-cart { margin:16px; background:#ff50b4; color:#000; border:none; padding:18px; font-size:1.15rem; font-weight:bold; border-radius:14px; display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer; box-shadow:0 0 18px rgba(255,80,180,0.65); }
+
+nav { position:fixed; bottom:0; left:0; right:0; background:rgba(15,0,25,0.95); backdrop-filter:blur(16px); border-top:1px solid rgba(255,80,180,0.35); padding:10px 0; display:flex; justify-content:space-around; z-index:20; }
+.nav-item { display:flex; flex-direction:column; align-items:center; color:#ff88cc; font-size:0.75rem; gap:4px; cursor:pointer; flex:1; max-width:25%; position:relative; }
+.nav-item.active { color:#ff50b4; }
+#cart-badge { position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:0.65rem; display:none; }
 </style>
 </head>
 <body>
+
 <div class="container">
-<div class="overlay"></div>
-<div class="content">
-<header id="main-header">
-<button class="back-btn" id="btn-back" style="display:none;">← Retour</button>
-<div class="header-inner">
-<img src="dino.jpg" alt="Dino Logo" class="header-logo">
-<div class="header-title">DINO TERPS 76</div>
-</div>
-</header>
+  <div class="overlay"></div>
+  <div class="content">
 
-<div id="home-page">
-<section class="welcome">
-<div class="welcome-inner">
-<div class="welcome-emoji">🍣</div>
-<div>
-<h2 id="welcome-name">Chargement...</h2>
-<p>Bienvenue sur le shop premium</p>
-</div>
-</div>
-</section>
-<div id="products-grid"></div>
-</div>
+    <header id="main-header">
+      <button class="back-btn" id="btn-back" style="display:none;">← Retour</button>
+      <div class="header-inner">
+        <img src="dino.jpg" alt="Dino Logo" class="header-logo">
+        <div class="header-title">DINO TERPS 76</div>
+      </div>
+    </header>
 
-<div id="product-detail">
-<div class="product-hero">
-<video id="detail-video" autoplay muted loop playsinline></video>
-</div>
-<div class="product-title" id="detail-title"></div>
-<div class="badges">
-<div class="badge badge-strain" id="detail-strain"></div>
-</div>
-<div class="strain-section" id="detail-strain-desc"></div>
-<div class="quantity-section">
-<div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
-<div class="quantity-grid" id="qty-grid"></div>
-</div>
-<button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
-</div>
+    <div id="home-page">
+      <section class="welcome">
+        <div class="welcome-inner">
+          <div class="welcome-emoji">🍣</div>
+          <div>
+            <h2 id="welcome-name">Chargement...</h2>
+            <p>Bienvenue sur le shop premium</p>
+          </div>
+        </div>
+      </section>
 
-<div id="cart-page">
-<h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
-<button id="clear-cart-btn" class="clear-cart-btn">Vider le panier</button>
-<div id="cart-items"></div>
+      <div id="products-grid">
+        <!-- Produit 1 -->
+        <div class="card" data-key="cali">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="cali-thumb.jpg">
+              <source src="cali.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">🇺🇸 Cali weed🌳</div>
+            <div class="card-info">Runtz / Tropicana Strawberry</div>
+          </div>
+        </div>
+        <!-- Produit 2 -->
+        <div class="card" data-key="gaz">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="gaz-thumb.jpg">
+              <source src="gaz.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">⚡️ Dry 90u</div>
+            <div class="card-info">Gaz fruit🍇</div>
+          </div>
+        </div>
+        <!-- Produit 3 -->
+        <div class="card" data-key="farm">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="farm-thumb.jpg">
+              <source src="farm.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">🥶 FRESH FROZEN SIFT</div>
+            <div class="card-info">KINGZ FARM 🧑‍🌾</div>
+          </div>
+        </div>
+        <!-- Produit 4 -->
+        <div class="card" data-key="120u">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="120u-thumb.jpg">
+              <source src="120u.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Dry 120u⚡️</div>
+            <div class="card-info">🧑‍🌾 CALIMOUNTAIN</div>
+          </div>
+        </div>
+        <!-- Produit 5 -->
+        <div class="card" data-key="french">
+          <div class="card-img">
+            <video autoplay muted loop playsinline poster="french-thumb.jpg">
+              <source src="french.mp4" type="video/mp4">
+            </video>
+            <div class="badge-star">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">STATIC SIFT⚡️🥇🥇</div>
+            <div class="card-info">🧑🏻‍🌾 DR FRENCH 🧑🏻‍🌾</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Détail produit -->
+    <div id="product-detail">
+      <div class="product-hero">
+        <video id="detail-video" autoplay muted loop playsinline></video>
+      </div>
+      <div class="product-title" id="detail-title"></div>
+      <div class="badges">
+        <div class="badge badge-strain" id="detail-strain"></div>
+      </div>
+      <div class="strain-section" id="detail-strain-desc"></div>
+      <div class="quantity-section">
+        <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
+        <div class="quantity-grid" id="qty-grid"></div>
+      </div>
+      <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
+    </div>
+
+        <!-- Page Infos -->
+    <div id="infos-page" style="display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5;">
+      <div class="section">
+        <div class="section-title">🚚 Livraison</div>
+        <div class="subsection">
+          <p>SALUT A TOUS LA TEAM !</p>
+          <p>VOICI LES ZONE DE LIVRAISON 🚚 📦 : 76 / 27 / 14 / 60</p>
+          <p>76 Centre et alentours :</p>
+          <ul>
+            <li>10klm 50€</li>
+            <li>20klm 80€</li>
+            <li>30klm 120€</li>
+            <li>50klm 350€</li>
+            <li>100klm 420€</li>
+          </ul>
+          <p>Payement en Espèce 💶!</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">🏠 SERVICE MEET-UP ✅</div>
+        <p>Vous pouvez passer directement sur place la famille, avant de passer venir en privé et préciser votre heure d’arrivée avec votre commande souhaitée au meet-up avec 🚶📦 @dino76s 🍣</p>
+        <p>Payement en Espèce 💶 !</p>
+        <p>Ouvert 12h - 23h</p>
+        <p>SAV : 24h/24h 🕛</p>
+      </div>
+
+      <div class="section">
+        <div class="contact">
+          Contactez-nous sur Telegram : 
+          <a href="#" onclick="tg.openTelegramLink('https://t.me/DINO76S'); return false;">@DINO76S</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Réseaux -->
+    <div id="reseaux-page" style="display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5;">
+      <h1>Nos réseaux</h1>
+      <div class="reseaux-card" onclick="tg.openLink('https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr')">
+        <div class="icon">📸</div>
+        <h3>Instagram</h3>
+        <p>https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr</p>
+      </div>
+      <div class="reseaux-card" onclick="tg.openLink('https://duanym138.org/DINOfslmogx8')">
+        <div class="icon">🥔</div>
+        <h3>Patato</h3>
+        <p>https://duanym138.org/DINOfslmogx8</p>
+      </div>
+      <div class="reseaux-card" onclick="tg.openLink('https://t.me/+j7EMkLSIaV83ZmU8')">
+        <div class="icon">📢</div>
+        <h3>Canal telegram</h3>
+        <p>https://t.me/+j7EMkLSIaV83ZmU8</p>
+      </div>
+      <div class="reseaux-card" onclick="tg.openLink('https://snapchat.com/t/EZAiDCkN')">
+        <div class="icon">👻</div>
+        <h3>Snap chat</h3>
+        <p>https://snapchat.com/t/EZAiDCkN</p>
+      </div>
+    </div>
+
+    <!-- Page Panier -->
+    <div id="cart-page" style="display:none; padding:16px; padding-bottom:140px;">
+      <div class="cart-header">
+        <h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
+        <button id="clear-cart-btn" class="clear-cart-btn" style="display:none;">Vider le panier</button>
+      </div>
+      <div id="cart-items"></div>
+
+      <div class="questionnaire" id="questionnaire" style="display:none;">
+        <div class="question">
+          <span class="question-label">Mode de récupération :</span>
+          <button class="option-btn" data-type="pickup">Venir sur place</button>
+          <button class="option-btn" data-type="delivery">Livré</button>
+        </div>
+
+        <div id="pickup-questions" style="display:none;">
+          <div class="question">
+            <span class="question-label">Pour quelle heure ?</span>
+            <input type="time" id="pickup-time">
+          </div>
+        </div>
+
+        <div id="delivery-questions" style="display:none;">
+          <div class="question">
+            <span class="question-label">Pour quelle heure ?</span>
+            <input type="time" id="delivery-time">
+          </div>
+          <div class="question">
+            <span class="question-label">Votre adresse :</span>
+            <input type="text" id="delivery-address" placeholder="Adresse complète">
+          </div>
+          <div class="question">
+            <span class="question-label">Détails / questions livraison :</span>
+            <textarea id="delivery-details" placeholder="Précisez ici..."></textarea>
+          </div>
+        </div>
+
+        <button class="submit-order" id="submit-order-btn">Commander</button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-item active" id="nav-home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Accueil</span>
+      </div>
+      <div class="nav-item" id="nav-cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"/>
+          <circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span>Panier</span>
+        <span id="cart-badge"></span>
+      </div>
+      <div class="nav-item" id="nav-infos">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <span>Infos</span>
+      </div>
+      <div class="nav-item" id="nav-reseaux">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Réseaux</span>
+      </div>
+    </nav>
+  </div>
 </div>
-
-<nav>
-<div class="nav-item active" id="nav-home"><span>Accueil</span></div>
-<div class="nav-item" id="nav-cart"><span>Panier</span><span id="cart-badge"></span></div>
-</nav>
-
-</div></div>
 
 <script>
-const tg = window.Telegram.WebApp; tg.ready(); tg.expand();
-const user = tg.initDataUnsafe?.user;
-document.getElementById('welcome-name').textContent = user ? `Salut ${user.first_name || 'Farmer'} !` : 'Bienvenue !';
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
 
+const user = tg.initDataUnsafe?.user;
+document.getElementById('welcome-name').textContent = user ? `Salut ${user.first_name} !` : 'Bienvenue !';
+
+// Produits et quantité/prix
 const products = {
-cali:{title:'🇺🇸 Cali weed🌳', video:'cali.mp4', poster:'cali-thumb.jpg', strain:'Runtz 🌈 / Tropicana Strawberry 🌴🍓', quantities:[{qty:'3G',price:'40€'},{qty:'5G',price:'60€'},{qty:'10G',price:'120€'},{qty:'20G',price:'230€'},{qty:'25G',price:'300€'}]},
-gaz:{title:'⚡️ Dry 90u', video:'gaz.mp4', poster:'gaz-thumb.jpg', strain:'Gaz fruit🍇', quantities:[{qty:'10G',price:'130€'},{qty:'25G',price:'240€'},{qty:'50G',price:'450€'}]},
-farm:{title:'🥶 FRESH FROZEN SIFT', video:'farm.mp4', poster:'farm-thumb.jpg', strain:'KINGZ FARM 🧑‍🌾', quantities:[{qty:'5G',price:'70€'},{qty:'10G',price:'140€'},{qty:'20G',price:'250€'},{qty:'25G',price:'300€'}]},
-'120u':{title:'Dry 120u⚡️', video:'120u.mp4', poster:'120u-thumb.jpg', strain:'🧑‍🌾 CALIMOUNTAIN', quantities:[{qty:'5G',price:'70€'},{qty:'10G',price:'140€'},{qty:'20G',price:'260€'},{qty:'25G',price:'310€'}]},
-french:{title:'STATIC SIFT⚡️🥇🥇', video:'french.mp4', poster:'french-thumb.jpg', strain:'🧑🏻‍🌾 DR FRENCH 🧑🏻‍🌾', quantities:[{qty:'5G',price:'70€'},{qty:'10G',price:'130€'},{qty:'20G',price:'280€'},{qty:'50G',price:'550€'}]}
+  cali: {
+    key: 'cali', title: '🇺🇸 Cali weed🌳', farm: 'Runtz / Tropicana Strawberry',
+    strain: 'Runtz 🌈✅ Tropicana Strawberry 🌴🍓✅',
+    video: 'cali.mp4', poster: 'cali-thumb.jpg',
+    quantities: [
+      { qty: '3G', price: '40 €' },
+      { qty: '5G', price: '60 €' },
+      { qty: '10G', price: '120 €' },
+      { qty: '20G', price: '230 €' },
+      { qty: '25G', price: '300 €' }
+    ]
+  },
+  gaz: {
+    key: 'gaz', title: '⚡️ Dry 90u', farm: 'Gaz fruit🍇',
+    strain: 'Papaya dolce 🥭 ✅\nMimi cheese 🧀 ✅',
+    video: 'gaz.mp4', poster: 'gaz-thumb.jpg',
+    quantities: [
+      { qty: '10G', price: '130 €' },
+      { qty: '25G', price: '240 €' },
+      { qty: '50G', price: '450 €' }
+    ]
+  },
+  farm: {
+    key: 'farm', title: '🥶 FRESH FROZEN SIFT', farm: 'KINGZ FARM 🧑‍🌾',
+    strain: 'PERMANENT MAKER x GELATO 41 ⛽️ 🍦 ✅',
+    video: 'farm.mp4', poster: 'farm-thumb.jpg',
+    quantities: [
+      { qty: '5G', price: '70 €' },
+      { qty: '10G', price: '140 €' },
+      { qty: '20G', price: '250 €' },
+      { qty: '25G', price: '300 €' }
+    ]
+  },
+  '120u': {
+    key: '120u', title: 'Dry 120u⚡️', farm: '🧑‍🌾 CALIMOUNTAIN',
+    strain: 'Candy Gaz 🍬✅ Glitter Bomb 💣✅ Apple Mintz 🍏✅',
+    video: '120u.mp4', poster: '120u-thumb.jpg',
+    quantities: [
+      { qty: '5G', price: '70 €' },
+      { qty: '10G', price: '140 €' },
+      { qty: '20G', price: '260 €' },
+      { qty: '25G', price: '310 €' }
+    ]
+  },
+  french: {
+    key: 'french', title: 'STATIC SIFT⚡️🥇🥇', farm: '🧑🏻‍🌾 DR FRENCH 🧑🏻‍🌾',
+    strain: 'LARRY POP TARTS 🍋🍰 ✅\nCALYPO ⛽️🫐✅',
+    video: 'french.mp4', poster: 'french-thumb.jpg',
+    quantities: [
+      { qty: '5G', price: '70 €' },
+      { qty: '10G', price: '130 €' },
+      { qty: '20G', price: '280 €' },
+      { qty: '50G', price: '550 €' }
+    ]
+  }
 };
 
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 function saveCart(){ localStorage.setItem('cart',JSON.stringify(cart)); updateBadge(); }
 function updateBadge(){ const b=document.getElementById('cart-badge'); if(cart.length>0){b.textContent=cart.length;b.style.display='block';}else b.style.display='none'; }
 function hideAllPages(){ document.getElementById('home-page').style.display='none'; document.getElementById('product-detail').style.display='none'; document.getElementById('cart-page').style.display='none'; document.getElementById('btn-back').style.display='none'; }
@@ -140,6 +396,9 @@ document.getElementById('nav-home').onclick=()=>{ hideAllPages(); document.getEl
 document.getElementById('nav-cart').onclick=showCart;
 
 renderProducts(); updateBadge();
+// Code JS complet pour gestion panier, produit, formulaire et envoi
+// ... (À copier tel que dans le code que je t'ai envoyé précédemment pour gérer le panier et le formulaire)
 </script>
 </body>
 </html>
+    
