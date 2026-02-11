@@ -140,19 +140,11 @@
     .badge-strain { background:rgba(255,80,180,0.28); color:#ff50b4; border:1px solid #ff50b4; }
     .strain-section { padding:0 16px 20px; color:#ff80d0; font-size:1.05rem; line-height:1.6; }
     .strain-title { font-weight:bold; color:#ff50b4; margin-bottom:10px; font-size:1.15rem; }
-    .quantity-section { padding:16px; background:rgba(10,0,20,0.6); margin:12px 16px; border-radius:14px; border:1px solid rgba(255,80,180,0.45); }
-    .quantity-title { font-size:1.15rem; color:#ff50b4; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
-    .quantity-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-    .qty-btn {
-      background:rgba(255,80,180,0.2); border:1px solid #ff50b4; color:#fff;
-      padding:14px 10px; border-radius:12px; text-align:center; cursor:pointer; font-weight:bold; transition:0.2s;
-    }
-    .qty-btn:hover, .qty-btn.selected { background:#ff50b4; color:#000; }
 
     .contact-telegram {
       margin:16px;
       background:#0088cc;
-      color:#ffffff;
+      color:white;
       border:none;
       padding:18px;
       font-size:1.15rem;
@@ -244,9 +236,6 @@
       text-decoration:none;
       cursor:pointer;
     }
-    #infos-page .contact a:hover {
-      text-decoration:underline;
-    }
 
     #reseaux-page { display:none; padding:16px; padding-bottom:140px; color:#ffe0f0; font-size:1.05rem; line-height:1.5; }
     #reseaux-page h1 { color:#ff50b4; font-size:1.8rem; text-align:center; margin:20px 0 30px; text-shadow:0 0 10px rgba(255,80,180,0.8); }
@@ -263,85 +252,6 @@
     .reseaux-card:hover { transform:scale(1.02); border-color:#ff50b4; box-shadow:0 0 15px rgba(255,80,180,0.4); }
     .reseaux-card .icon { font-size:2.5rem; margin-bottom:10px; }
     .reseaux-card h3 { color:#ff80d0; margin:8px 0; font-size:1.3rem; }
-    .reseaux-card p { display: none; } /* ← on cache les URLs */
-
-    #cart-page { display:none; padding:16px; padding-bottom:140px; }
-    .cart-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:16px;
-    }
-    .cart-item {
-      background:rgba(20,5,30,0.7);
-      border:1px solid rgba(255,80,180,0.4);
-      border-radius:10px;
-      padding:12px;
-      margin-bottom:12px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-    .cart-item-name { font-size:1rem; color:#fff; }
-    .cart-item-qty { color:#ff50b4; font-weight:bold; }
-    .delete-item {
-      background:#ff4444;
-      color:white;
-      border:none;
-      padding:4px 8px;
-      border-radius:4px;
-      font-weight:bold;
-      cursor:pointer;
-      margin-left:10px;
-    }
-    .clear-cart-btn {
-      background:#ff4444;
-      color:white;
-      border:none;
-      padding:8px 16px;
-      border-radius:8px;
-      font-weight:bold;
-      cursor:pointer;
-    }
-    .questionnaire { margin-top:24px; }
-    .question { margin-bottom:20px; }
-    .question-label { font-size:1.1rem; color:#ff50b4; margin-bottom:10px; display:block; }
-    .option-btn {
-      background:rgba(255,80,180,0.18);
-      border:1px solid #ff50b4;
-      color:#fff;
-      padding:12px;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:bold;
-      width:100%;
-      margin-bottom:8px;
-      text-align:center;
-    }
-    .option-btn.selected { background:#ff50b4; color:#000; }
-    input, textarea {
-      background:rgba(10,0,20,0.6);
-      border:1px solid #ff50b4;
-      color:#fff;
-      padding:12px;
-      border-radius:10px;
-      width:100%;
-      margin-bottom:12px;
-      font-family:inherit;
-    }
-    .submit-order {
-      background:#ff50b4;
-      color:#000;
-      border:none;
-      padding:18px;
-      font-size:1.15rem;
-      font-weight:bold;
-      border-radius:14px;
-      cursor:pointer;
-      width:100%;
-      box-shadow:0 0 18px rgba(255,80,180,0.65);
-      margin-top:16px;
-    }
 
     nav {
       position:fixed;
@@ -364,21 +274,10 @@
       gap:4px;
       cursor:pointer;
       flex:1;
-      max-width:25%;
+      max-width:33.3%;
       position:relative;
     }
     .nav-item.active { color:#ff50b4; }
-    #cart-badge {
-      position:absolute;
-      top:-5px;
-      right:-5px;
-      background:red;
-      color:white;
-      border-radius:50%;
-      padding:2px 6px;
-      font-size:0.65rem;
-      display:none;
-    }
   </style>
 </head>
 <body>
@@ -559,45 +458,6 @@
       </div>
     </div>
 
-    <div id="cart-page" style="display:none;">
-      <div class="cart-header">
-        <h2 style="font-size:1.4rem; color:#ff50b4;">Votre Panier</h2>
-        <button id="clear-cart-btn" class="clear-cart-btn" style="display:none;">Vider le panier</button>
-      </div>
-      <div id="cart-items"></div>
-      <div class="questionnaire" id="questionnaire" style="display:none;">
-        <div class="question">
-          <span class="question-label">Venir sur place ou Livré ?</span>
-          <button class="option-btn" data-type="pickup">Venir sur place</button>
-          <button class="option-btn" data-type="delivery">Livré</button>
-        </div>
-
-        <div id="pickup-questions" style="display:none;">
-          <div class="question">
-            <span class="question-label">Pour quelle heure ?</span>
-            <input type="time" id="pickup-time">
-          </div>
-        </div>
-
-        <div id="delivery-questions" style="display:none;">
-          <div class="question">
-            <span class="question-label">Pour quelle heure ?</span>
-            <input type="time" id="delivery-time">
-          </div>
-          <div class="question">
-            <span class="question-label">Votre adresse :</span>
-            <input type="text" id="delivery-address" placeholder="Adresse complète">
-          </div>
-          <div class="question">
-            <span class="question-label">Détails / questions livraison :</span>
-            <textarea id="delivery-details" placeholder="Précisez ici..."></textarea>
-          </div>
-        </div>
-
-        <button class="submit-order" id="submit-order-btn">Commander</button>
-      </div>
-    </div>
-
     <nav>
       <div class="nav-item active" id="nav-home">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -605,15 +465,6 @@
           <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
         <span>Accueil</span>
-      </div>
-      <div class="nav-item" id="nav-cart">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="9" cy="21" r="1"/>
-          <circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        <span>Panier</span>
-        <span id="cart-badge"></span>
       </div>
       <div class="nav-item" id="nav-infos">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -650,7 +501,6 @@
     cali: {
       key: 'cali',
       title: '🇺🇸 Cali weed🌳',
-      farm: 'Runtz / Tropicana Strawberry',
       strain: 'Runtz 🌈✅ Tropicana Strawberry 🌴🍓✅',
       video: 'cali.mp4',
       poster: 'cali-thumb.jpg',
@@ -665,7 +515,6 @@
     gaz: {
       key: 'gaz',
       title: '⚡️ Dry 90u',
-      farm: 'Gaz fruit🍇',
       strain: 'Papaya Dolce 🥭✅ Mimi Cheese 🧀✅',
       video: 'gaz.mp4',
       poster: 'gaz-thumb.jpg',
@@ -678,7 +527,6 @@
     farm: {
       key: 'farm',
       title: '🥶 FRESH FROZEN SIFT',
-      farm: 'KINGZ FARM 🧑‍🌾',
       strain: 'PERMANENT MAKER x GELATO 41 ⛽️🍦✅',
       video: 'farm.mp4',
       poster: 'farm-thumb.jpg',
@@ -692,7 +540,6 @@
     '120u': {
       key: '120u',
       title: 'Dry 120u⚡️',
-      farm: '🧑‍🌾 CALIMOUNTAIN',
       strain: 'Candy Gaz 🍬✅ Glitter Bomb 💣✅ Apple Mintz 🍏✅',
       video: '120u.mp4',
       poster: '120u-thumb.jpg',
@@ -706,7 +553,6 @@
     french: {
       key: 'french',
       title: 'STATIC SIFT⚡️🥇🥇',
-      farm: '🧑🏻‍🌾 DR FRENCH 🧑🏻‍🌾',
       strain: 'LARRY POP TARTS 🍋🍰 ✅ - CALYPO ⛽️🫐✅',
       video: 'french.mp4',
       poster: 'french-thumb.jpg',
@@ -718,8 +564,6 @@
       ]
     }
   };
-
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
   function openProductDetail(key) {
     const p = products[key];
@@ -757,7 +601,6 @@
     document.getElementById('product-detail').style.display = 'none';
     document.getElementById('infos-page').style.display = 'none';
     document.getElementById('reseaux-page').style.display = 'none';
-    document.getElementById('cart-page').style.display = 'none';
   }
 
   document.querySelectorAll('#products-grid .card').forEach(card => {
@@ -770,12 +613,11 @@
     document.getElementById('btn-back').style.display = 'none';
   };
 
-  // NOUVEAU BOUTON CONTACT TELEGRAM
   document.getElementById('contact-telegram-btn').onclick = () => {
     const selected = document.querySelector('.qty-btn.selected');
     const title = document.getElementById('detail-title').textContent.trim();
 
-    let message = `Salut ! Je suis intéressé par : ${title}`;
+    let message = `Salut ! Je suis intéressé par ${title}`;
     if (selected) {
       const qtyText = selected.innerText.replace(/\n/g, ' ');
       message += ` – ${qtyText}`;
@@ -785,114 +627,12 @@
     tg.openTelegramLink(`https://t.me/DINO76S?text=${encoded}`);
   };
 
-  function updateBadge() {
-    const badge = document.getElementById('cart-badge');
-    if (cart.length > 0) {
-      badge.textContent = cart.length;
-      badge.style.display = 'block';
-    } else {
-      badge.style.display = 'none';
-    }
-  }
-
-  document.getElementById('add-to-cart-btn')?.addEventListener('click', () => { /* inutilisé maintenant */ });
-
-  function showCart() {
-    hideAllPages();
-    document.getElementById('cart-page').style.display = 'block';
-    document.getElementById('btn-back').style.display = 'inline-block';
-
-    const itemsDiv = document.getElementById('cart-items');
-    itemsDiv.innerHTML = '';
-
-    const clearBtn = document.getElementById('clear-cart-btn');
-
-    if (cart.length === 0) {
-      itemsDiv.innerHTML = '<p style="text-align:center; color:#888; padding:40px 0;">Votre panier est vide</p>';
-      document.getElementById('questionnaire').style.display = 'none';
-      clearBtn.style.display = 'none';
-    } else {
-      cart.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `<span class="cart-item-name">${item.title}</span><span class="cart-item-qty">${item.qty} - ${item.price}</span><button class="delete-item" onclick="removeItem(${index})">X</button>`;
-        itemsDiv.appendChild(div);
-      });
-      document.getElementById('questionnaire').style.display = 'block';
-      clearBtn.style.display = 'inline-block';
-    }
-  }
-
-  window.removeItem = function(index) {
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    showCart();
-    updateBadge();
-  };
-
-  document.getElementById('clear-cart-btn').onclick = () => {
-    if (confirm('Voulez-vous vraiment vider tout le panier ?')) {
-      cart = [];
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert('Panier vidé !');
-      showCart();
-      updateBadge();
-    }
-  };
-
-  let deliveryType = '';
-  document.querySelectorAll('.option-btn').forEach(btn => {
-    btn.onclick = () => {
-      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      deliveryType = btn.dataset.type;
-
-      document.getElementById('pickup-questions').style.display = deliveryType === 'pickup' ? 'block' : 'none';
-      document.getElementById('delivery-questions').style.display = deliveryType === 'delivery' ? 'block' : 'none';
-    };
-  });
-
-  document.getElementById('submit-order-btn').onclick = () => {
-    if (!deliveryType) return alert('Choisissez un mode de récupération !');
-
-    let message = 'NOUVELLE COMMANDE DINO TERPS 76\n\n';
-    cart.forEach(item => {
-      message += `• ${item.title} : ${item.qty} (${item.price})\n`;
-    });
-
-    if (deliveryType === 'pickup') {
-      const time = document.getElementById('pickup-time').value;
-      if (!time) return alert('Indiquez une heure !');
-      message += `\nMode : Venir sur place (Meet-up)\nHeure : ${time}`;
-    } else {
-      const time = document.getElementById('delivery-time').value;
-      const addr = document.getElementById('delivery-address').value;
-      const details = document.getElementById('delivery-details').value;
-      if (!time || !addr) return alert('Heure et adresse obligatoires !');
-      message += `\nMode : Livraison\nHeure : ${time}\nAdresse : ${addr}\nDétails : ${details || 'aucun'}`;
-    }
-
-    const encoded = encodeURIComponent(message);
-    tg.openTelegramLink(`https://t.me/DINO76S?text=${encoded}`);
-
-    cart = [];
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Commande envoyée ! Panier vidé.');
-    updateBadge();
-    document.getElementById('nav-home').click();
-  };
-
+  // Navigation
   document.getElementById('nav-home').addEventListener('click', () => {
     hideAllPages();
     document.getElementById('home-page').style.display = 'block';
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-home').classList.add('active');
-  });
-
-  document.getElementById('nav-cart').addEventListener('click', () => {
-    showCart();
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    document.getElementById('nav-cart').classList.add('active');
   });
 
   document.getElementById('nav-infos').addEventListener('click', () => {
@@ -910,9 +650,6 @@
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.getElementById('nav-reseaux').classList.add('active');
   });
-
-  // Initialisation
-  updateBadge();
 </script>
 
 </body>
