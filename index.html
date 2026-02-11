@@ -2,15 +2,21 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>DINO TERPS 76</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
 
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'M PLUS Rounded 1c', 'Orbitron', sans-serif;
+      font-family: 'M PLUS Rounded 1c', Orbitron, sans-serif;
       background: #0f1117;
       color: #e2e8f0;
       min-height: 100vh;
@@ -20,8 +26,7 @@
     .container {
       position: relative;
       min-height: 100vh;
-      background: url('dino.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background: url('dino.jpg') center/cover no-repeat fixed;
     }
 
     .overlay {
@@ -55,8 +60,8 @@
     .header-inner {
       display: flex;
       align-items: center;
-      width: 100%;
       max-width: 420px;
+      width: 100%;
     }
 
     .header-logo {
@@ -167,8 +172,14 @@
     .card-title {
       font-size: 1.15rem;
       color: #f1f5f9;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
       font-weight: 700;
+    }
+
+    .card-farm {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-bottom: 8px;
     }
 
     .card-info {
@@ -199,6 +210,12 @@
       font-weight: 900;
       color: #60a5fa;
       text-shadow: 0 0 12px rgba(96, 165, 250, 0.6);
+    }
+
+    .product-farm {
+      padding: 0 16px 12px;
+      font-size: 1.15rem;
+      color: #94a3b8;
     }
 
     .badges {
@@ -512,7 +529,7 @@
       </div>
     </header>
 
-    <!-- Accueil -->
+    <!-- Page d'accueil -->
     <div id="home-page">
       <section class="welcome">
         <div class="welcome-inner">
@@ -523,15 +540,17 @@
           </div>
         </div>
       </section>
+
       <div id="products-grid"></div>
     </div>
 
-    <!-- Détail produit -->
+    <!-- Page détail produit -->
     <div id="product-detail">
       <div class="product-hero">
         <video id="detail-video" autoplay muted loop playsinline></video>
       </div>
       <div class="product-title" id="detail-title"></div>
+      <div class="product-farm" id="detail-farm"></div>
       <div class="badges">
         <div class="badge badge-strain" id="detail-strain"></div>
       </div>
@@ -543,13 +562,13 @@
       <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
-    <!-- Panier -->
+    <!-- Page Panier -->
     <div id="cart-page">
       <h2 style="color:#60a5fa; text-align:center; margin:20px 0;">Votre Panier</h2>
       <div id="cart-items"></div>
       <div id="cart-total" class="cart-total"></div>
 
-      <div class="questionnaire" id="questionnaire" style="display:none;">
+      <div class="questionnaire" id="questionnaire">
         <div class="question">
           <span class="question-label">Mode de récupération :</span>
           <button class="option-btn" data-type="pickup">Venir sur place</button>
@@ -582,7 +601,7 @@
       </div>
     </div>
 
-    <!-- Infos -->
+    <!-- Page Infos -->
     <div id="infos-page">
       <div class="section">
         <div class="section-title">🚚 Livraison</div>
@@ -590,11 +609,11 @@
         <p>VOICI LES ZONE DE LIVRAISON 🚚 📦 : 76 / 27 / 14 / 60</p>
         <p><strong>76 Centre et alentours :</strong></p>
         <ul>
-          <li>10klm → 50€</li>
-          <li>20klm → 80€</li>
-          <li>30klm → 120€</li>
-          <li>50klm → 350€</li>
-          <li>100klm → 420€</li>
+          <li>10klm 50€</li>
+          <li>20klm 80€</li>
+          <li>30klm 120€</li>
+          <li>50klm 350€</li>
+          <li>100klm 420€</li>
         </ul>
         <p><strong>Payement en Espèce 💶 !</strong></p>
       </div>
@@ -608,7 +627,7 @@
       </div>
     </div>
 
-    <!-- Réseaux -->
+    <!-- Page Réseaux -->
     <div id="reseaux-page">
       <h2 style="text-align:center; color:#60a5fa; margin:30px 0 40px; font-size:1.8rem;">Nos réseaux</h2>
       <div class="reseaux-list">
@@ -619,6 +638,7 @@
       </div>
     </div>
 
+    <!-- Navigation -->
     <nav>
       <div class="nav-item active" id="nav-home">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -656,229 +676,301 @@
 </div>
 
 <script>
-const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
-tg.disableVerticalSwipes();
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+  tg.expand();
+  tg.disableVerticalSwipes();
 
-const user = tg.initDataUnsafe?.user || {};
-document.getElementById('welcome-name').textContent = user.first_name ? `Salut ${user.first_name} !` : 'Bienvenue !';
+  const user = tg.initDataUnsafe?.user || {};
+  document.getElementById('welcome-name').textContent = user.first_name ? `Salut ${user.first_name} !` : 'Bienvenue !';
 
-// Produits (inchangés)
-const products = {
-  cali: { key:'cali', title:'🇺🇸 Cali weed🌳', strain:'Runtz 🌈✅ Tropicana Strawberry 🌴🍓✅', video:'cali.mp4', poster:'cali-thumb.jpg',
-    quantities:[{qty:'3G',price:'40 €'},{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'300 €'}] },
-  gaz: { key:'gaz', title:'⚡️ Dry 90u', strain:'Papaya dolce 🥭 ✅\nMimi cheese 🧀 ✅', video:'gaz.mp4', poster:'gaz-thumb.jpg',
-    quantities:[{qty:'10G',price:'130 €'},{qty:'25G',price:'240 €'},{qty:'50G',price:'450 €'}] },
-  farm: { key:'farm', title:'🥶 FRESH FROZEN SIFT', strain:'PERMANENT MAKER x GELATO 41 ⛽️ 🍦 ✅', video:'farm.mp4', poster:'farm-thumb.jpg',
-    quantities:[{qty:'5G',price:'70 €'},{qty:'10G',price:'140 €'},{qty:'20G',price:'250 €'},{qty:'25G',price:'300 €'}] },
-  '120u': { key:'120u', title:'Dry 120u⚡️', strain:'Candy Gaz 🍬✅ Glitter Bomb 💣✅ Apple Mintz 🍏✅', video:'120u.mp4', poster:'120u-thumb.jpg',
-    quantities:[{qty:'5G',price:'70 €'},{qty:'10G',price:'140 €'},{qty:'20G',price:'260 €'},{qty:'25G',price:'310 €'}] },
-  french: { key:'french', title:'STATIC SIFT⚡️🥇🥇', strain:'LARRY POP TARTS 🍋🍰 ✅\nCALYPO ⛽️🫐✅', video:'french.mp4', poster:'french-thumb.jpg',
-    quantities:[{qty:'5G',price:'80 €'},{qty:'10G',price:'150 €'},{qty:'20G',price:'280 €'},{qty:'25G',price:'330 €'}] }
-};
-
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-function saveCart() {
-  localStorage.setItem('cart', JSON.stringify(cart));
-  updateBadge();
-}
-
-function updateBadge() {
-  const badge = document.getElementById('cart-badge');
-  badge.textContent = cart.length || '';
-  badge.style.display = cart.length > 0 ? 'inline-block' : 'none';
-}
-
-function hideAllPages() {
-  ['home-page','product-detail','cart-page','infos-page','reseaux-page'].forEach(id => {
-    document.getElementById(id).style.display = 'none';
-  });
-  document.getElementById('btn-back').style.display = 'none';
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-}
-
-function renderProducts() {
-  const grid = document.getElementById('products-grid');
-  grid.innerHTML = '';
-  Object.values(products).forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="card-img">
-        <video autoplay muted loop playsinline poster="${p.poster}">
-          <source src="${p.video}" type="video/mp4">
-        </video>
-        <div class="badge-star">★</div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">${p.title}</div>
-        <div class="card-info">${p.strain.split('\n')[0]}</div>
-      </div>`;
-    card.onclick = () => openProductDetail(p.key);
-    grid.appendChild(card);
-  });
-}
-
-function openProductDetail(key) {
-  const p = products[key];
-  const videoEl = document.getElementById('detail-video');
-  videoEl.innerHTML = `<source src="${p.video}" type="video/mp4">`;
-  videoEl.poster = p.poster;
-  videoEl.load();
-
-  document.getElementById('detail-title').textContent = p.title;
-  document.getElementById('detail-strain').textContent = p.strain.split('\n')[0];
-  document.getElementById('detail-strain-desc').innerHTML = p.strain.replace(/\n/g, '<br>');
-
-  const qgrid = document.getElementById('qty-grid');
-  qgrid.innerHTML = '';
-  p.quantities.forEach((item, idx) => {
-    const btn = document.createElement('button');
-    btn.className = 'qty-btn';
-    btn.innerHTML = `${item.qty}<br>${item.price}`;
-    btn.dataset.idx = idx;
-    btn.onclick = () => {
-      qgrid.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-    };
-    qgrid.appendChild(btn);
-  });
-
-  hideAllPages();
-  document.getElementById('product-detail').style.display = 'block';
-  document.getElementById('btn-back').style.display = 'inline-block';
-}
-
-document.getElementById('btn-back').onclick = () => {
-  hideAllPages();
-  document.getElementById('home-page').style.display = 'block';
-  document.getElementById('nav-home').classList.add('active');
-};
-
-document.getElementById('add-to-cart-btn').onclick = () => {
-  const selected = document.querySelector('.qty-btn.selected');
-  if (!selected) return alert('Sélectionne une quantité !');
-
-  const title = document.getElementById('detail-title').textContent;
-  const key = Object.keys(products).find(k => products[k].title === title);
-  const item = products[key].quantities[selected.dataset.idx];
-
-  cart.push({ title, qty: item.qty, price: item.price });
-  saveCart();
-  alert('Ajouté au panier !');
-};
-
-// Panier
-function showCart() {
-  hideAllPages();
-  document.getElementById('cart-page').style.display = 'block';
-  document.getElementById('nav-cart').classList.add('active');
-
-  const itemsDiv = document.getElementById('cart-items');
-  itemsDiv.innerHTML = '';
-
-  if (cart.length === 0) {
-    itemsDiv.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:80px 0;">Votre panier est vide</p>';
-    document.getElementById('questionnaire').style.display = 'none';
-    document.getElementById('cart-total').textContent = '';
-    return;
-  }
-
-  cart.forEach((item, index) => {
-    const div = document.createElement('div');
-    div.className = 'cart-item';
-    div.innerHTML = `
-      <div>
-        <strong>${item.title}</strong><br>
-        ${item.qty} — ${item.price}
-      </div>
-      <button class="delete-btn" data-index="${index}">X</button>`;
-    itemsDiv.appendChild(div);
-  });
-
-  document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.onclick = () => {
-      const idx = parseInt(btn.dataset.index);
-      cart.splice(idx, 1);
-      saveCart();
-      showCart();
-    };
-  });
-
-  document.getElementById('cart-total').textContent = `Total : ${cart.length} article${cart.length > 1 ? 's' : ''}`;
-  document.getElementById('questionnaire').style.display = 'block';
-}
-
-document.querySelectorAll('.option-btn').forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const type = btn.dataset.type;
-    document.getElementById('pickup-questions').style.display  = type === 'pickup' ? 'block' : 'none';
-    document.getElementById('delivery-questions').style.display = type === 'delivery' ? 'block' : 'none';
+  // Produits avec les fermes / producteurs demandés
+  const products = {
+    cali: {
+      key: 'cali',
+      title: '🇺🇸 Cali weed🌳',
+      farm: '', // pas de sous-titre pour Cali
+      strain: 'Runtz 🌈✅ Tropicana Strawberry 🌴🍓✅',
+      video: 'cali.mp4',
+      poster: 'cali-thumb.jpg',
+      quantities: [
+        { qty: '3G', price: '40 €' },
+        { qty: '5G', price: '60 €' },
+        { qty: '10G', price: '120 €' },
+        { qty: '20G', price: '230 €' },
+        { qty: '25G', price: '300 €' }
+      ]
+    },
+    gaz: {
+      key: 'gaz',
+      title: '⚡️ Dry 90u',
+      farm: 'Gaz fruit🧃',
+      strain: 'Papaya dolce 🥭 ✅\nMimi cheese 🧀 ✅',
+      video: 'gaz.mp4',
+      poster: 'gaz-thumb.jpg',
+      quantities: [
+        { qty: '10G', price: '130 €' },
+        { qty: '25G', price: '240 €' },
+        { qty: '50G', price: '450 €' }
+      ]
+    },
+    farm: {
+      key: 'farm',
+      title: '🥶 FRESH FROZEN SIFT',
+      farm: 'KINGZ FARMZ 🧑‍🌾',
+      strain: 'PERMANENT MAKER x GELATO 41 ⛽️ 🍦 ✅',
+      video: 'farm.mp4',
+      poster: 'farm-thumb.jpg',
+      quantities: [
+        { qty: '5G', price: '70 €' },
+        { qty: '10G', price: '140 €' },
+        { qty: '20G', price: '250 €' },
+        { qty: '25G', price: '300 €' }
+      ]
+    },
+    '120u': {
+      key: '120u',
+      title: 'Dry 120u⚡️',
+      farm: '🧑‍🌾 CALIMOUNTAIN',
+      strain: 'Candy Gaz 🍬✅ Glitter Bomb 💣✅ Apple Mintz 🍏✅',
+      video: '120u.mp4',
+      poster: '120u-thumb.jpg',
+      quantities: [
+        { qty: '5G', price: '70 €' },
+        { qty: '10G', price: '140 €' },
+        { qty: '20G', price: '260 €' },
+        { qty: '25G', price: '310 €' }
+      ]
+    },
+    french: {
+      key: 'french',
+      title: 'STATIC SIFT⚡️🥇🥇',
+      farm: '🧑🏻‍🌾 DR FRENCH 🧑🏻‍🌾',
+      strain: 'LARRY POP TARTS 🍋🍰 ✅\nCALYPO ⛽️🫐✅',
+      video: 'french.mp4',
+      poster: 'french-thumb.jpg',
+      quantities: [
+        { qty: '5G', price: '70 €' },
+        { qty: '10G', price: '130 €' },
+        { qty: '20G', price: '280 €' },
+        { qty: '50G', price: '550 €' }
+      ]
+    }
   };
-});
 
-document.getElementById('submit-order-btn').onclick = () => {
-  const modeBtn = document.querySelector('.option-btn.active');
-  if (!modeBtn) return alert('Choisis un mode de récupération !');
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  const mode = modeBtn.dataset.type;
-  let msg = `Commande de ${user.first_name || 'Client'} (@${user.username || 'pas de pseudo'})\n\n`;
-  msg += `Mode : ${mode === 'pickup' ? 'Meet-up' : 'Livraison'}\n\n`;
-
-  cart.forEach(i => msg += `• ${i.title} × ${i.qty} (${i.price})\n`);
-
-  if (mode === 'pickup') {
-    const time = document.getElementById('pickup-time').value;
-    if (time) msg += `\nHeure meet-up souhaitée : ${time}`;
-  } else {
-    const time = document.getElementById('delivery-time').value;
-    const addr = document.getElementById('delivery-address').value.trim();
-    const det = document.getElementById('delivery-details').value.trim();
-    if (time) msg += `\nHeure livraison souhaitée : ${time}`;
-    if (addr) msg += `\nAdresse : ${addr}`;
-    if (det) msg += `\nDétails : ${det}`;
+  function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateBadge();
   }
 
-  msg += `\n\nMerci !`;
+  function updateBadge() {
+    const badge = document.getElementById('cart-badge');
+    badge.textContent = cart.length || '';
+    badge.style.display = cart.length > 0 ? 'inline-block' : 'none';
+  }
 
-  const encoded = encodeURIComponent(msg);
-  tg.openTelegramLink(`https://t.me/DINO76S?text=${encoded}`);
+  function hideAllPages() {
+    document.getElementById('home-page').style.display = 'none';
+    document.getElementById('product-detail').style.display = 'none';
+    document.getElementById('cart-page').style.display = 'none';
+    document.getElementById('infos-page').style.display = 'none';
+    document.getElementById('reseaux-page').style.display = 'none';
+    document.getElementById('btn-back').style.display = 'none';
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  }
 
-  // Option : vider après envoi (décommente si voulu)
-  // cart = []; saveCart(); showCart();
-};
+  function renderProducts() {
+    const grid = document.getElementById('products-grid');
+    grid.innerHTML = '';
+    Object.values(products).forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-img">
+          <video autoplay muted loop playsinline poster="${p.poster}">
+            <source src="${p.video}" type="video/mp4">
+          </video>
+          <div class="badge-star">★</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${p.title}</div>
+          ${p.farm ? `<div class="card-farm">${p.farm}</div>` : ''}
+          <div class="card-info">${p.strain.split('\n')[0]}</div>
+        </div>
+      `;
+      card.onclick = () => openProductDetail(p.key);
+      grid.appendChild(card);
+    });
+  }
 
-// Navigation
-document.getElementById('nav-home').onclick = () => {
-  hideAllPages();
-  document.getElementById('home-page').style.display = 'block';
-  document.getElementById('nav-home').classList.add('active');
-};
+  function openProductDetail(key) {
+    const p = products[key];
+    const videoEl = document.getElementById('detail-video');
+    videoEl.innerHTML = `<source src="${p.video}" type="video/mp4">`;
+    videoEl.poster = p.poster;
+    videoEl.load();
 
-document.getElementById('nav-cart').onclick = showCart;
+    document.getElementById('detail-title').textContent = p.title;
+    document.getElementById('detail-farm').textContent = p.farm;
+    document.getElementById('detail-farm').style.display = p.farm ? 'block' : 'none';
 
-document.getElementById('nav-infos').onclick = () => {
-  hideAllPages();
-  document.getElementById('infos-page').style.display = 'block';
-  document.getElementById('nav-infos').classList.add('active');
-};
+    document.getElementById('detail-strain').textContent = p.strain.split('\n')[0];
+    document.getElementById('detail-strain-desc').innerHTML = p.strain.replace(/\n/g, '<br>');
 
-document.getElementById('nav-reseaux').onclick = () => {
-  hideAllPages();
-  document.getElementById('reseaux-page').style.display = 'block';
-  document.getElementById('nav-reseaux').classList.add('active');
-};
+    const qtyGrid = document.getElementById('qty-grid');
+    qtyGrid.innerHTML = '';
+    p.quantities.forEach((item, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'qty-btn';
+      btn.innerHTML = `${item.qty}<br>${item.price}`;
+      btn.dataset.idx = idx;
+      btn.onclick = () => {
+        qtyGrid.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+      };
+      qtyGrid.appendChild(btn);
+    });
 
-document.querySelectorAll('.reseau-item').forEach(item => {
-  item.onclick = () => tg.openLink(item.dataset.link);
-});
+    hideAllPages();
+    document.getElementById('product-detail').style.display = 'block';
+    document.getElementById('btn-back').style.display = 'inline-block';
+  }
 
-renderProducts();
-updateBadge();
+  document.getElementById('btn-back').onclick = () => {
+    hideAllPages();
+    document.getElementById('home-page').style.display = 'block';
+    document.getElementById('nav-home').classList.add('active');
+  };
+
+  document.getElementById('add-to-cart-btn').onclick = () => {
+    const selected = document.querySelector('.qty-btn.selected');
+    if (!selected) return alert('Sélectionnez une quantité !');
+
+    const title = document.getElementById('detail-title').textContent;
+    const key = Object.keys(products).find(k => products[k].title === title);
+    const item = products[key].quantities[selected.dataset.idx];
+
+    cart.push({ title, qty: item.qty, price: item.price });
+    saveCart();
+    alert('Ajouté au panier !');
+  };
+
+  // Afficher le panier
+  function showCart() {
+    hideAllPages();
+    document.getElementById('cart-page').style.display = 'block';
+    document.getElementById('nav-cart').classList.add('active');
+
+    const itemsDiv = document.getElementById('cart-items');
+    itemsDiv.innerHTML = '';
+
+    if (cart.length === 0) {
+      itemsDiv.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:80px 0;">Votre panier est vide</p>';
+      document.getElementById('questionnaire').style.display = 'none';
+      document.getElementById('cart-total').textContent = '';
+      return;
+    }
+
+    cart.forEach((item, index) => {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <div>
+          <strong>${item.title}</strong><br>
+          ${item.qty} — ${item.price}
+        </div>
+        <button class="delete-btn" data-index="${index}">X</button>
+      `;
+      itemsDiv.appendChild(div);
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.onclick = () => {
+        const idx = parseInt(btn.dataset.index);
+        cart.splice(idx, 1);
+        saveCart();
+        showCart();
+      };
+    });
+
+    document.getElementById('cart-total').textContent = `Total : ${cart.length} article${cart.length > 1 ? 's' : ''}`;
+    document.getElementById('questionnaire').style.display = 'block';
+  }
+
+  // Gestion des boutons mode récupération
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const type = btn.dataset.type;
+      document.getElementById('pickup-questions').style.display = type === 'pickup' ? 'block' : 'none';
+      document.getElementById('delivery-questions').style.display = type === 'delivery' ? 'block' : 'none';
+    };
+  });
+
+  // Bouton Commander → envoi message pré-rempli
+  document.getElementById('submit-order-btn').onclick = () => {
+    const modeBtn = document.querySelector('.option-btn.active');
+    if (!modeBtn) return alert('Choisis un mode de récupération !');
+
+    const mode = modeBtn.dataset.type;
+    let message = `Commande de ${user.first_name || 'Client'} (@${user.username || 'pas de pseudo'})\n\n`;
+    message += `Mode : ${mode === 'pickup' ? 'Meet-up' : 'Livraison'}\n\n`;
+
+    cart.forEach(item => {
+      message += `• ${item.title} × ${item.qty} (${item.price})\n`;
+    });
+
+    if (mode === 'pickup') {
+      const time = document.getElementById('pickup-time').value;
+      if (time) message += `\nHeure meet-up souhaitée : ${time}`;
+    } else {
+      const time = document.getElementById('delivery-time').value;
+      const address = document.getElementById('delivery-address').value.trim();
+      const details = document.getElementById('delivery-details').value.trim();
+      if (time) message += `\nHeure livraison souhaitée : ${time}`;
+      if (address) message += `\nAdresse : ${address}`;
+      if (details) message += `\nDétails : ${details}`;
+    }
+
+    message += `\n\nMerci !`;
+
+    const encoded = encodeURIComponent(message);
+    tg.openTelegramLink(`https://t.me/DINO76S?text=${encoded}`);
+  };
+
+  // Navigation
+  document.getElementById('nav-home').onclick = () => {
+    hideAllPages();
+    document.getElementById('home-page').style.display = 'block';
+    document.getElementById('nav-home').classList.add('active');
+  };
+
+  document.getElementById('nav-cart').onclick = () => {
+    showCart();
+  };
+
+  document.getElementById('nav-infos').onclick = () => {
+    hideAllPages();
+    document.getElementById('infos-page').style.display = 'block';
+    document.getElementById('nav-infos').classList.add('active');
+  };
+
+  document.getElementById('nav-reseaux').onclick = () => {
+    hideAllPages();
+    document.getElementById('reseaux-page').style.display = 'block';
+    document.getElementById('nav-reseaux').classList.add('active');
+  };
+
+  document.querySelectorAll('.reseau-item').forEach(item => {
+    item.onclick = () => tg.openLink(item.dataset.link);
+  });
+
+  // Initialisation
+  renderProducts();
+  updateBadge();
 </script>
 </body>
 </html>
