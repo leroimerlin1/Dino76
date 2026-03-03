@@ -55,10 +55,9 @@
     .product-hero { height: 340px; background: #000; position: relative; }
     .product-hero video { width: 100%; height: 100%; object-fit: cover; }
     .product-title { padding: 16px; font-size: 2.1rem; font-weight: 900; color: #60a5fa; text-shadow: 0 0 12px rgba(96, 165, 250, 0.6); }
-    .product-farm { padding: 0 16px 8px; font-size: 1.15rem; color: #94a3b8; }
     .badges { padding: 0 16px 8px; display: flex; flex-wrap: wrap; gap: 10px; }
     .badge { padding: 8px 16px; border-radius: 999px; font-size: 0.95rem; font-weight: bold; }
-    .badge-farm { background: rgba(59, 130, 246, 0.22); color: #60a5fa; border: 1px solid #60a5fa; }
+    .badge-farm { background: rgba(59, 130, 246, 0.22); color: #60a5fa; border: 1px solid #60a5fa; max-width: fit-content; }
     .strain-section { padding: 0 16px 16px; color: #94a3b8; font-size: 1.05rem; line-height: 1.5; }
     .description-section { padding: 0 16px 24px; color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; }
     .quantity-section { padding: 16px; background: rgba(15, 23, 42, 0.7); margin: 12px 16px; border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.35); }
@@ -164,7 +163,6 @@
         <video id="detail-video" autoplay loop muted playsinline controls></video>
       </div>
       <div class="product-title" id="detail-title"></div>
-      <div class="product-farm" id="detail-farm"></div>
       <div class="badges">
         <div class="badge badge-farm" id="detail-farm-badge"></div>
       </div>
@@ -251,7 +249,7 @@
     <div id="reseaux-page">
       <h2 style="text-align:center; color:#60a5fa; margin:30px 0 40px; font-size:1.8rem;">Nos réseaux</h2>
       <div class="reseaux-list">
-        <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3ZjMGo4dGMxc2tz&utm_source=qr">Instagram 📸</div>
+        <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3VjMGo4dGMxc2tz&utm_source=qr">Instagram 📸</div>
         <div class="reseau-item" data-link="https://duanym138.org/DINOfslmogx8">Potato 🥔</div>
         <div class="reseau-item" data-link="https://t.me/+j7EMkLSIaV83ZmU8">Canal Telegram 📢</div>
         <div class="reseau-item" data-link="https://snapchat.com/t/EZAiDCkN">Snapchat 👻</div>
@@ -408,10 +406,8 @@
     videoEl.load();
 
     document.getElementById('detail-title').textContent = p.title;
-    document.getElementById('detail-farm').textContent = p.farm || '';
-    document.getElementById('detail-farm').style.display = p.farm ? 'block' : 'none';
 
-    // Badge bleu = uniquement le farm/sous-titre
+    // Badge bleu = UNIQUEMENT le farm/sous-titre
     document.getElementById('detail-farm-badge').textContent = p.farm || 'Premium';
 
     // Strains en dessous du badge
