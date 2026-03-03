@@ -55,10 +55,11 @@
     .product-hero { height: 340px; background: #000; position: relative; }
     .product-hero video { width: 100%; height: 100%; object-fit: cover; }
     .product-title { padding: 16px; font-size: 2.1rem; font-weight: 900; color: #60a5fa; text-shadow: 0 0 12px rgba(96, 165, 250, 0.6); }
-    .product-farm { padding: 0 16px 12px; font-size: 1.15rem; color: #94a3b8; }
-    .badges { padding: 0 16px 16px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .product-farm { padding: 0 16px 8px; font-size: 1.15rem; color: #94a3b8; }
+    .badges { padding: 0 16px 8px; display: flex; flex-wrap: wrap; gap: 10px; }
     .badge { padding: 8px 16px; border-radius: 999px; font-size: 0.95rem; font-weight: bold; }
     .badge-farm { background: rgba(59, 130, 246, 0.22); color: #60a5fa; border: 1px solid #60a5fa; }
+    .strain-section { padding: 0 16px 16px; color: #94a3b8; font-size: 1.05rem; line-height: 1.5; }
     .description-section { padding: 0 16px 24px; color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; }
     .quantity-section { padding: 16px; background: rgba(15, 23, 42, 0.7); margin: 12px 16px; border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.35); }
     .quantity-title { font-size: 1.25rem; color: #60a5fa; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
@@ -99,8 +100,15 @@
       box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
     }
     #infos-page, #reseaux-page { display: none; padding: 16px; padding-bottom: 200px; font-size: 1.05rem; line-height: 1.6; }
-    .section-title { font-size: 1.45rem; color: #60a5fa; margin: 36px 0 16px; font-weight: bold; }
-    .section:first-child .section-title { margin-top: 12px; }
+    .info-box {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px 0;
+      backdrop-filter: blur(8px);
+    }
+    .section-title { font-size: 1.45rem; color: #60a5fa; margin-bottom: 16px; font-weight: bold; }
     ul { padding-left: 24px; margin: 12px 0; }
     .reseaux-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
     .reseau-item {
@@ -160,6 +168,7 @@
       <div class="badges">
         <div class="badge badge-farm" id="detail-farm-badge"></div>
       </div>
+      <div class="strain-section" id="detail-strain-desc"></div>
       <div class="description-section" id="detail-description"></div>
       <div class="quantity-section">
         <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
@@ -209,7 +218,7 @@
 
     <!-- Page Infos -->
     <div id="infos-page">
-      <div class="section">
+      <div class="info-box">
         <div class="section-title">🚚 LIVRAISON</div>
         <p><strong>SALUT A TOUS LA TEAM !</strong></p>
         <p>VOICI LES ZONES DE LIVRAISON 🚚 📦 : 76 / 27 / 14 / 60</p>
@@ -224,7 +233,7 @@
         <p><strong>Paiement en espèces 💶 uniquement !</strong></p>
       </div>
 
-      <div class="section">
+      <div class="info-box">
         <div class="section-title">🏠 SERVICE MEET-UP</div>
         <p>Vous pouvez passer directement sur place la famille !<br>Avant de venir, contactez-nous en privé et précisez :</p>
         <ul>
@@ -402,9 +411,13 @@
     document.getElementById('detail-farm').textContent = p.farm || '';
     document.getElementById('detail-farm').style.display = p.farm ? 'block' : 'none';
 
-    // Le badge bleu affiche maintenant le farm/sous-titre
+    // Badge bleu = uniquement le farm/sous-titre
     document.getElementById('detail-farm-badge').textContent = p.farm || 'Premium';
 
+    // Strains en dessous du badge
+    document.getElementById('detail-strain-desc').innerHTML = p.strain ? p.strain.replace(/\n/g, '<br>') : '';
+
+    // Description
     document.getElementById('detail-description').innerHTML = p.description ? p.description.replace(/\n/g, '<br>') : '';
 
     const qtyGrid = document.getElementById('qty-grid');
