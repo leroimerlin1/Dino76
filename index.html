@@ -74,39 +74,54 @@
       cursor: pointer; box-shadow: 0 0 16px rgba(96, 165, 250, 0.5);
     }
 
-    /* SWITCHER VIDÉOS (version propre et stylée - cercles avec chiffres) */
+    /* SWITCHER VIDÉO ULTRA MODERNE (miniatures avec aperçu + play) */
     .video-switcher {
-      padding: 12px 16px 20px;
+      padding: 12px 16px 24px;
       display: flex;
+      gap: 14px;
       justify-content: center;
-      gap: 24px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
-    .video-btn {
-      width: 58px;
-      height: 58px;
-      background: rgba(59, 130, 246, 0.18);
-      border: 2px solid #60a5fa;
-      color: #60a5fa;
+    .video-preview {
+      width: 96px;
+      height: 54px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+    .video-preview:hover {
+      transform: scale(1.12) translateY(-2px);
+      border-color: #60a5fa;
+      box-shadow: 0 10px 25px rgba(96, 165, 250, 0.35);
+    }
+    .video-preview.active {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.5);
+      transform: scale(1.08);
+    }
+    .play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px;
+      height: 32px;
+      background: rgba(15, 23, 42, 0.92);
       border-radius: 50%;
-      font-size: 1.55rem;
-      font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(96, 165, 250, 0.25);
-    }
-    .video-btn:hover {
-      transform: scale(1.15);
-      background: rgba(96, 165, 250, 0.3);
-    }
-    .video-btn.active {
-      background: #60a5fa;
-      color: #0f172a;
-      border-color: #fff;
-      transform: scale(1.2);
-      box-shadow: 0 0 25px rgba(96, 165, 250, 0.7);
+      font-size: 16px;
+      color: #60a5fa;
+      text-shadow: 0 0 8px rgba(96, 165, 250, 0.8);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
     }
 
     #cart-page { padding: 16px; }
@@ -198,7 +213,7 @@
       <div class="product-hero">
         <video id="detail-video" autoplay loop muted playsinline controls></video>
       </div>
-      <!-- Switcher vidéos (cercles stylés) -->
+      <!-- Switcher moderne avec miniatures -->
       <div id="video-switcher" class="video-switcher"></div>
 
       <div class="product-title" id="detail-title"></div>
@@ -341,7 +356,7 @@
   const user = tg.initDataUnsafe?.user || {};
   document.getElementById('welcome-name').textContent = user.first_name ? `Salut ${user.first_name} !` : 'Bienvenue !';
 
-  // ==================== PRODUITS MIS À JOUR ====================
+  // ==================== PRODUITS (3G sur PIRATE seulement) ====================
   const products = {
     mtRiff: {
       key: 'mtRiff',
@@ -350,8 +365,8 @@
       strain: 'FORBIDEN 🍓🍉✅\nSTRAWNANA 🍓🍋‍🟩✅\nYOLLOW RUNTZ 🌈 ✅',
       description: 'Voici une Farm réputée pour sa fraîcheur et sa pureté du vrai Frozen sift goût fruité. Arôme vif et frais en saveur !',
       videos: [
-        { src: 'mt.riff.mp4' },
-        { src: 'mt.riff2.mp4' }
+        { src: 'mt.riff.mp4', poster: 'mt.riff.jpg' },
+        { src: 'mt.riff2.mp4', poster: 'mt.riff2.jpg' }
       ],
       poster: 'mt.riff.jpg',
       quantities: [
@@ -367,8 +382,8 @@
       strain: 'RUNTZ 🌈 ✅\nCANDY KUSH 🍭 ✅',
       description: 'Là on est sur une qualité de weed exceptionnelle, craquant, frais, riche terps pour les vrais connaisseurs et gros poumons 💨 THOP SELF 5A ++',
       videos: [
-        { src: 'cali.mp4' },
-        { src: 'cali2.mp4' }
+        { src: 'cali.mp4', poster: 'cali.jpg' },
+        { src: 'cali2.mp4', poster: 'cali2.jpg' }
       ],
       poster: 'cali.jpg',
       quantities: [
@@ -384,7 +399,7 @@
       strain: 'Sherbenger ⛽️💥\nFatso 🍭🚀\nTropico 🏝🍹',
       description: 'Le frozen de l’année l\'équipe 🐰, une vraie foudre une pépite qu’il y’a pas souvent il se rapproche du blue magic patron ! ⚡️',
       videos: [
-        { src: 'pirate.mp4' }
+        { src: 'pirate.mp4', poster: 'pirate.jpg' }
       ],
       poster: 'pirate.jpg',
       quantities: [
@@ -421,8 +436,9 @@
     document.getElementById('page-title').style.fontSize = '1.55rem';
   }
 
-  function loadVideo(src) {
+  function loadVideo(src, poster) {
     const videoEl = document.getElementById('detail-video');
+    videoEl.poster = poster || '';
     videoEl.innerHTML = `<source src="${src}" type="video/mp4">`;
     videoEl.load();
     videoEl.play().catch(() => {});
@@ -475,31 +491,35 @@
       qtyGrid.appendChild(btn);
     });
 
-    // Switcher vidéos (cercles avec 1, 2, etc.)
+    // Switcher miniatures modernes
     const switcher = document.getElementById('video-switcher');
     switcher.innerHTML = '';
     if (p.videos.length > 1) {
       switcher.style.display = 'flex';
       p.videos.forEach((vid, idx) => {
-        const btn = document.createElement('button');
-        btn.className = `video-btn ${idx === 0 ? 'active' : ''}`;
-        btn.textContent = idx + 1;
-        btn.onclick = () => {
-          switcher.querySelectorAll('.video-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          loadVideo(vid.src);
+        const preview = document.createElement('div');
+        preview.className = `video-preview ${idx === 0 ? 'active' : ''}`;
+        preview.style.backgroundImage = `url('${vid.poster}')`;
+        
+        const play = document.createElement('div');
+        play.className = 'play-icon';
+        play.innerHTML = '▶';
+        preview.appendChild(play);
+
+        preview.onclick = () => {
+          switcher.querySelectorAll('.video-preview').forEach(b => b.classList.remove('active'));
+          preview.classList.add('active');
+          loadVideo(vid.src, vid.poster);
         };
-        switcher.appendChild(btn);
+        switcher.appendChild(preview);
       });
     } else {
       switcher.style.display = 'none';
     }
 
-    // Charger première vidéo
-    document.getElementById('detail-video').poster = p.poster || '';
-    loadVideo(p.videos[0].src);
+    // Première vidéo
+    loadVideo(p.videos[0].src, p.videos[0].poster);
 
-    // Affichage
     document.getElementById('page-title').textContent = p.title;
     document.getElementById('page-title').style.fontSize = '1.35rem';
 
