@@ -1,403 +1,622 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>DINO TERPS 76</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
 :root {
-  --deep-black:#0a0a08;--dark-wood:#12100c;--mid-wood:#1c1710;--warm-wood:#2a2018;
-  --lacquer-red:#c0392b;--crimson:#e74c3c;--neon-red:#ff3b30;
-  --gold:#d4af37;--gold-light:#f0d060;--cream:#f5f0e8;--rice-white:#faf8f2;
-  --text-warm:#e8dcc8;--text-dim:#8a7860;
-  --surface:rgba(20,16,10,0.94);--surface-light:rgba(30,24,16,0.88);
-  --border-gold:rgba(212,175,55,0.35);--border-red:rgba(192,57,43,0.4);
-  --glow-gold:rgba(212,175,55,0.45);--glow-red:rgba(231,76,60,0.4);
+  --bg-dark:#1a0e05;
+  --bg-mid:#271508;
+  --bg-card:#2e1a0a;
+  --orange:#ff7a00;
+  --orange-light:#ffaa44;
+  --orange-glow:#ff6600;
+  --cream:#fff4e0;
+  --cream-dim:#c8a87a;
+  --brown:#5c2e0a;
+  --brown-light:#8a4a18;
+  --red:#d63200;
+  --green:#4a9c3f;
+  --green-light:#6dcc60;
+  --white:#fff8f0;
+  --border-orange:rgba(255,122,0,0.45);
+  --border-cream:rgba(255,244,224,0.15);
+  --surface:rgba(30,14,3,0.93);
+  --glow-orange:rgba(255,122,0,0.5);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;min-height:100dvh;width:100%;overflow:hidden;font-family:'Zen Kaku Gothic New','Noto Serif JP',sans-serif;background:radial-gradient(ellipse at top,#1c1710 0%,#0a0a08 70%);color:var(--text-warm);touch-action:manipulation;}
-body::before{content:'';position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 15% 85%,rgba(192,57,43,0.06) 0%,transparent 50%),radial-gradient(ellipse at 85% 85%,rgba(212,175,55,0.05) 0%,transparent 50%),radial-gradient(ellipse at 50% 0%,rgba(192,57,43,0.08) 0%,transparent 50%),url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none;}
+html,body{
+  height:100%;min-height:100dvh;width:100%;overflow:hidden;
+  font-family:'Nunito',sans-serif;
+  background:#1a0e05;
+  color:var(--cream);
+  touch-action:manipulation;
+}
+
+/* MANGA NOISE TEXTURE OVERLAY */
+body::before{
+content:’’;position:fixed;inset:0;z-index:0;pointer-events:none;
+background:
+radial-gradient(ellipse at 50% 0%,rgba(255,122,0,0.12) 0%,transparent 55%),
+radial-gradient(ellipse at 15% 90%,rgba(214,50,0,0.08) 0%,transparent 45%),
+radial-gradient(ellipse at 85% 85%,rgba(255,170,68,0.07) 0%,transparent 45%),
+url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘4’ height=‘4’%3E%3Crect width=‘4’ height=‘4’ fill=’%231a0e05’/%3E%3Crect x=‘0’ y=‘0’ width=‘1’ height=‘1’ fill=’%23ffffff’ fill-opacity=‘0.025’/%3E%3Crect x=‘2’ y=‘2’ width=‘1’ height=‘1’ fill=’%23ffffff’ fill-opacity=‘0.015’/%3E%3C/svg%3E”);
+}
 
 /* SPLASH */
-.splash{position:fixed;inset:0;background:#0a0a08;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.8s ease;overflow:hidden;}
+.splash{position:fixed;inset:0;background:#0f0700;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.8s ease;overflow:hidden;}
 .splash.hidden{opacity:0;pointer-events:none;}
-.splash-content{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.splash-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(28,23,16,0.1) 0%,rgba(10,10,8,0.95) 100%);z-index:1;}
-.splash-pattern{position:absolute;inset:0;z-index:1;opacity:0.04;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(212,175,55,0.5) 39px,rgba(212,175,55,0.5) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(212,175,55,0.5) 39px,rgba(212,175,55,0.5) 40px);}
-.splash-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,0.15) 0%,rgba(212,175,55,0.08) 60%,transparent 100%);z-index:2;animation:glowPulse 3s ease-in-out infinite;}
-@keyframes glowPulse{0%,100%{transform:scale(1);opacity:0.6;}50%{transform:scale(1.4);opacity:1;}}
-.splash-logo-ring{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,0.2) 0%,rgba(10,10,8,0.8) 100%);border:2px solid var(--gold);box-shadow:0 0 0 6px rgba(212,175,55,0.08),0 0 40px rgba(192,57,43,0.5),0 0 80px rgba(212,175,55,0.15);z-index:3;display:flex;align-items:center;justify-content:center;overflow:hidden;animation:logoEntrance 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;margin-bottom:20px;}
-.splash-logo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.splash-logo-ring .fallback-emoji{font-size:3.2rem;display:none;}
-@keyframes logoEntrance{0%{transform:scale(0.4) rotate(-10deg);opacity:0;}100%{transform:scale(1) rotate(0deg);opacity:1;}}
-.splash-title-jp{font-family:'Noto Serif JP',serif;font-size:0.9rem;font-weight:400;color:rgba(212,175,55,0.5);letter-spacing:8px;text-transform:uppercase;z-index:3;margin-bottom:6px;animation:fadeUp 0.6s 0.3s ease both;}
-.splash-title-main{font-family:'Noto Serif JP',serif;font-size:2rem;font-weight:900;color:var(--gold);letter-spacing:3px;z-index:3;text-shadow:0 0 30px rgba(212,175,55,0.7),0 0 60px rgba(192,57,43,0.4);animation:fadeUp 0.6s 0.2s ease both;margin-bottom:4px;}
-.splash-title-sub{font-size:0.75rem;font-weight:600;color:rgba(192,57,43,0.6);letter-spacing:4px;text-transform:uppercase;z-index:3;margin-bottom:40px;animation:fadeUp 0.6s 0.45s ease both;}
-@keyframes fadeUp{0%{opacity:0;transform:translateY(16px);}100%{opacity:1;transform:translateY(0);}}
-.splash-divider{width:120px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.6),transparent);z-index:3;margin-bottom:8px;animation:fadeUp 0.6s 0.35s ease both;}
-.splash-progress-wrap{width:180px;height:2px;background:rgba(212,175,55,0.08);border-radius:999px;z-index:3;overflow:hidden;animation:fadeUp 0.6s 0.6s ease both;}
-.splash-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--lacquer-red),var(--gold),#fff);border-radius:999px;box-shadow:0 0 10px rgba(212,175,55,0.9);animation:loadBar 2.4s 0.5s ease forwards;}
-@keyframes loadBar{0%{width:0%;}60%{width:70%;}100%{width:100%;}}
-.splash-text{color:rgba(138,120,96,0.5);font-size:0.68rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;z-index:3;margin-top:14px;animation:fadeUp 0.6s 0.7s ease both;}
-.splash-particles{position:absolute;inset:0;z-index:2;pointer-events:none;}
-.petal{position:absolute;opacity:0;animation:petalFall var(--dur) var(--delay) ease-in-out infinite;font-size:var(--sz);}
-@keyframes petalFall{0%{opacity:0;transform:translateY(-20px) rotate(0deg);}20%{opacity:0.6;}80%{opacity:0.3;}100%{opacity:0;transform:translateY(100px) rotate(180deg);}}
+.splash-content{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;}
+.splash-bg-rings{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.splash-ring{position:absolute;border-radius:50%;border:2px solid rgba(255,122,0,0.12);animation:ringPulse 3s ease-in-out infinite;}
+.splash-ring:nth-child(1){width:260px;height:260px;animation-delay:0s;}
+.splash-ring:nth-child(2){width:340px;height:340px;animation-delay:0.4s;border-color:rgba(255,122,0,0.07);}
+.splash-ring:nth-child(3){width:420px;height:420px;animation-delay:0.8s;border-color:rgba(255,122,0,0.04);}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:0.5;}50%{transform:scale(1.06);opacity:1;}}
+
+/* Speed lines manga effect */
+.splash-speed-lines{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:0.06;}
+.splash-speed-lines::before{
+content:’’;position:absolute;inset:-50%;
+background:conic-gradient(from 0deg,transparent 0deg,rgba(255,122,0,0.8) 0.3deg,transparent 0.6deg,transparent 3.6deg,rgba(255,122,0,0.6) 3.9deg,transparent 4.2deg,transparent 7.2deg,rgba(255,122,0,0.7) 7.5deg,transparent 7.8deg,transparent 10.8deg,rgba(255,122,0,0.5) 11.1deg,transparent 11.4deg,transparent 14.4deg,rgba(255,122,0,0.8) 14.7deg,transparent 15deg);
+animation:spinLines 8s linear infinite;
+}
+@keyframes spinLines{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+.splash-logo{
+width:160px;height:160px;border-radius:50%;overflow:hidden;
+border:4px solid var(–orange);
+box-shadow:0 0 0 8px rgba(255,122,0,0.12),0 0 50px rgba(255,122,0,0.6),0 0 100px rgba(214,50,0,0.3);
+z-index:3;
+animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+margin-bottom:18px;
+flex-shrink:0;
+}
+.splash-logo img{width:100%;height:100%;object-fit:cover;}
+@keyframes popIn{0%{transform:scale(0.3) rotate(-15deg);opacity:0;}100%{transform:scale(1) rotate(0deg);opacity:1;}}
+
+.splash-name{
+font-family:‘Bangers’,cursive;font-size:3.2rem;letter-spacing:4px;
+color:var(–cream);
+text-shadow:4px 4px 0px var(–orange-glow),6px 6px 0px var(–brown),-1px -1px 0 rgba(255,122,0,0.5);
+z-index:3;line-height:1;
+animation:fadeSlideUp 0.5s 0.3s ease both;
+}
+.splash-sub{
+font-family:‘Bangers’,cursive;font-size:1.4rem;letter-spacing:6px;
+color:var(–orange);text-shadow:2px 2px 0 var(–brown);
+z-index:3;margin-top:4px;
+animation:fadeSlideUp 0.5s 0.45s ease both;
+}
+@keyframes fadeSlideUp{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+
+.splash-divider{
+width:140px;height:3px;margin:16px 0 12px;
+background:linear-gradient(90deg,transparent,var(–orange),var(–orange-light),transparent);
+border-radius:2px;z-index:3;
+animation:fadeSlideUp 0.5s 0.5s ease both;
+}
+.splash-progress{width:180px;height:3px;background:rgba(255,122,0,0.12);border-radius:99px;overflow:hidden;z-index:3;animation:fadeSlideUp 0.5s 0.6s ease both;}
+.splash-bar{height:100%;width:0%;background:linear-gradient(90deg,var(–red),var(–orange),var(–orange-light));border-radius:99px;box-shadow:0 0 12px rgba(255,122,0,0.9);animation:loadBar 2.4s 0.5s ease forwards;}
+@keyframes loadBar{0%{width:0%;}60%{width:72%;}100%{width:100%;}}
+.splash-loading-txt{color:rgba(200,168,122,0.5);font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;z-index:3;margin-top:12px;animation:fadeSlideUp 0.5s 0.7s ease both;}
 
 /* CONTAINER */
-.container{position:relative;height:100dvh;width:100%;background:radial-gradient(ellipse at top center,#1c1710 0%,#0a0a08 70%);}
-.overlay{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse at 20% 90%,rgba(192,57,43,0.04) 0%,transparent 45%),radial-gradient(ellipse at 80% 90%,rgba(212,175,55,0.03) 0%,transparent 45%);}
+.container{position:relative;height:100dvh;width:100%;background:var(–bg-dark);}
 .content{position:relative;z-index:2;height:100dvh;width:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:100px;}
 
-/* HEADER — logo centré */
-#home-logo-wrapper{position:sticky;top:0;z-index:100;background:rgba(10,10,8,0.97);border-bottom:1px solid rgba(212,175,55,0.22);padding:12px 16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;will-change:transform;transform:translateZ(0);-webkit-transform:translateZ(0);flex-shrink:0;min-height:70px;}
-#home-logo-wrapper::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent);}
-.home-logo-img-wrap{width:52px;height:52px;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 18px rgba(212,175,55,0.55),0 0 36px rgba(192,57,43,0.3);overflow:hidden;flex-shrink:0;background:rgba(20,16,10,0.9);display:flex;align-items:center;justify-content:center;}
-.home-logo-img-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
-.home-logo-img-wrap .logo-fallback{font-size:1.8rem;display:none;}
+/* HOME HEADER — BIG LOGO */
+#home-page{}
+#home-hero{
+position:relative;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+padding:22px 16px 18px;
+background:linear-gradient(180deg,rgba(255,122,0,0.1) 0%,rgba(26,14,5,0) 100%);
+border-bottom:2px solid rgba(255,122,0,0.2);
+overflow:hidden;
+}
+#home-hero::before{
+content:’’;position:absolute;inset:0;
+background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,122,0,0.04) 0.5deg,transparent 1deg,transparent 4deg,rgba(255,122,0,0.03) 4.5deg,transparent 5deg);
+animation:spinLines 20s linear infinite;
+pointer-events:none;
+}
+.hero-logo-ring{
+width:110px;height:110px;border-radius:50%;overflow:hidden;
+border:3px solid var(–orange);
+box-shadow:0 0 0 6px rgba(255,122,0,0.1),0 0 30px rgba(255,122,0,0.55),0 0 60px rgba(214,50,0,0.25);
+position:relative;z-index:2;
+flex-shrink:0;
+}
+.hero-logo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
+.hero-brand{
+font-family:‘Bangers’,cursive;font-size:2.6rem;letter-spacing:3px;
+color:var(–cream);line-height:1;margin-top:12px;
+text-shadow:3px 3px 0 var(–orange-glow),5px 5px 0 var(–brown);
+position:relative;z-index:2;
+}
+.hero-tagline{
+font-family:‘Bangers’,cursive;font-size:1rem;letter-spacing:5px;
+color:var(–orange-light);margin-top:4px;text-shadow:1px 1px 0 var(–brown);
+position:relative;z-index:2;
+}
+.hero-strip{
+display:flex;gap:8px;margin-top:14px;position:relative;z-index:2;
+}
+.hero-chip{
+background:rgba(255,122,0,0.12);border:1.5px solid rgba(255,122,0,0.35);
+color:var(–orange-light);font-size:0.72rem;font-weight:800;
+padding:4px 12px;border-radius:4px;letter-spacing:1px;
+}
 
-/* NEON LINE */
-.neon-line{height:1px;margin:0 16px 14px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.4),rgba(192,57,43,0.3),transparent);}
+/* ORANGE LINE */
+.orange-line{height:2px;margin:0 16px 14px;background:linear-gradient(90deg,transparent,rgba(255,122,0,0.5),rgba(214,50,0,0.4),transparent);}
 
 /* PRODUCTS HEADER */
-#products-header{margin:0 16px 14px;background:var(--surface);border-radius:18px;border:1px solid var(--border-gold);box-shadow:0 8px 32px rgba(0,0,0,0.7),0 0 20px rgba(212,175,55,0.06);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
-.products-title{display:flex;align-items:center;gap:10px;font-family:'Noto Serif JP',serif;font-size:1rem;font-weight:700;color:var(--text-dim);letter-spacing:1px;}
-.products-count{display:flex;flex-direction:column;align-items:center;background:rgba(212,175,55,0.06);border:1.5px solid rgba(212,175,55,0.4);border-radius:14px;padding:8px 20px;box-shadow:0 0 20px rgba(212,175,55,0.1),inset 0 0 20px rgba(212,175,55,0.02);min-width:80px;}
-.products-count-number{font-family:'Noto Serif JP',serif;font-size:1.8rem;font-weight:900;color:var(--gold);line-height:1;text-shadow:0 0 16px rgba(212,175,55,0.7);}
-.products-count-label{font-size:0.62rem;font-weight:700;color:rgba(212,175,55,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+#products-header{margin:0 16px 12px;background:var(–bg-card);border-radius:14px;border:1.5px solid var(–border-orange);box-shadow:0 6px 24px rgba(0,0,0,0.7),0 0 16px rgba(255,122,0,0.06);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);}
+.products-title{display:flex;align-items:center;gap:10px;font-family:‘Bangers’,cursive;font-size:1.3rem;letter-spacing:2px;color:var(–cream-dim);}
+.products-count{display:flex;flex-direction:column;align-items:center;background:rgba(255,122,0,0.07);border:1.5px solid rgba(255,122,0,0.4);border-radius:12px;padding:7px 18px;box-shadow:0 0 18px rgba(255,122,0,0.1);}
+.products-count-number{font-family:‘Bangers’,cursive;font-size:2rem;color:var(–orange);line-height:1;text-shadow:0 0 14px rgba(255,122,0,0.7);}
+.products-count-label{font-size:0.6rem;font-weight:800;color:rgba(255,170,68,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
 
-/* FILTERS — 2 selects côte à côte, compacts */
-#filters-bar{margin:0 16px 14px;}
-.filters-inner{display:flex;gap:8px;align-items:center;}
-.compact-select{flex:1;min-width:0;height:40px;font-size:11px;padding:0 24px 0 10px;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:600;background:var(--surface);border:1.5px solid var(--border-gold);border-radius:12px;color:var(--text-warm);appearance:none;-webkit-appearance:none;cursor:pointer;outline:none;transition:border-color 0.2s,box-shadow 0.2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23d4af37' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;background-color:var(--surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.compact-select:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(212,175,55,0.25);}
-.compact-select option{background:#12100c;color:var(--text-warm);}
+/* FILTERS */
+#filters-bar{margin:0 16px 12px;}
+.filters-inner{display:flex;gap:8px;}
+.compact-select{
+flex:1;height:40px;font-size:11px;padding:0 24px 0 10px;
+font-family:‘Nunito’,sans-serif;font-weight:700;
+background:var(–bg-card);border:1.5px solid var(–border-orange);
+border-radius:10px;color:var(–cream);appearance:none;-webkit-appearance:none;cursor:pointer;outline:none;
+transition:border-color 0.2s,box-shadow 0.2s;
+background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘10’ viewBox=‘0 0 12 12’%3E%3Cpath fill=’%23ff7a00’ d=‘M6 8L1 3h10z’/%3E%3C/svg%3E”);
+background-repeat:no-repeat;background-position:right 8px center;background-color:var(–bg-card);
+}
+.compact-select:focus{border-color:var(–orange);box-shadow:0 0 10px rgba(255,122,0,0.3);}
+.compact-select option{background:#271508;color:var(–cream);}
 
 /* CARDS */
-#products-grid{padding:0 16px 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
-.no-results{grid-column:1/-1;text-align:center;padding:48px 20px;color:rgba(212,175,55,0.4);font-family:'Noto Serif JP',serif;font-size:1rem;}
-.card{background:transparent;border:1.5px solid var(--gold);border-radius:12px;overflow:hidden;transition:all .25s;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.8),0 0 10px rgba(212,175,55,0.08);position:relative;height:220px;}
-.card:active{transform:scale(0.97);border-color:var(--crimson);box-shadow:0 0 24px rgba(192,57,43,0.35);}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 10%,var(--lacquer-red) 30%,var(--gold) 50%,var(--lacquer-red) 70%,transparent 90%);z-index:5;opacity:0;transition:opacity 0.25s;}
+#products-grid{padding:0 16px 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.no-results{grid-column:1/-1;text-align:center;padding:48px 20px;color:rgba(255,122,0,0.4);font-family:‘Bangers’,cursive;font-size:1.2rem;letter-spacing:2px;}
+.card{
+background:var(–bg-card);border:2px solid rgba(255,122,0,0.3);
+border-radius:12px;overflow:hidden;transition:all .25s;cursor:pointer;
+box-shadow:0 4px 16px rgba(0,0,0,.8),0 0 8px rgba(255,122,0,0.06);
+position:relative;height:220px;
+}
+.card:active{transform:scale(0.96);border-color:var(–orange);box-shadow:0 0 24px rgba(255,122,0,0.4);}
+.card::before{content:’’;position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent 5%,var(–red) 25%,var(–orange) 50%,var(–red) 75%,transparent 95%);z-index:5;opacity:0;transition:opacity 0.25s;}
 .card:active::before{opacity:1;}
-.card-media{height:100%;width:100%;position:relative;background:#0a0a08;}
+.card-media{height:100%;width:100%;position:relative;background:#0f0700;}
 .card-media video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
-.card-no-video{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1c1710,#0a0a08);font-size:3rem;}
-.card-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(10,10,8,0.97) 0%,rgba(10,10,8,0.5) 60%,transparent 100%);padding:16px 12px 12px;z-index:2;}
-.card-title{font-family:'Noto Serif JP',serif;font-size:0.88rem;color:var(--gold);font-weight:700;letter-spacing:0.5px;margin-bottom:3px;text-shadow:0 0 10px rgba(212,175,55,0.6);line-height:1.2;}
-.card-farm{font-size:0.72rem;color:rgba(192,57,43,0.9);font-weight:bold;text-shadow:0 0 6px rgba(192,57,43,0.5);}
+.card-no-video{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#271508,#0f0700);font-size:3rem;}
+.card-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(10,5,0,0.97) 0%,rgba(10,5,0,0.5) 60%,transparent 100%);padding:14px 10px 10px;z-index:2;}
+.card-title{font-family:‘Bangers’,cursive;font-size:0.95rem;color:var(–orange-light);font-weight:400;letter-spacing:1px;margin-bottom:3px;text-shadow:0 0 10px rgba(255,122,0,0.7);line-height:1.2;}
+.card-farm{font-size:0.7rem;color:rgba(255,122,0,0.8);font-weight:800;}
 
 /* PRODUCT DETAIL */
-#product-detail{display:none;flex-direction:column;height:100dvh;background:#0a0a08;position:relative;}
-.product-info{flex:1;background:linear-gradient(180deg,#1c1710 0%,#0a0a08 100%);overflow-y:auto;padding-bottom:90px;}
-.product-title{padding:22px 16px 8px;font-family:'Noto Serif JP',serif;font-size:1.6rem;font-weight:900;color:var(--gold);text-shadow:0 0 20px rgba(212,175,55,0.6),0 0 40px rgba(192,57,43,0.3);letter-spacing:1px;line-height:1.2;}
-.badges{padding:0 16px 14px;display:flex;flex-wrap:wrap;gap:10px;}
-.badge{padding:7px 16px;border-radius:4px;font-size:.88rem;font-weight:bold;}
-.badge-farm{background:rgba(192,57,43,0.1);color:var(--crimson);border:1px solid rgba(192,57,43,0.4);text-shadow:0 0 8px rgba(192,57,43,0.4);}
-.strain-section{padding:0 16px 20px;color:#c8b89a;font-size:1rem;line-height:1.7;white-space:pre-line;}
-.quantity-section{padding:16px;margin:10px 16px;border-radius:12px;border:1px solid rgba(212,175,55,0.18);background:rgba(28,23,16,0.5);position:relative;overflow:hidden;}
-.quantity-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.4;}
-.quantity-title{font-family:'Noto Serif JP',serif;font-size:1.1rem;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px;font-weight:700;text-shadow:0 0 10px rgba(212,175,55,0.4);}
-.quantity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-.qty-btn{background:rgba(20,16,10,0.9);border:1px solid rgba(212,175,55,0.2);color:var(--text-warm);padding:14px 10px;border-radius:8px;text-align:center;cursor:pointer;font-weight:bold;transition:.2s;font-family:'Zen Kaku Gothic New',sans-serif;}
-.qty-btn.selected{background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(192,57,43,0.15));color:#fff;border-color:var(--gold);box-shadow:0 0 14px rgba(212,175,55,0.3),inset 0 0 10px rgba(212,175,55,0.08);}
-.price-new{color:#7bc47b;font-weight:900;font-size:1.05rem;text-shadow:0 0 8px rgba(123,196,123,0.4);}
-.add-to-cart{margin:14px 16px 36px;background:linear-gradient(135deg,var(--lacquer-red),#8b0000,#5a0000);color:var(--gold);border:1px solid rgba(212,175,55,0.4);padding:17px;font-size:1.1rem;font-weight:bold;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;box-shadow:0 0 24px rgba(192,57,43,0.5),0 4px 16px rgba(0,0,0,0.5);font-family:'Noto Serif JP',serif;letter-spacing:1px;}
+#product-detail{display:none;flex-direction:column;height:100dvh;background:#0f0700;position:relative;}
+.product-info{flex:1;background:linear-gradient(180deg,#271508 0%,#0f0700 100%);overflow-y:auto;padding-bottom:90px;}
+.product-title{padding:20px 16px 8px;font-family:‘Bangers’,cursive;font-size:2rem;font-weight:400;color:var(–orange-light);text-shadow:3px 3px 0 rgba(214,50,0,0.6),0 0 20px rgba(255,122,0,0.5);letter-spacing:2px;line-height:1.2;}
+.badges{padding:0 16px 12px;display:flex;flex-wrap:wrap;gap:8px;}
+.badge{padding:6px 14px;border-radius:4px;font-size:.82rem;font-weight:800;}
+.badge-farm{background:rgba(255,122,0,0.1);color:var(–orange);border:1.5px solid rgba(255,122,0,0.4);text-shadow:0 0 6px rgba(255,122,0,0.4);}
+.strain-section{padding:0 16px 18px;color:#c8a87a;font-size:0.95rem;line-height:1.7;white-space:pre-line;}
+.quantity-section{padding:16px;margin:10px 16px;border-radius:12px;border:1.5px solid rgba(255,122,0,0.2);background:rgba(39,21,8,0.6);position:relative;overflow:hidden;}
+.quantity-section::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(–orange),transparent);opacity:0.5;}
+.quantity-title{font-family:‘Bangers’,cursive;font-size:1.2rem;color:var(–orange);margin-bottom:14px;display:flex;align-items:center;gap:10px;letter-spacing:2px;text-shadow:0 0 10px rgba(255,122,0,0.4);}
+.quantity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.qty-btn{background:rgba(15,7,0,0.9);border:1.5px solid rgba(255,122,0,0.2);color:var(–cream);padding:14px 10px;border-radius:8px;text-align:center;cursor:pointer;font-weight:800;transition:.2s;font-family:‘Nunito’,sans-serif;}
+.qty-btn.selected{background:linear-gradient(135deg,rgba(255,122,0,0.25),rgba(214,50,0,0.18));color:#fff;border-color:var(–orange);box-shadow:0 0 14px rgba(255,122,0,0.35),inset 0 0 10px rgba(255,122,0,0.08);}
+.price-new{color:#6dcc60;font-weight:900;font-size:1rem;text-shadow:0 0 8px rgba(109,204,96,0.4);}
+.add-to-cart{margin:14px 16px 36px;background:linear-gradient(135deg,var(–red),#8b1500);color:var(–orange-light);border:1.5px solid rgba(255,122,0,0.5);padding:16px;font-size:1.1rem;font-weight:400;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;box-shadow:0 0 24px rgba(214,50,0,0.5),0 4px 16px rgba(0,0,0,0.5);font-family:‘Bangers’,cursive;letter-spacing:3px;}
 
 /* SWIPER */
-.swiper-wrap{position:relative;width:100%;overflow:hidden;background:#0a0a08;aspect-ratio:1/1;flex:0 0 auto;}
+.swiper-wrap{position:relative;width:100%;overflow:hidden;background:#0f0700;aspect-ratio:1/1;flex:0 0 auto;}
 .swiper-track{display:flex;transition:transform 0.35s ease;will-change:transform;height:100%;}
-.swiper-track>*{flex-shrink:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none;background:#0a0a08;}
+.swiper-track>*{flex-shrink:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;user-select:none;background:#0f0700;}
 .swiper-track video{pointer-events:auto;object-fit:cover;}
-.swiper-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(20,16,10,0.88);border:1.5px solid rgba(212,175,55,0.4);color:var(--gold);width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
-.swiper-btn-prev{left:12px;}
-.swiper-btn-next{right:12px;}
-.swiper-counter{position:absolute;bottom:10px;right:14px;background:rgba(20,16,10,0.9);border:1px solid rgba(212,175,55,0.4);border-radius:6px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--gold);letter-spacing:1px;font-family:'Noto Serif JP',serif;}
+.swiper-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(15,7,0,0.88);border:1.5px solid rgba(255,122,0,0.4);color:var(–orange);width:44px;height:44px;border-radius:50%;font-size:18px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
+.swiper-btn-prev{left:12px;}.swiper-btn-next{right:12px;}
+.swiper-counter{position:absolute;bottom:10px;right:14px;background:rgba(15,7,0,0.9);border:1px solid rgba(255,122,0,0.4);border-radius:6px;padding:4px 12px;font-size:12px;font-weight:800;color:var(–orange);letter-spacing:1px;font-family:‘Bangers’,cursive;}
 
 /* CART */
 #cart-page{padding:16px;display:none;}
-.cart-item{background:var(--surface);border:1px solid var(--border-gold);border-radius:10px;padding:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
-.cart-item-title{font-weight:bold;color:var(--gold);font-family:'Noto Serif JP',serif;}
-.cart-item-qty{color:var(--text-dim);font-size:0.9rem;}
-.delete-btn{background:var(--lacquer-red);color:var(--gold);border:1px solid rgba(212,175,55,0.3);width:32px;height:32px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.1rem;}
-.cart-total{text-align:center;font-size:1.3rem;color:var(--gold);margin:20px 0;font-family:'Noto Serif JP',serif;text-shadow:0 0 12px rgba(212,175,55,0.5);}
-.questionnaire{background:var(--surface);border:1px solid var(--border-gold);border-radius:12px;padding:20px;margin-top:20px;position:relative;overflow:hidden;}
-.questionnaire::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lacquer-red),var(--gold),transparent);opacity:0.5;}
-.question{margin-bottom:20px;}
-.question-label{display:block;font-size:0.95rem;color:var(--text-dim);margin-bottom:10px;font-weight:600;}
-.option-btn{width:100%;padding:13px;margin:6px 0;background:rgba(20,16,10,0.8);border:1px solid rgba(212,175,55,0.2);color:var(--text-warm);border-radius:8px;font-size:0.95rem;cursor:pointer;font-family:'Zen Kaku Gothic New',sans-serif;}
-.option-btn.active{background:linear-gradient(135deg,rgba(212,175,55,0.18),rgba(192,57,43,0.12));color:#fff;border-color:var(--gold);font-weight:bold;box-shadow:0 0 12px rgba(212,175,55,0.25);}
-input[type="time"],input[type="text"],textarea{width:100%;padding:13px;border-radius:8px;border:1px solid rgba(212,175,55,0.25);background:rgba(20,16,10,0.8);color:var(--text-warm);font-size:0.95rem;font-family:'Zen Kaku Gothic New',sans-serif;outline:none;}
-input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 8px rgba(212,175,55,0.2);}
-textarea{min-height:90px;resize:vertical;}
-#submit-order-btn{width:100%;padding:17px;background:linear-gradient(135deg,var(--lacquer-red),#8b0000);color:var(--gold);border:1px solid rgba(212,175,55,0.4);border-radius:12px;font-size:1.15rem;font-weight:bold;margin-top:22px;cursor:pointer;box-shadow:0 0 20px rgba(192,57,43,0.4);font-family:'Noto Serif JP',serif;letter-spacing:2px;}
-#submit-order-btn:disabled{background:#1c1710;color:#333;cursor:not-allowed;}
+.cart-item{background:var(–bg-card);border:1.5px solid var(–border-orange);border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+.cart-item-title{font-weight:800;color:var(–orange-light);font-family:‘Bangers’,cursive;font-size:1rem;letter-spacing:1px;}
+.cart-item-qty{color:var(–cream-dim);font-size:0.88rem;}
+.delete-btn{background:var(–red);color:var(–orange-light);border:1px solid rgba(255,122,0,0.3);width:32px;height:32px;border-radius:50%;font-weight:bold;cursor:pointer;font-size:1.1rem;}
+.cart-total{text-align:center;font-size:1.4rem;color:var(–orange);margin:18px 0;font-family:‘Bangers’,cursive;letter-spacing:2px;text-shadow:0 0 12px rgba(255,122,0,0.5);}
+.questionnaire{background:var(–bg-card);border:1.5px solid var(–border-orange);border-radius:12px;padding:20px;margin-top:18px;position:relative;overflow:hidden;}
+.questionnaire::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(–red),var(–orange),transparent);opacity:0.6;}
+.question{margin-bottom:18px;}
+.question-label{display:block;font-size:0.88rem;color:var(–cream-dim);margin-bottom:10px;font-weight:800;}
+.option-btn{width:100%;padding:12px;margin:6px 0;background:rgba(15,7,0,0.8);border:1.5px solid rgba(255,122,0,0.2);color:var(–cream);border-radius:8px;font-size:0.9rem;cursor:pointer;font-family:‘Nunito’,sans-serif;font-weight:700;}
+.option-btn.active{background:linear-gradient(135deg,rgba(255,122,0,0.2),rgba(214,50,0,0.14));color:#fff;border-color:var(–orange);font-weight:900;box-shadow:0 0 12px rgba(255,122,0,0.25);}
+input[type=“time”],input[type=“text”],textarea{width:100%;padding:12px;border-radius:8px;border:1.5px solid rgba(255,122,0,0.25);background:rgba(15,7,0,0.8);color:var(–cream);font-size:0.9rem;font-family:‘Nunito’,sans-serif;outline:none;}
+input:focus,textarea:focus{border-color:var(–orange);box-shadow:0 0 8px rgba(255,122,0,0.2);}
+textarea{min-height:80px;resize:vertical;}
+#submit-order-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(–red),#8b1500);color:var(–orange-light);border:1.5px solid rgba(255,122,0,0.4);border-radius:12px;font-size:1.2rem;font-weight:400;margin-top:20px;cursor:pointer;box-shadow:0 0 20px rgba(214,50,0,0.4);font-family:‘Bangers’,cursive;letter-spacing:3px;}
+#submit-order-btn:disabled{background:#271508;color:#333;cursor:not-allowed;}
 
 /* INFOS */
 #infos-page{display:none;padding:16px 16px 110px;}
-.info-card{background:var(--surface);border:1.5px solid var(--border-gold);border-radius:18px;padding:20px 18px;margin-bottom:16px;box-shadow:0 6px 32px rgba(0,0,0,0.7),0 0 20px rgba(212,175,55,0.04);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:relative;overflow:hidden;}
-.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--lacquer-red),var(--gold),transparent);opacity:0.4;}
-.info-card-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-.info-card-icon{width:46px;height:46px;background:rgba(212,175,55,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;border:1px solid rgba(212,175,55,0.25);}
-.info-card-title{font-family:'Noto Serif JP',serif;font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:0.5px;}
+.info-card{background:var(–bg-card);border:1.5px solid var(–border-orange);border-radius:16px;padding:18px 16px;margin-bottom:14px;box-shadow:0 6px 28px rgba(0,0,0,0.7),0 0 16px rgba(255,122,0,0.04);backdrop-filter:blur(10px);position:relative;overflow:hidden;}
+.info-card::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(–red),var(–orange),transparent);opacity:0.5;}
+.info-card-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.info-card-icon{width:44px;height:44px;background:rgba(255,122,0,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;border:1.5px solid rgba(255,122,0,0.25);}
+.info-card-title{font-family:‘Bangers’,cursive;font-size:1.2rem;font-weight:400;color:#fff;letter-spacing:2px;}
 .dept-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
-.dept-badge{background:rgba(192,57,43,0.08);border:1.5px solid rgba(192,57,43,0.35);color:var(--crimson);padding:5px 14px;border-radius:4px;font-family:'Noto Serif JP',serif;font-size:0.95rem;font-weight:700;}
-.meetup-location-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);border-radius:10px;padding:13px 16px;margin-bottom:10px;border:1px solid rgba(212,175,55,0.1);}
-.meetup-location-name{font-size:1rem;font-weight:700;color:#fff;font-family:'Noto Serif JP',serif;}
-.disponible-badge{background:rgba(123,196,123,0.1);border:1.5px solid rgba(123,196,123,0.4);color:#7bc47b;font-family:'Noto Serif JP',serif;font-size:0.72rem;font-weight:800;padding:5px 13px;border-radius:4px;letter-spacing:0.5px;}
-.meetup-horaires-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.meetup-horaires-text{color:var(--text-dim);font-size:0.88rem;font-weight:500;}
+.dept-badge{background:rgba(214,50,0,0.1);border:1.5px solid rgba(255,122,0,0.4);color:var(–orange);padding:5px 14px;border-radius:4px;font-family:‘Bangers’,cursive;font-size:1rem;font-weight:400;letter-spacing:1px;}
+.meetup-location-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);border-radius:8px;padding:12px 14px;margin-bottom:8px;border:1px solid rgba(255,122,0,0.1);}
+.meetup-location-name{font-size:0.95rem;font-weight:800;color:#fff;}
+.disponible-badge{background:rgba(74,156,63,0.12);border:1.5px solid rgba(109,204,96,0.4);color:#6dcc60;font-size:0.7rem;font-weight:800;padding:5px 12px;border-radius:4px;letter-spacing:0.5px;}
+.meetup-horaires-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.meetup-horaires-text{color:var(–cream-dim);font-size:0.86rem;font-weight:600;}
 
 /* RÉSEAUX */
 #reseaux-page{display:none;padding:16px 16px 110px;}
-.section-title{font-family:'Noto Serif JP',serif;font-size:1.3rem;color:var(--gold);margin:20px 0 16px;font-weight:bold;text-align:center;text-shadow:0 0 16px rgba(212,175,55,0.6);letter-spacing:3px;}
-.reseaux-list{display:flex;flex-direction:column;gap:13px;margin-top:4px;}
-.reseau-item{background:var(--surface);border:1.5px solid var(--border-gold);border-radius:16px;padding:15px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(0,0,0,0.6);backdrop-filter:blur(6px);position:relative;overflow:hidden;}
-.reseau-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.3),transparent);}
-.reseau-item:active{transform:scale(0.97);border-color:var(--crimson);background:rgba(192,57,43,0.06);}
-.reseau-icon-wrap{width:50px;height:50px;flex-shrink:0;border-radius:12px;border:1.5px solid rgba(212,175,55,0.25);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:1.7rem;}
-.reseau-icon-wrap img{width:32px!important;height:32px!important;object-fit:contain;}
+.section-title{font-family:‘Bangers’,cursive;font-size:1.6rem;color:var(–orange);margin:18px 0 14px;font-weight:400;text-align:center;text-shadow:2px 2px 0 var(–brown),0 0 16px rgba(255,122,0,0.5);letter-spacing:4px;}
+.reseaux-list{display:flex;flex-direction:column;gap:12px;margin-top:4px;}
+.reseau-item{background:var(–bg-card);border:1.5px solid var(–border-orange);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(0,0,0,0.6);position:relative;overflow:hidden;}
+.reseau-item::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,122,0,0.35),transparent);}
+.reseau-item:active{transform:scale(0.97);border-color:var(–orange);background:rgba(255,122,0,0.06);}
+.reseau-icon-wrap{width:48px;height:48px;flex-shrink:0;border-radius:10px;border:1.5px solid rgba(255,122,0,0.25);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:1.5rem;}
+.reseau-icon-wrap img{width:30px!important;height:30px!important;object-fit:contain;}
 .reseau-text{flex:1;}
-.reseau-name{font-family:'Noto Serif JP',serif;font-size:0.95rem;font-weight:800;color:#fff;letter-spacing:0.3px;}
-.reseau-sub{font-size:0.78rem;color:#6a5840;font-weight:500;margin-top:3px;}
-.reseau-arrow{font-size:1.5rem;color:var(--gold);font-weight:300;line-height:1;text-shadow:0 0 8px rgba(212,175,55,0.5);}
+.reseau-name{font-family:‘Bangers’,cursive;font-size:1rem;font-weight:400;color:#fff;letter-spacing:1px;}
+.reseau-sub{font-size:0.76rem;color:#6a4a28;font-weight:600;margin-top:2px;}
+.reseau-arrow{font-size:1.4rem;color:var(–orange);line-height:1;text-shadow:0 0 8px rgba(255,122,0,0.5);}
 
 /* AVIS */
-.star.on{color:var(--gold);text-shadow:0 0 8px rgba(212,175,55,0.8);}
-.avis-card{background:var(--surface);border:1.5px solid rgba(212,175,55,0.1);border-radius:14px;padding:15px 18px;margin-bottom:12px;box-shadow:0 4px 16px rgba(0,0,0,0.6);}
-.avis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.avis-user{font-family:'Noto Serif JP',serif;font-size:0.85rem;color:var(--crimson);font-weight:700;}
-.avis-date{font-size:0.72rem;color:#3a2e20;margin-bottom:8px;}
-.avis-comment{color:#c8b89a;font-size:0.88rem;line-height:1.5;}
+.star.on{color:var(–orange);text-shadow:0 0 8px rgba(255,122,0,0.8);}
+.avis-card{background:var(–bg-card);border:1.5px solid rgba(255,122,0,0.12);border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 4px 14px rgba(0,0,0,0.6);}
+.avis-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.avis-user{font-family:‘Bangers’,cursive;font-size:0.9rem;color:var(–orange);font-weight:400;letter-spacing:1px;}
+.avis-date{font-size:0.7rem;color:#3a2010;margin-bottom:6px;}
+.avis-comment{color:#c8a87a;font-size:0.86rem;line-height:1.5;}
 
 /* NAV */
-nav{position:fixed;bottom:16px;left:12px;right:12px;height:62px;background:rgba(10,10,8,0.97);border-radius:22px;border:1px solid rgba(212,175,55,0.22);display:flex;justify-content:space-around;align-items:center;z-index:1000;box-shadow:0 10px 40px rgba(0,0,0,0.9),0 0 30px rgba(212,175,55,0.06);padding:0 4px;}
-nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,0.5),transparent);}
+nav{
+position:fixed;bottom:14px;left:10px;right:10px;height:62px;
+background:rgba(15,7,0,0.97);
+border-radius:20px;border:1.5px solid rgba(255,122,0,0.25);
+display:flex;justify-content:space-around;align-items:center;
+z-index:1000;
+box-shadow:0 8px 36px rgba(0,0,0,0.9),0 0 28px rgba(255,122,0,0.07);
+padding:0 4px;
+}
+nav::before{content:’’;position:absolute;top:0;left:20%;right:20%;height:1.5px;background:linear-gradient(90deg,transparent,rgba(255,122,0,0.55),transparent);}
 .nav-item{display:flex;align-items:center;justify-content:center;cursor:pointer;width:44px;height:44px;border-radius:50%;background:transparent;transition:all 0.25s ease;position:relative;}
-.nav-item.active{background:rgba(212,175,55,0.15);box-shadow:0 3px 18px rgba(212,175,55,0.3),0 0 0 1px rgba(212,175,55,0.25);transform:translateY(-3px) scale(1.08);}
+.nav-item.active{background:rgba(255,122,0,0.15);box-shadow:0 3px 18px rgba(255,122,0,0.35),0 0 0 1.5px rgba(255,122,0,0.3);transform:translateY(-3px) scale(1.08);}
 .nav-emoji{font-size:1.2rem;line-height:1;display:block;transition:transform 0.2s;}
 .nav-item.active .nav-emoji{transform:scale(1.1);}
-#cart-badge{position:absolute;top:-2px;right:-2px;background:var(--lacquer-red);color:var(--gold);border-radius:50%;min-width:15px;height:15px;padding:0 3px;font-size:0.55rem;font-weight:bold;line-height:15px;box-shadow:0 0 8px rgba(192,57,43,0.7);display:none;z-index:2;text-align:center;}
+#cart-badge{position:absolute;top:-2px;right:-2px;background:var(–red);color:var(–orange-light);border-radius:50%;min-width:15px;height:15px;padding:0 3px;font-size:0.55rem;font-weight:800;line-height:15px;box-shadow:0 0 8px rgba(214,50,0,0.7);display:none;z-index:2;text-align:center;}
 
 /* PROFIL */
 #profil-page{display:none;padding:16px 16px 110px;}
-.profil-header{background:var(--surface);border:1.5px solid var(--border-gold);border-radius:20px;padding:26px 20px 20px;text-align:center;margin-bottom:16px;box-shadow:0 0 30px rgba(212,175,55,0.06);position:relative;overflow:hidden;}
-.profil-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--lacquer-red),var(--gold),transparent);opacity:0.5;}
-.profil-avatar{width:76px;height:76px;background:rgba(212,175,55,0.08);border:2px solid rgba(212,175,55,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 12px;box-shadow:0 0 30px rgba(212,175,55,0.2);overflow:hidden;}
+.profil-header{background:var(–bg-card);border:1.5px solid var(–border-orange);border-radius:18px;padding:24px 18px 18px;text-align:center;margin-bottom:14px;box-shadow:0 0 28px rgba(255,122,0,0.06);position:relative;overflow:hidden;}
+.profil-header::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(–orange),var(–red),var(–orange),transparent);opacity:0.5;}
+.profil-avatar{width:72px;height:72px;background:rgba(255,122,0,0.08);border:2px solid rgba(255,122,0,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 10px;box-shadow:0 0 28px rgba(255,122,0,0.2);overflow:hidden;}
 .profil-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
-.profil-name{font-family:'Noto Serif JP',serif;font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:3px;}
-.profil-section-title{font-family:'Noto Serif JP',serif;font-size:0.88rem;font-weight:800;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin:18px 0 10px;}
-.profil-stats-block{background:var(--surface);border:1.5px solid rgba(212,175,55,0.22);border-radius:16px;padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:16px;box-shadow:0 6px 24px rgba(0,0,0,0.6);}
-.profil-stats-icon{width:52px;height:52px;background:rgba(212,175,55,0.06);border:1.5px solid rgba(212,175,55,0.25);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
-.profil-stats-info{flex:1;}
-.profil-stats-number{font-family:'Noto Serif JP',serif;font-size:2rem;font-weight:900;color:var(--gold);line-height:1;text-shadow:0 0 16px rgba(212,175,55,0.5);}
-.profil-stats-label{font-size:0.78rem;color:#3a2e20;font-weight:600;margin-top:4px;}
-.commande-card{background:var(--surface);border:1.5px solid rgba(255,255,255,0.04);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
-.commande-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.commande-date{font-size:0.76rem;color:#3a2e20;font-weight:600;}
-.commande-total{font-family:'Noto Serif JP',serif;font-size:0.88rem;font-weight:900;color:var(--gold);}
-.commande-items{font-size:0.85rem;color:#6a5840;line-height:1.6;}
-.commande-mode{display:inline-block;margin-top:7px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.18);color:rgba(212,175,55,0.7);font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:4px;letter-spacing:0.5px;}
-  </style>
+.profil-name{font-family:‘Bangers’,cursive;font-size:1.1rem;letter-spacing:2px;color:#fff;margin-bottom:2px;}
+.profil-section-title{font-family:‘Bangers’,cursive;font-size:0.9rem;font-weight:400;color:var(–orange);letter-spacing:3px;text-transform:uppercase;margin:16px 0 8px;}
+.profil-stats-block{background:var(–bg-card);border:1.5px solid rgba(255,122,0,0.22);border-radius:14px;padding:16px;margin-bottom:14px;display:flex;align-items:center;gap:14px;box-shadow:0 6px 22px rgba(0,0,0,0.6);}
+.profil-stats-icon{width:48px;height:48px;background:rgba(255,122,0,0.06);border:1.5px solid rgba(255,122,0,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.profil-stats-number{font-family:‘Bangers’,cursive;font-size:2rem;color:var(–orange);line-height:1;text-shadow:0 0 14px rgba(255,122,0,0.5);}
+.profil-stats-label{font-size:0.76rem;color:#3a2010;font-weight:700;margin-top:3px;}
+.commande-card{background:var(–bg-card);border:1.5px solid rgba(255,255,255,0.04);border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.commande-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.commande-date{font-size:0.74rem;color:#3a2010;font-weight:700;}
+.commande-total{font-family:‘Bangers’,cursive;font-size:0.9rem;color:var(–orange);letter-spacing:1px;}
+.commande-items{font-size:0.83rem;color:#6a4a28;line-height:1.5;}
+.commande-mode{display:inline-block;margin-top:6px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.18);color:rgba(255,170,68,0.7);font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:4px;letter-spacing:0.5px;}
+
+/* MANGA PANEL ACCENT on cards */
+.manga-corner{position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 28px 28px 0;border-color:transparent var(–orange) transparent transparent;z-index:3;opacity:0.6;}
+</style>
+
 </head>
 <body>
 
 <!-- SPLASH -->
+
 <div id="splash-screen" class="splash">
   <div class="splash-content">
-    <div class="splash-vignette"></div>
-    <div class="splash-pattern"></div>
-    <div class="splash-particles" id="splash-particles"></div>
-    <div class="splash-glow"></div>
-    <div class="splash-logo-ring">
-      <img src="dino.jpg" alt="Dino Terps 76" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="fallback-emoji">🍣</span>
+    <div class="splash-bg-rings">
+      <div class="splash-ring"></div>
+      <div class="splash-ring"></div>
+      <div class="splash-ring"></div>
     </div>
-    <div class="splash-title-jp">Premium Shop</div>
-    <div class="splash-title-main">DINO TERPS 76</div>
+    <div class="splash-speed-lines"></div>
+    <div class="splash-logo">
+      <img src="dino.jpg" alt="Dino Terps 76" onerror="this.style.background='#271508';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';">
+    </div>
+    <div class="splash-name">DINO TERPS 76</div>
     <div class="splash-divider"></div>
-    <div class="splash-title-sub">🔥 ディノテルプス 🔥</div>
-    <div class="splash-progress-wrap"><div class="splash-progress-bar"></div></div>
-    <div class="splash-text">Chargement...</div>
+    <div class="splash-sub">🍣 PREMIUM SHOP 🍣</div>
+    <div class="splash-progress"><div class="splash-bar"></div></div>
+    <div class="splash-loading-txt">Chargement...</div>
   </div>
 </div>
 
 <div class="container">
-  <div class="overlay"></div>
   <div class="content">
 
-    <!-- ACCUEIL -->
-    <div id="home-page">
-      <div id="home-logo-wrapper">
-        <div class="home-logo-img-wrap">
-          <img src="dino.jpg" alt="Dino Terps 76" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="logo-fallback">🍣</span>
-        </div>
-      </div>
-      <div class="neon-line"></div>
-      <div id="products-header">
-        <div class="products-title"><span style="font-size:1.3rem">🛍️</span>Catalogue</div>
-        <div id="products-count-modern" class="products-count">
-          <div class="products-count-number">6</div>
-          <div class="products-count-label">Produits</div>
-        </div>
-      </div>
-      <div id="filters-bar">
-        <div class="filters-inner">
-          <select id="category-filter" class="compact-select" onchange="filterProducts()"><option value="">Toutes catégories</option></select>
-          <select id="farm-filter" class="compact-select" onchange="filterProducts()"><option value="">Toutes farms</option></select>
-        </div>
-      </div>
-      <div id="products-grid"></div>
+
+<!-- ACCUEIL -->
+<div id="home-page">
+  <div id="home-hero" style="position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
+    <div class="hero-logo-ring">
+      <img src="dino.jpg" alt="Dino Terps 76" onerror="this.parentElement.style.background='#271508'">
     </div>
-
-    <!-- DÉTAIL PRODUIT -->
-    <div id="product-detail">
-      <div class="swiper-wrap">
-        <div class="swiper-track" id="swiper-track"></div>
-        <button class="swiper-btn swiper-btn-prev" onclick="swiperPrev()">&#8249;</button>
-        <button class="swiper-btn swiper-btn-next" onclick="swiperNext()">&#8250;</button>
-        <div class="swiper-counter" id="swiper-counter">1 / 1</div>
-      </div>
-      <div class="product-info">
-        <div class="product-title" id="detail-title"></div>
-        <div class="badges"><div class="badge badge-farm" id="detail-farm-badge"></div></div>
-        <div class="strain-section" id="detail-strain-desc"></div>
-        <div class="quantity-section">
-          <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
-          <div class="quantity-grid" id="qty-grid"></div>
-        </div>
-        <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
-      </div>
+    <div class="hero-brand">DINO TERPS 76</div>
+    <div class="hero-tagline">🍣 PREMIUM TERPS SHOP 🍣</div>
+    <div class="hero-strip">
+      <span class="hero-chip">76 · 27 · 14 · 60</span>
+      <span class="hero-chip">⚡ TERPS HIGH</span>
+      <span class="hero-chip">🔥 QUALITY</span>
     </div>
-
-    <!-- PANIER -->
-    <div id="cart-page">
-      <h2 style="color:var(--gold);text-align:center;margin:20px 0;font-family:'Noto Serif JP',serif;text-shadow:0 0 16px rgba(212,175,55,0.5);">Votre Panier</h2>
-      <div id="cart-items"></div>
-      <div id="cart-total" class="cart-total"></div>
-      <div class="questionnaire">
-        <div class="question">
-          <span class="question-label">Mode de récupération :</span>
-          <button class="option-btn" data-type="pickup">Venir sur place</button>
-          <button class="option-btn" data-type="delivery">Livraison</button>
-        </div>
-        <div id="pickup-questions" style="display:none">
-          <div class="question"><span class="question-label">Pour quelle heure ?</span><input type="time" id="pickup-time"></div>
-        </div>
-        <div id="delivery-questions" style="display:none">
-          <div class="question"><span class="question-label">Heure souhaitée</span><input type="time" id="delivery-time"></div>
-          <div class="question"><span class="question-label">Adresse complète</span><input type="text" id="delivery-address" placeholder="Rue, numéro, ville..."></div>
-          <div class="question"><span class="question-label">Précisions (étage, code, etc.)</span><textarea id="delivery-details" placeholder="Interphone, digicode, remarques..."></textarea></div>
-        </div>
-        <button id="submit-order-btn">Commander</button>
-      </div>
+  </div>
+  <div style="height:14px"></div>
+  <div id="products-header">
+    <div class="products-title">🛍️ Catalogue</div>
+    <div id="products-count-modern" class="products-count">
+      <div class="products-count-number">6</div>
+      <div class="products-count-label">Produits</div>
     </div>
+  </div>
+  <div id="filters-bar">
+    <div class="filters-inner">
+      <select id="category-filter" class="compact-select" onchange="filterProducts()"><option value="">Toutes catégories</option></select>
+      <select id="farm-filter" class="compact-select" onchange="filterProducts()"><option value="">Toutes farms</option></select>
+    </div>
+  </div>
+  <div id="products-grid"></div>
+</div>
 
-    <!-- INFOS -->
-    <div id="infos-page">
-      <div class="info-card" style="margin-top:8px">
-        <div class="info-card-header"><div class="info-card-icon">🚚</div><div class="info-card-title">Livraison</div></div>
-        <div style="color:#c8b89a;font-size:0.9rem;line-height:1.8;white-space:pre-line">SALUT À TOUS LA TEAM !
+<!-- DÉTAIL PRODUIT -->
+<div id="product-detail">
+  <div class="swiper-wrap">
+    <div class="swiper-track" id="swiper-track"></div>
+    <button class="swiper-btn swiper-btn-prev" onclick="swiperPrev()">&#8249;</button>
+    <button class="swiper-btn swiper-btn-next" onclick="swiperNext()">&#8250;</button>
+    <div class="swiper-counter" id="swiper-counter">1 / 1</div>
+  </div>
+  <div class="product-info">
+    <div class="product-title" id="detail-title"></div>
+    <div class="badges"><div class="badge badge-farm" id="detail-farm-badge"></div></div>
+    <div class="strain-section" id="detail-strain-desc"></div>
+    <div class="quantity-section">
+      <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
+      <div class="quantity-grid" id="qty-grid"></div>
+    </div>
+    <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
+  </div>
+</div>
 
-VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--gold);font-weight:700">76 / 27 / 14 / 60</span>
+<!-- PANIER -->
+<div id="cart-page">
+  <h2 style="color:var(--orange);text-align:center;margin:18px 0;font-family:'Bangers',cursive;font-size:2rem;letter-spacing:3px;text-shadow:2px 2px 0 var(--brown),0 0 16px rgba(255,122,0,0.5);">Votre Panier 🛒</h2>
+  <div id="cart-items"></div>
+  <div id="cart-total" class="cart-total"></div>
+  <div class="questionnaire">
+    <div class="question">
+      <span class="question-label">Mode de récupération :</span>
+      <button class="option-btn" data-type="pickup">Venir sur place</button>
+      <button class="option-btn" data-type="delivery">Livraison</button>
+    </div>
+    <div id="pickup-questions" style="display:none">
+      <div class="question"><span class="question-label">Pour quelle heure ?</span><input type="time" id="pickup-time"></div>
+    </div>
+    <div id="delivery-questions" style="display:none">
+      <div class="question"><span class="question-label">Heure souhaitée</span><input type="time" id="delivery-time"></div>
+      <div class="question"><span class="question-label">Adresse complète</span><input type="text" id="delivery-address" placeholder="Rue, numéro, ville..."></div>
+      <div class="question"><span class="question-label">Précisions (étage, code, etc.)</span><textarea id="delivery-details" placeholder="Interphone, digicode, remarques..."></textarea></div>
+    </div>
+    <button id="submit-order-btn">Commander 🍣</button>
+  </div>
+</div>
 
-<span style="color:var(--crimson);font-weight:700">76 Centre et alentours :</span>
-  • 10 km → <span style="color:#7bc47b;font-weight:700">50 €</span>
-  • 20 km → <span style="color:#7bc47b;font-weight:700">80 €</span>
-  • 30 km → <span style="color:#7bc47b;font-weight:700">120 €</span>
-  • 50 km → <span style="color:#7bc47b;font-weight:700">350 €</span>
-  • 100 km → <span style="color:#7bc47b;font-weight:700">420 €</span></div>
-        <div style="margin-top:14px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:11px 14px;font-size:0.85rem;color:var(--gold);font-weight:700;text-align:center">💶 Paiement en espèces uniquement</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Meet-up</div></div>
-        <div style="color:#c8b89a;font-size:0.9rem;line-height:1.8;margin-bottom:14px">Vous pouvez passer directement sur place la famille !<br>Avant de venir, contactez-nous en privé et précisez :</div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
-          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 14px"><span style="color:var(--gold)">→</span><span style="color:var(--text-warm);font-size:0.88rem">Votre heure d'arrivée</span></div>
-          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 14px"><span style="color:var(--gold)">→</span><span style="color:var(--text-warm);font-size:0.88rem">Votre commande souhaitée</span></div>
-        </div>
-        <div class="meetup-location-row">
-          <div style="display:flex;align-items:center;gap:10px"><span style="color:var(--gold);font-size:1rem">📍</span><span class="meetup-location-name">@dino76s 🍣</span></div>
-          <div class="disponible-badge">Disponible</div>
-        </div>
-        <div class="meetup-horaires-row" style="margin-top:8px"><span style="color:var(--gold);font-size:1rem">🕐</span><span class="meetup-horaires-text">Horaires : 12h – 23h</span></div>
-        <div class="meetup-horaires-row"><span style="color:var(--crimson);font-size:1rem">✅</span><span class="meetup-horaires-text">SAV disponible 24h/24</span></div>
-        <div style="margin-top:12px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:11px 14px;font-size:0.85rem;color:var(--gold);font-weight:700;text-align:center">💶 Paiement en espèces uniquement</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Zones desservies</div></div>
-        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px">
-          <span style="color:var(--gold);font-size:1rem;margin-top:2px">🗺️</span>
-          <div><div style="color:var(--text-dim);font-size:0.9rem;font-weight:500">Départements</div><div class="dept-badges"><span class="dept-badge">76</span><span class="dept-badge">27</span><span class="dept-badge">14</span><span class="dept-badge">60</span></div></div>
-        </div>
+<!-- INFOS -->
+<div id="infos-page">
+
+  <!-- BLOC BIENVENUE -->
+  <div class="info-card" style="margin-top:8px;background:linear-gradient(135deg,rgba(46,26,10,0.98),rgba(20,10,2,0.98));border-color:rgba(255,122,0,0.6);box-shadow:0 0 30px rgba(255,122,0,0.12),0 6px 28px rgba(0,0,0,0.8);">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:3px;color:var(--orange-light);text-shadow:2px 2px 0 var(--brown),0 0 20px rgba(255,122,0,0.6);line-height:1.2;">🪧 Bienvenue chez<br>DINO TERPS 76 🍱 🪧</div>
+    </div>
+    <!-- Normandie badge -->
+    <div style="display:flex;justify-content:center;margin-bottom:14px;">
+      <div style="background:rgba(255,122,0,0.1);border:2px solid rgba(255,122,0,0.5);border-radius:8px;padding:8px 22px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.4rem">🇫🇷</span>
+        <span style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:3px;color:var(--cream)">NORMANDIE</span>
       </div>
     </div>
-
-    <!-- RÉSEAUX -->
-    <div id="reseaux-page">
-      <h2 class="section-title">🔥 Nos réseaux</h2>
-      <div class="reseaux-list">
-        <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3VjMGo4dGMxc2tz&utm_source=qr">
-          <div class="reseau-icon-wrap" style="background:rgba(225,48,108,0.12);border-color:rgba(225,48,108,0.35)">📸</div>
-          <div class="reseau-text"><div class="reseau-name">Instagram</div><div class="reseau-sub">@dinoterps76</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
-        <div class="reseau-item" data-link="https://duanym138.org/DINOfslmogx8">
-          <div class="reseau-icon-wrap" style="background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3)">🥔</div>
-          <div class="reseau-text"><div class="reseau-name">Potato</div><div class="reseau-sub">Canal officiel 📢</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
-        <div class="reseau-item" data-link="https://t.me/+j7EMkLSIaV83ZmU8">
-          <div class="reseau-icon-wrap" style="background:rgba(41,182,246,0.12);border-color:rgba(41,182,246,0.3)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/512px-Telegram_logo.svg.png" alt="Telegram">
-          </div>
-          <div class="reseau-text"><div class="reseau-name">Canal Telegram</div><div class="reseau-sub">Annonces & updates 📢</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
-        <div class="reseau-item" data-link="https://snapchat.com/t/EZAiDCkN">
-          <div class="reseau-icon-wrap" style="background:rgba(255,252,0,0.1);border-color:rgba(255,252,0,0.3)">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="12" cy="11" r="5" fill="#FFFC00"/><path d="M7 16c0 0 1.5 3 5 3s5-3 5-3" stroke="#FFFC00" stroke-width="1.5" fill="none"/></svg>
-          </div>
-          <div class="reseau-text"><div class="reseau-name">Snapchat</div><div class="reseau-sub">Lien direct 👻</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
+    <!-- Badges qualité -->
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(109,204,96,0.06);border:1px solid rgba(109,204,96,0.25);border-radius:8px;padding:10px 14px;">
+        <span style="font-size:1.1rem">✅</span>
+        <span style="color:#6dcc60;font-weight:800;font-size:0.9rem;letter-spacing:0.5px">QUALITÉ VALIDÉE</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;">
+        <span style="font-size:1.1rem">🏆</span>
+        <span style="color:var(--orange-light);font-weight:800;font-size:0.9rem;letter-spacing:0.5px">SERVICE NUMÉRO UNO</span>
       </div>
     </div>
-
-    <!-- AVIS -->
-    <div id="avis-page" style="display:none;padding:16px 16px 110px">
-      <h2 class="section-title">⭐ Avis clients</h2>
-      <div class="info-card" style="margin-bottom:20px">
-        <div class="info-card-header"><div class="info-card-icon">✍️</div><div class="info-card-title">Laisser un avis</div></div>
-        <div style="margin-bottom:14px">
-          <div style="color:var(--text-dim);font-size:0.88rem;margin-bottom:10px;font-weight:600">Votre note</div>
-          <div id="star-rating" style="display:flex;gap:8px;font-size:2rem;cursor:pointer">
-            <span class="star" data-v="1">☆</span><span class="star" data-v="2">☆</span><span class="star" data-v="3">☆</span><span class="star" data-v="4">☆</span><span class="star" data-v="5">☆</span>
-          </div>
-        </div>
-        <div style="margin-bottom:14px">
-          <div style="color:var(--text-dim);font-size:0.88rem;margin-bottom:8px;font-weight:600">Votre commentaire</div>
-          <textarea id="avis-text" placeholder="Partagez votre expérience..."></textarea>
-        </div>
-        <button id="submit-avis-btn" style="width:100%;padding:15px;background:linear-gradient(135deg,var(--lacquer-red),#8b0000);color:var(--gold);border:1px solid rgba(212,175,55,0.3);border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;font-family:'Noto Serif JP',serif;letter-spacing:1px;box-shadow:0 0 20px rgba(192,57,43,0.4)">Publier mon avis</button>
+    <!-- Grid atouts -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:4px">🌿🍇🍊</div>
+        <div style="color:var(--cream-dim);font-size:0.75rem;font-weight:800">FRUITS FRAIS</div>
       </div>
-      <div id="avis-list"></div>
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:4px">💎</div>
+        <div style="color:var(--cream-dim);font-size:0.75rem;font-weight:800">MEILLEURE QUALITÉ</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:4px">💰</div>
+        <div style="color:var(--cream-dim);font-size:0.75rem;font-weight:800">MEILLEURS PRIX</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1.4rem;margin-bottom:4px">📦✅</div>
+        <div style="color:var(--cream-dim);font-size:0.75rem;font-weight:800">SATISFACTION GARANTIE</div>
+      </div>
     </div>
+    <!-- Services -->
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <div style="flex:1;background:rgba(214,50,0,0.1);border:1.5px solid rgba(214,50,0,0.35);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1rem;margin-bottom:3px">🚚</div>
+        <div style="font-family:'Bangers',cursive;font-size:0.85rem;letter-spacing:1px;color:var(--orange)">LIVRAISON</div>
+      </div>
+      <div style="flex:1;background:rgba(214,50,0,0.1);border:1.5px solid rgba(214,50,0,0.35);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1rem;margin-bottom:3px">🤝</div>
+        <div style="font-family:'Bangers',cursive;font-size:0.85rem;letter-spacing:1px;color:var(--orange)">MEET UP</div>
+      </div>
+    </div>
+    <!-- Service rapide -->
+    <div style="background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:1.2rem">🚚</span>
+      <span style="color:var(--cream);font-size:0.86rem;font-weight:800">SERVICE RAPIDE — notre équipe se déplace pour tout le monde ❤️</span>
+    </div>
+    <!-- Philosophie -->
+    <div style="background:rgba(255,255,255,0.015);border:1px solid rgba(255,244,224,0.08);border-radius:8px;padding:11px 14px;margin-bottom:12px;font-style:italic;color:var(--cream-dim);font-size:0.84rem;line-height:1.6;text-align:center;">
+      Authenticité, respect et proximité<br>
+      <span style="color:var(--orange-light)">👉 Offrir le meilleur tout en respectant nos prochains</span>
+    </div>
+    <!-- Parrainage -->
+    <div style="background:linear-gradient(135deg,rgba(255,122,0,0.15),rgba(214,50,0,0.1));border:2px solid rgba(255,122,0,0.45);border-radius:10px;padding:13px 16px;margin-bottom:12px;text-align:center;">
+      <div style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--orange-light);margin-bottom:4px;">🤝 PARRAINAGE 🎁</div>
+      <div style="color:var(--cream);font-size:0.88rem;font-weight:800;">1 AMI PARRAINÉ = <span style="color:#6dcc60;font-size:1.05rem">−20€</span> SUR COMMANDE</div>
+    </div>
+    <!-- Horaires + paiement -->
+    <div style="display:flex;gap:8px;">
+      <div style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1rem;margin-bottom:3px">🕐</div>
+        <div style="color:var(--cream-dim);font-size:0.72rem;font-weight:800;margin-bottom:2px">OUVERT</div>
+        <div style="color:var(--cream);font-size:0.8rem;font-weight:900">12h – 23h</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1rem;margin-bottom:3px">🕛</div>
+        <div style="color:var(--cream-dim);font-size:0.72rem;font-weight:800;margin-bottom:2px">SAV</div>
+        <div style="color:#6dcc60;font-size:0.8rem;font-weight:900">24h / 24h</div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1rem;margin-bottom:3px">💶</div>
+        <div style="color:var(--cream-dim);font-size:0.72rem;font-weight:800;margin-bottom:2px">PAIEMENT</div>
+        <div style="color:var(--orange);font-size:0.8rem;font-weight:900">ESPÈCES</div>
+      </div>
+    </div>
+  </div>
 
-    <!-- PROFIL -->
-    <div id="profil-page"></div>
+  <div class="info-card" style="margin-top:0">
+    <div class="info-card-header"><div class="info-card-icon">🚚</div><div class="info-card-title">Livraison</div></div>
+    <div style="color:#c8a87a;font-size:0.88rem;line-height:1.8;white-space:pre-line">SALUT À TOUS LA TEAM !
 
-    <!-- NAV -->
-    <nav>
-      <div class="nav-item active" id="nav-home"><span class="nav-emoji">🏠</span></div>
-      <div class="nav-item" id="nav-cart"><span class="nav-emoji">🛒</span><span id="cart-badge"></span></div>
-      <div class="nav-item" id="nav-avis"><span class="nav-emoji">⭐</span></div>
-      <div class="nav-item" id="nav-infos"><span class="nav-emoji">ℹ️</span></div>
-      <div class="nav-item" id="nav-reseaux"><span class="nav-emoji">📡</span></div>
-      <div class="nav-item" id="nav-profil"><span class="nav-emoji">👤</span></div>
-    </nav>
+
+VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-weight:800">76 / 27 / 14 / 60</span>
+
+<span style="color:var(--red);font-weight:800">76 Centre et alentours :</span>
+• 10 km → <span style="color:#6dcc60;font-weight:800">50 €</span>
+• 20 km → <span style="color:#6dcc60;font-weight:800">80 €</span>
+• 30 km → <span style="color:#6dcc60;font-weight:800">120 €</span>
+• 50 km → <span style="color:#6dcc60;font-weight:800">350 €</span>
+• 100 km → <span style="color:#6dcc60;font-weight:800">420 €</span></div>
+<div style="margin-top:12px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;font-size:0.83rem;color:var(--orange);font-weight:800;text-align:center">💶 Paiement en espèces uniquement</div>
+</div>
+<div class="info-card">
+<div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Meet-up</div></div>
+<div style="color:#c8a87a;font-size:0.88rem;line-height:1.8;margin-bottom:12px">Vous pouvez passer directement sur place la famille !<br>Avant de venir, contactez-nous en privé et précisez :</div>
+<div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px">
+<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.12);border-radius:7px;padding:9px 12px"><span style="color:var(--orange)">→</span><span style="color:var(--cream);font-size:0.86rem">Votre heure d’arrivée</span></div>
+<div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.12);border-radius:7px;padding:9px 12px"><span style="color:var(--orange)">→</span><span style="color:var(--cream);font-size:0.86rem">Votre commande souhaitée</span></div>
+</div>
+<div class="meetup-location-row">
+<div style="display:flex;align-items:center;gap:10px"><span style="color:var(--orange)">📍</span><span class="meetup-location-name">@dino76s 🍣</span></div>
+<div class="disponible-badge">Disponible</div>
+</div>
+<div class="meetup-horaires-row" style="margin-top:8px"><span style="color:var(--orange)">🕐</span><span class="meetup-horaires-text">Horaires : 12h – 23h</span></div>
+<div class="meetup-horaires-row"><span style="color:var(--green)">✅</span><span class="meetup-horaires-text">SAV disponible 24h/24</span></div>
+<div style="margin-top:10px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;font-size:0.83rem;color:var(--orange);font-weight:800;text-align:center">💶 Paiement en espèces uniquement</div>
+</div>
+<div class="info-card">
+<div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Zones desservies</div></div>
+<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px">
+<span style="color:var(--orange);font-size:1rem;margin-top:2px">🗺️</span>
+<div><div style="color:var(--cream-dim);font-size:0.88rem;font-weight:600">Départements</div><div class="dept-badges"><span class="dept-badge">76</span><span class="dept-badge">27</span><span class="dept-badge">14</span><span class="dept-badge">60</span></div></div>
+</div>
+</div>
+</div>
+
+
+<!-- RÉSEAUX -->
+<div id="reseaux-page">
+  <h2 class="section-title">🔥 Nos réseaux</h2>
+  <div class="reseaux-list">
+    <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3VjMGo4dGMxc2tz&utm_source=qr">
+      <div class="reseau-icon-wrap" style="background:rgba(225,48,108,0.12);border-color:rgba(225,48,108,0.35)">📸</div>
+      <div class="reseau-text"><div class="reseau-name">Instagram</div><div class="reseau-sub">@dinoterps76</div></div>
+      <div class="reseau-arrow">›</div>
+    </div>
+    <div class="reseau-item" data-link="https://duanym138.org/DINOfslmogx8">
+      <div class="reseau-icon-wrap" style="background:rgba(255,122,0,0.1);border-color:rgba(255,122,0,0.3)">🥔</div>
+      <div class="reseau-text"><div class="reseau-name">Potato</div><div class="reseau-sub">Canal officiel 📢</div></div>
+      <div class="reseau-arrow">›</div>
+    </div>
+    <div class="reseau-item" data-link="https://t.me/+j7EMkLSIaV83ZmU8">
+      <div class="reseau-icon-wrap" style="background:rgba(41,182,246,0.12);border-color:rgba(41,182,246,0.3)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/512px-Telegram_logo.svg.png" alt="Telegram">
+      </div>
+      <div class="reseau-text"><div class="reseau-name">Canal Telegram</div><div class="reseau-sub">Annonces & updates 📢</div></div>
+      <div class="reseau-arrow">›</div>
+    </div>
+    <div class="reseau-item" data-link="https://snapchat.com/t/EZAiDCkN">
+      <div class="reseau-icon-wrap" style="background:rgba(255,252,0,0.1);border-color:rgba(255,252,0,0.3)">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="12" cy="11" r="5" fill="#FFFC00"/><path d="M7 16c0 0 1.5 3 5 3s5-3 5-3" stroke="#FFFC00" stroke-width="1.5" fill="none"/></svg>
+      </div>
+      <div class="reseau-text"><div class="reseau-name">Snapchat</div><div class="reseau-sub">Lien direct 👻</div></div>
+      <div class="reseau-arrow">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- AVIS -->
+<div id="avis-page" style="display:none;padding:16px 16px 110px">
+  <h2 class="section-title">⭐ Avis clients</h2>
+  <div class="info-card" style="margin-bottom:18px">
+    <div class="info-card-header"><div class="info-card-icon">✍️</div><div class="info-card-title">Laisser un avis</div></div>
+    <div style="margin-bottom:14px">
+      <div style="color:var(--cream-dim);font-size:0.86rem;margin-bottom:8px;font-weight:800">Votre note</div>
+      <div id="star-rating" style="display:flex;gap:8px;font-size:2rem;cursor:pointer">
+        <span class="star" data-v="1">☆</span><span class="star" data-v="2">☆</span><span class="star" data-v="3">☆</span><span class="star" data-v="4">☆</span><span class="star" data-v="5">☆</span>
+      </div>
+    </div>
+    <div style="margin-bottom:14px">
+      <div style="color:var(--cream-dim);font-size:0.86rem;margin-bottom:8px;font-weight:800">Votre commentaire</div>
+      <textarea id="avis-text" placeholder="Partagez votre expérience..."></textarea>
+    </div>
+    <button id="submit-avis-btn" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--red),#8b1500);color:var(--orange-light);border:1.5px solid rgba(255,122,0,0.3);border-radius:10px;font-size:1.1rem;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px;box-shadow:0 0 18px rgba(214,50,0,0.4)">Publier mon avis ⭐</button>
+  </div>
+  <div id="avis-list"></div>
+</div>
+
+<!-- PROFIL -->
+<div id="profil-page"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-item active" id="nav-home"><span class="nav-emoji">🏠</span></div>
+  <div class="nav-item" id="nav-cart"><span class="nav-emoji">🛒</span><span id="cart-badge"></span></div>
+  <div class="nav-item" id="nav-avis"><span class="nav-emoji">⭐</span></div>
+  <div class="nav-item" id="nav-infos"><span class="nav-emoji">ℹ️</span></div>
+  <div class="nav-item" id="nav-reseaux"><span class="nav-emoji">📡</span></div>
+  <div class="nav-item" id="nav-profil"><span class="nav-emoji">👤</span></div>
+</nav>
+
+
   </div>
 </div>
 
@@ -407,75 +626,20 @@ let tgUser = null;
 if (tg) {
   tg.ready(); tg.expand();
   if (typeof tg.requestFullscreen==='function') tg.requestFullscreen();
-  if (typeof tg.setHeaderColor==='function') tg.setHeaderColor('#0a0a08');
-  if (typeof tg.setBackgroundColor==='function') tg.setBackgroundColor('#0a0a08');
-  if (typeof tg.setBottomBarColor==='function') tg.setBottomBarColor('#0a0a08');
+  if (typeof tg.setHeaderColor==='function') tg.setHeaderColor('#0f0700');
+  if (typeof tg.setBackgroundColor==='function') tg.setBackgroundColor('#0f0700');
+  if (typeof tg.setBottomBarColor==='function') tg.setBottomBarColor('#0f0700');
   tg.enableClosingConfirmation();
   tgUser = tg.initDataUnsafe?.user || null;
 }
 
-// ── PRODUITS (video uniquement, pas d'image) ──
 const products = {
-  dry_black: {
-    key:'dry_black',
-    title:'🍫 Dry',
-    category:'Dry 🍫',
-    farm:'⬛️ BLACK F*RM',
-    video:'dry_black.mp4',
-    strain:'- Acai S1 🫐\n- Forbidden 🍒🍉\n- Tiramisu 🍰🍨\n- Lamponi 🍓🌈',
-    description:'Le meilleur dura la famille imbattable pour sa qualité TERPS élevé en goût ! 🍇🍉🍒🔥',
-    quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'50 €'},{qty:'10G',price:'100 €'},{qty:'20G',price:'180 €'}]
-  },
-  eggs_frozen: {
-    key:'eggs_frozen',
-    title:'Format-EGGS Frozen 🧊',
-    category:'Fresh Frozen 🧊',
-    farm:'HONCLE FARM',
-    video:'eggs_frozen.mp4',
-    strain:'- Lemon Cherry 🍋🍒\n- Grapes 🍇',
-    description:'Eggs de Frozen, la famille c\'est pétant élevé hight excellent pour la journée et soirée. 🌆🔥🔥',
-    quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'240 €'}]
-  },
-  bnf_mintz: {
-    key:'bnf_mintz',
-    title:'BARBE NOIR F*RM 90u 🏴‍☠️',
-    category:'Fresh Frozen 🧊',
-    farm:'BNF 🏴‍☠️',
-    video:'bnf_mintz.mp4',
-    strain:'- Original Mintz 🍊',
-    description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',
-    quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'60 €'},{qty:'10G',price:'110 €'},{qty:'20G',price:'210 €'}]
-  },
-  bnf_icc: {
-    key:'bnf_icc',
-    title:'BARBE NOIR F*RM 90u 🏴‍☠️',
-    category:'Fresh Frozen 🧊',
-    farm:'BNF 🏴‍☠️',
-    video:'bnf_icc.mp4',
-    strain:'- Ice Cream Cake 🍧🍰',
-    description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',
-    quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'60 €'},{qty:'10G',price:'110 €'},{qty:'20G',price:'210 €'}]
-  },
-  psg_static: {
-    key:'psg_static',
-    title:'STATIC SIFT 140/75u ⚡️',
-    category:'Static Sift ⚡️',
-    farm:'PSG F*RM 🗼',
-    video:'psg_static.mp4',
-    strain:'- Peach Tsunami 🌊🍑\n- Forbidden 🍓🍉',
-    description:'La capitale !! PSG farm une farm reconnue static frais sec pétant — très élevé excellent rien à dire. 🍋🍓🍉🔥🔥',
-    quantities:[{qty:'2G',price:'40 €'},{qty:'5G',price:'90 €'},{qty:'10G',price:'160 €'},{qty:'25G',price:'310 €'}]
-  },
-  golden_dry: {
-    key:'golden_dry',
-    title:'DRY TECH 🌟🌟',
-    category:'Dry 🍫',
-    farm:'GOLDEN FARM',
-    video:'golden_dry.mp4',
-    strain:'- Yellow Runtz ✨🌈\n- Mac Melon 🍡🍈',
-    description:'Golden Farm haute qualité de resiné très bon — consommer en journée ou soirée goutu TERPS validé ! 🔥🔥',
-    quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'220 €'}]
-  }
+  dry_black:{key:'dry_black',title:'🍫 Dry',category:'Dry 🍫',farm:'⬛️ BLACK F*RM',video:'dry_black.mp4',strain:'- Acai S1 🫐\n- Forbidden 🍒🍉\n- Tiramisu 🍰🍨\n- Lamponi 🍓🌈',description:'Le meilleur dura la famille imbattable pour sa qualité TERPS élevé en goût ! 🍇🍉🍒🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'50 €'},{qty:'10G',price:'100 €'},{qty:'20G',price:'180 €'}]},
+  eggs_frozen:{key:'eggs_frozen',title:'Format-EGGS Frozen 🧊',category:'Fresh Frozen 🧊',farm:'HONCLE FARM',video:'eggs_frozen.mp4',strain:'- Lemon Cherry 🍋🍒\n- Grapes 🍇',description:'Eggs de Frozen, la famille c\'est pétant élevé hight excellent pour la journée et soirée. 🌆🔥🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'240 €'}]},
+  bnf_mintz:{key:'bnf_mintz',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_mintz.mp4',strain:'- Original Mintz 🍊',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'60 €'},{qty:'10G',price:'110 €'},{qty:'20G',price:'210 €'}]},
+  bnf_icc:{key:'bnf_icc',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_icc.mp4',strain:'- Ice Cream Cake 🍧🍰',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'60 €'},{qty:'10G',price:'110 €'},{qty:'20G',price:'210 €'}]},
+  psg_static:{key:'psg_static',title:'STATIC SIFT 140/75u ⚡️',category:'Static Sift ⚡️',farm:'PSG F*RM 🗼',video:'psg_static.mp4',strain:'- Peach Tsunami 🌊🍑\n- Forbidden 🍓🍉',description:'La capitale !! PSG farm une farm reconnue static frais sec pétant — très élevé excellent rien à dire. 🍋🍓🍉🔥🔥',quantities:[{qty:'2G',price:'40 €'},{qty:'5G',price:'90 €'},{qty:'10G',price:'160 €'},{qty:'25G',price:'310 €'}]},
+  golden_dry:{key:'golden_dry',title:'DRY TECH 🌟🌟',category:'Dry 🍫',farm:'GOLDEN FARM',video:'golden_dry.mp4',strain:'- Yellow Runtz ✨🌈\n- Mac Melon 🍡🍈',description:'Golden Farm haute qualité de resiné très bon — consommer en journée ou soirée goutu TERPS validé ! 🔥🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'220 €'}]}
 };
 
 let cart=[];
@@ -522,7 +686,7 @@ function renderProducts(list){
     const mediaHTML=p.video
       ?`<video src="${p.video}" muted autoplay loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
       :`<div class="card-no-video">🎬</div>`;
-    card.innerHTML=`<div class="card-media">${mediaHTML}<div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
+    card.innerHTML=`<div class="card-media">${mediaHTML}<div class="manga-corner"></div><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
     card.onclick=()=>openProductDetail(p.key);
     grid.appendChild(card);
   });
@@ -553,11 +717,11 @@ function buildProductMedia(videoSrc){
   if(videoSrc){
     const vid=document.createElement('video');
     vid.src=videoSrc;vid.controls=true;vid.playsInline=true;vid.loop=true;vid.muted=false;
-    vid.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#0a0a08;pointer-events:auto;';
+    vid.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#0f0700;pointer-events:auto;';
     track.appendChild(vid);swiperItems.push('video');
   } else {
     const ph=document.createElement('div');
-    ph.style.cssText='flex-shrink:0;width:100%;height:100%;background:linear-gradient(135deg,#1c1710,#0a0a08);display:flex;align-items:center;justify-content:center;font-size:4rem;';
+    ph.style.cssText='flex-shrink:0;width:100%;height:100%;background:linear-gradient(135deg,#271508,#0f0700);display:flex;align-items:center;justify-content:center;font-size:4rem;';
     ph.textContent='🎬';track.appendChild(ph);swiperItems.push('placeholder');
   }
   btnPrev.style.display='none';btnNext.style.display='none';counter.style.display='none';
@@ -577,8 +741,8 @@ function openProductDetail(key){
   document.getElementById('detail-title').textContent=p.title;
   document.getElementById('detail-farm-badge').textContent=p.farm;
   let content='';
-  if(p.strain)content+=`<div style="color:var(--gold);font-weight:700;margin-bottom:12px;font-size:0.95rem;text-shadow:0 0 8px rgba(212,175,55,0.4)">Strains :\n${p.strain}</div>`;
-  if(p.description)content+=`<div style="margin-top:8px;color:#c8b89a;font-size:0.92rem;line-height:1.7;font-style:italic">${p.description.replace(/\n/g,'<br>')}</div>`;
+  if(p.strain)content+=`<div style="color:var(--orange);font-weight:800;margin-bottom:10px;font-size:0.93rem;text-shadow:0 0 8px rgba(255,122,0,0.4)">Strains :\n${p.strain}</div>`;
+  if(p.description)content+=`<div style="margin-top:8px;color:#c8a87a;font-size:0.9rem;line-height:1.7;font-style:italic">${p.description.replace(/\n/g,'<br>')}</div>`;
   document.getElementById('detail-strain-desc').innerHTML=content||'';
   const qtyGrid=document.getElementById('qty-grid');
   qtyGrid.innerHTML='';
@@ -624,8 +788,8 @@ document.querySelectorAll('.star').forEach(star=>{
 });
 function renderAvis(){
   const list=document.getElementById('avis-list');
-  if(!avisList.length){list.innerHTML='<p style="text-align:center;color:#3a2e20;padding:30px 0">Aucun avis pour l\'instant.</p>';return;}
-  list.innerHTML=[...avisList].reverse().map(a=>`<div class="avis-card"><div class="avis-header"><span class="avis-user">${a.user}</span><span style="font-size:0.95rem;letter-spacing:2px;color:var(--gold)">${'★'.repeat(a.note)}${'☆'.repeat(5-a.note)}</span></div><div class="avis-date">${a.date}</div><div class="avis-comment">${a.comment}</div></div>`).join('');
+  if(!avisList.length){list.innerHTML='<p style="text-align:center;color:#3a2010;padding:30px 0;font-weight:700">Aucun avis pour l\'instant.</p>';return;}
+  list.innerHTML=[...avisList].reverse().map(a=>`<div class="avis-card"><div class="avis-header"><span class="avis-user">${a.user}</span><span style="font-size:0.95rem;letter-spacing:2px;color:var(--orange)">${'★'.repeat(a.note)}${'☆'.repeat(5-a.note)}</span></div><div class="avis-date">${a.date}</div><div class="avis-comment">${a.comment}</div></div>`).join('');
 }
 document.getElementById('submit-avis-btn').onclick=()=>{
   const comment=document.getElementById('avis-text').value.trim();
@@ -642,7 +806,7 @@ document.getElementById('submit-avis-btn').onclick=()=>{
 function renderCart(){
   const container=document.getElementById('cart-items');
   container.innerHTML='';
-  if(!cart.length){container.innerHTML='<p style="text-align:center;color:#3a2e20;padding:40px 0">Votre panier est vide</p>';document.getElementById('cart-total').textContent='';return;}
+  if(!cart.length){container.innerHTML='<p style="text-align:center;color:#3a2010;padding:40px 0;font-weight:700">Votre panier est vide</p>';document.getElementById('cart-total').textContent='';return;}
   let total=0;
   cart.forEach((item,index)=>{
     total+=parseInt(item.price)||0;
@@ -687,19 +851,17 @@ function renderProfilPage(){
   const displayName=tgUser?(tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'')):'Invité';
   const username=tgUser?.username?'@'+tgUser.username:'';
   const photoUrl=tgUser?.photo_url||'';
-  page.innerHTML=`<div class="profil-header"><div class="profil-avatar">${photoUrl?`<img src="${photoUrl}" alt="avatar">`:'<span>👤</span>'}</div><div class="profil-name">${displayName}</div>${username?`<div style="color:#3a2e20;font-size:0.78rem;margin-top:2px">${username}</div>`:''} ${tgUser?.id?`<div style="color:#2a1e10;font-size:0.68rem;margin-top:4px">ID Telegram: ${tgUser.id}</div>`:''}</div><div class="profil-stats-block"><div class="profil-stats-icon">📦</div><div class="profil-stats-info"><div class="profil-stats-number">${commandes.length}</div><div class="profil-stats-label">commande(s) passée(s)</div></div></div><div class="profil-section-title">📦 Mes commandes</div><div id="profil-commandes">${commandes.length===0?'<p style="color:#3a2e20;text-align:center;padding:20px;font-size:0.88rem">Aucune commande pour l\'instant.</p>':[...commandes].reverse().map(c=>`<div class="commande-card"><div class="commande-header"><span class="commande-date">${c.date}</span><span class="commande-total">${c.total} €</span></div><div class="commande-items">${c.items}</div><span class="commande-mode">${c.mode}</span></div>`).join('')}</div>`;
+  page.innerHTML=`<div class="profil-header"><div class="profil-avatar">${photoUrl?`<img src="${photoUrl}" alt="avatar">`:'<span>👤</span>'}</div><div class="profil-name">${displayName}</div>${username?`<div style="color:#3a2010;font-size:0.76rem;margin-top:2px">${username}</div>`:''} ${tgUser?.id?`<div style="color:#2a1008;font-size:0.66rem;margin-top:3px">ID Telegram: ${tgUser.id}</div>`:''}</div><div class="profil-stats-block"><div class="profil-stats-icon">📦</div><div><div class="profil-stats-number">${commandes.length}</div><div class="profil-stats-label">commande(s) passée(s)</div></div></div><div class="profil-section-title">📦 Mes commandes</div><div id="profil-commandes">${commandes.length===0?'<p style="color:#3a2010;text-align:center;padding:20px;font-size:0.86rem;font-weight:700">Aucune commande pour l\'instant.</p>':[...commandes].reverse().map(c=>`<div class="commande-card"><div class="commande-header"><span class="commande-date">${c.date}</span><span class="commande-total">${c.total} €</span></div><div class="commande-items">${c.items}</div><span class="commande-mode">${c.mode}</span></div>`).join('')}</div>`;
 }
 document.querySelectorAll('.reseau-item[data-link]').forEach(el=>{
   el.onclick=()=>{const l=el.getAttribute('data-link');if(tg)tg.openLink(l);else window.open(l,'_blank');};
 });
 document.addEventListener('DOMContentLoaded',()=>{
-  const container=document.getElementById('splash-particles');
-  const emojis=['🌸','✨','🍣','⭐','🌺','💫'];
-  for(let i=0;i<24;i++){const s=document.createElement('div');s.className='petal';s.textContent=emojis[Math.floor(Math.random()*emojis.length)];s.style.cssText=`left:${Math.random()*100}%;top:${20+Math.random()*50}%;--dur:${2+Math.random()*3}s;--delay:${Math.random()*2.5}s;--sz:${0.7+Math.random()*0.8}rem;`;container.appendChild(s);}
   populateFilters();renderProducts();updateBadge();goToHome();
   const splash=document.getElementById('splash-screen');
   setTimeout(()=>{splash.classList.add('hidden');setTimeout(()=>{splash.style.display='none';},700);},2600);
 });
 </script>
+
 </body>
 </html>
