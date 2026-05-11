@@ -8,7 +8,6 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
 
-/* ── SUSHI JAPAN THEME ── */
 :root {
   --deep-black:     #0a0a08;
   --dark-wood:      #12100c;
@@ -58,30 +57,14 @@ body::before {
 .splash { position:fixed; inset:0; background:#0a0a08; z-index:9999; display:flex; align-items:center; justify-content:center; transition:opacity 0.8s ease; overflow:hidden; }
 .splash.hidden { opacity:0; pointer-events:none; }
 .splash-content { position:relative; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0; }
-.splash-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.06; filter:blur(8px); }
 .splash-vignette { position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(28,23,16,0.1) 0%,rgba(10,10,8,0.95) 100%); z-index:1; }
-
-/* Japanese pattern overlay */
 .splash-pattern {
   position:absolute; inset:0; z-index:1; opacity:0.04;
   background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(212,175,55,0.5) 39px, rgba(212,175,55,0.5) 40px),
                     repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(212,175,55,0.5) 39px, rgba(212,175,55,0.5) 40px);
 }
-
 .splash-glow { position:absolute; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,rgba(192,57,43,0.15) 0%,rgba(212,175,55,0.08) 60%,transparent 100%); z-index:2; animation:glowPulse 3s ease-in-out infinite; }
 @keyframes glowPulse { 0%,100%{transform:scale(1);opacity:0.6;}50%{transform:scale(1.4);opacity:1;} }
-
-/* Torii gate decorative element */
-.splash-torii {
-  position:absolute;
-  z-index:2;
-  bottom:0;
-  left:50%;
-  transform:translateX(-50%);
-  width:200px;
-  height:120px;
-  opacity:0.07;
-}
 
 .splash-logo-ring {
   width:120px; height:120px; border-radius:50%;
@@ -90,9 +73,15 @@ body::before {
   box-shadow:0 0 0 6px rgba(212,175,55,0.08), 0 0 40px rgba(192,57,43,0.5), 0 0 80px rgba(212,175,55,0.15);
   z-index:3;
   display:flex; align-items:center; justify-content:center;
-  font-size:3.2rem;
+  overflow:hidden;
   animation:logoEntrance 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;
   margin-bottom:20px;
+}
+.splash-logo-ring img {
+  width:100%; height:100%; object-fit:cover; border-radius:50%;
+}
+.splash-logo-ring .fallback-emoji {
+  font-size:3.2rem; display:none;
 }
 @keyframes logoEntrance { 0%{transform:scale(0.4) rotate(-10deg);opacity:0;}100%{transform:scale(1) rotate(0deg);opacity:1;} }
 
@@ -154,28 +143,75 @@ body::before {
 }
 .content { position:relative; z-index:2; height:100dvh; width:100%; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:100px; }
 
-/* ── HOME LOGO / HEADER ── */
+/* ── HOME LOGO / HEADER — STICKY STABLE ── */
 #home-logo-wrapper {
-  position:sticky; top:0; z-index:100;
-  background:rgba(10,10,8,0.96);
-  border-bottom:1px solid rgba(212,175,55,0.2);
-  padding:14px 16px 10px;
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  display:flex; flex-direction:column; align-items:center; gap:2px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(10,10,8,0.97);
+  border-bottom:1px solid rgba(212,175,55,0.22);
+  padding:10px 16px 10px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  /* Empêche tout redimensionnement ou saut au scroll */
+  will-change:transform;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+  flex-shrink:0;
+  min-height:64px;
 }
-.home-logo-emoji { font-size:2.2rem; line-height:1; filter:drop-shadow(0 0 12px rgba(192,57,43,0.7)); }
+
+/* Ligne décorative dorée en bas du header */
+#home-logo-wrapper::after {
+  content:'';
+  position:absolute;
+  bottom:0; left:15%; right:15%;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
+}
+
+/* Logo dino.jpg — cercle doré fixe */
+.home-logo-img-wrap {
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  box-shadow:0 0 14px rgba(212,175,55,0.45), 0 0 28px rgba(192,57,43,0.25);
+  overflow:hidden;
+  flex-shrink:0;
+  background:rgba(20,16,10,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.home-logo-img-wrap img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  display:block;
+}
+.home-logo-img-wrap .logo-fallback {
+  font-size:1.5rem;
+  display:none;
+}
+
+.home-logo-text { display:flex; flex-direction:column; gap:1px; }
 .home-logo-title {
   font-family:'Noto Serif JP',serif;
-  font-size:1.35rem; font-weight:900;
-  letter-spacing:3px;
+  font-size:1.15rem; font-weight:900;
+  letter-spacing:2px;
   color:var(--gold);
-  text-shadow:0 0 16px rgba(212,175,55,0.6);
+  text-shadow:0 0 12px rgba(212,175,55,0.55);
+  line-height:1.1;
 }
 .home-logo-jp {
-  font-size:0.6rem; font-weight:400;
-  color:rgba(212,175,55,0.4);
-  letter-spacing:5px;
+  font-size:0.58rem; font-weight:400;
+  color:rgba(212,175,55,0.38);
+  letter-spacing:4px;
   text-transform:uppercase;
 }
 
@@ -259,8 +295,6 @@ body::before {
   position:relative; height:220px;
 }
 .card:active { transform:scale(0.97); border-color:var(--crimson); box-shadow:0 0 24px rgba(192,57,43,0.35); }
-
-/* Chopstick decorative top border */
 .card::before {
   content:'';
   position:absolute; top:0; left:0; right:0;
@@ -560,7 +594,6 @@ nav {
   box-shadow:0 10px 40px rgba(0,0,0,0.9), 0 0 30px rgba(212,175,55,0.06);
   padding:0 4px;
 }
-/* Gold line on top of nav */
 nav::before {
   content:'';
   position:absolute; top:0; left:20%; right:20%; height:1px;
@@ -658,7 +691,10 @@ nav::before {
     <div class="splash-particles" id="splash-particles"></div>
     <div class="splash-glow"></div>
 
-    <div class="splash-logo-ring">🍣</div>
+    <div class="splash-logo-ring">
+      <img src="dino.jpg" alt="Dino Terps 76" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="fallback-emoji">🍣</span>
+    </div>
     <div class="splash-title-jp">Premium Shop</div>
     <div class="splash-title-main">DINO TERPS 76</div>
     <div class="splash-divider"></div>
@@ -674,11 +710,19 @@ nav::before {
 
     <!-- ACCUEIL -->
     <div id="home-page">
+      <!-- HEADER STICKY AVEC LOGO dino.jpg -->
       <div id="home-logo-wrapper">
-        <div class="home-logo-emoji">🍣</div>
-        <div class="home-logo-title">DINO TERPS 76</div>
-        <div class="home-logo-jp">ディノテルプス — Shop Premium</div>
+        <div class="home-logo-img-wrap">
+          <img src="dino.jpg" alt="Dino Terps 76"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="logo-fallback">🍣</span>
+        </div>
+        <div class="home-logo-text">
+          <div class="home-logo-title">DINO TERPS 76</div>
+          <div class="home-logo-jp">ディノテルプス — Shop Premium</div>
+        </div>
       </div>
+
       <div class="neon-line"></div>
       <div id="products-header">
         <div class="products-title"><span style="font-size:1.3rem">🛍️</span>Catalogue</div>
@@ -869,7 +913,6 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--gold);font-wei
 </div>
 
 <script>
-// ── TELEGRAM ──
 const tg = window.Telegram?.WebApp;
 let tgUser = null;
 if (tg) {
@@ -882,7 +925,6 @@ if (tg) {
   tgUser = tg.initDataUnsafe?.user || null;
 }
 
-// ── PRODUCTS (DINO TERPS 76 originals) ──
 const products = {
   mtRiff: {
     key:'mtRiff', title:'FRESH FROZEN 🧊', category:'Fresh Frozen 🧊', farm:'MT.RIFF',
@@ -913,23 +955,19 @@ const products = {
   }
 };
 
-// ── CART ──
 let cart = [];
 try { cart = JSON.parse(localStorage.getItem('cart_dino76')) || []; } catch(e) { cart = []; }
 function saveCart() { try { localStorage.setItem('cart_dino76', JSON.stringify(cart)); } catch(e){} updateBadge(); }
 function updateBadge() { const b=document.getElementById('cart-badge'); b.textContent=cart.length||''; b.style.display=cart.length>0?'inline-block':'none'; }
 
-// ── AVIS ──
 let avisList = [];
 try { avisList = JSON.parse(localStorage.getItem('avis_dino76')) || []; } catch(e) { avisList = []; }
 function saveAvis() { try { localStorage.setItem('avis_dino76', JSON.stringify(avisList)); } catch(e){} }
 
-// ── COMMANDES ──
 let commandes = [];
 try { commandes = JSON.parse(localStorage.getItem('commandes_dino76')) || []; } catch(e) { commandes = []; }
 function saveCommandes() { try { localStorage.setItem('commandes_dino76', JSON.stringify(commandes)); } catch(e){} }
 
-// ── FILTERS ──
 function populateFilters() {
   const all = Object.values(products);
   const cats = [...new Set(all.map(p=>p.category))].sort();
@@ -968,7 +1006,6 @@ function renderProducts(list) {
   });
 }
 
-// ── NAV ──
 function hideAllPages() {
   ['home-page','product-detail','cart-page','infos-page','reseaux-page','avis-page','profil-page'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.style.display='none';
@@ -984,7 +1021,6 @@ function goToHome() {
   scrollToTop();
 }
 
-// ── SWIPER ──
 let swiperIndex=0, swiperItems=[];
 function buildProductMedia(imageSrc, videoSrc, extraVideos) {
   const track=document.getElementById('swiper-track');
@@ -1023,7 +1059,6 @@ function swiperPrev() { if(swiperItems.length<=1)return; swiperIndex=(swiperInde
 function swiperNext() { if(swiperItems.length<=1)return; swiperIndex=(swiperIndex+1)%swiperItems.length; updateSwiperPosition(); }
 window.swiperPrev=swiperPrev; window.swiperNext=swiperNext;
 
-// ── PRODUCT DETAIL ──
 function openProductDetail(key) {
   const p=products[key];
   document.getElementById('detail-title').textContent=p.title;
@@ -1060,7 +1095,6 @@ document.getElementById('add-to-cart-btn').onclick=()=>{
   alert('✅ Ajouté au panier !');
 };
 
-// ── NAV EVENTS ──
 document.getElementById('nav-home').onclick=goToHome;
 document.getElementById('nav-cart').onclick=()=>{
   hideAllPages();
@@ -1097,7 +1131,6 @@ document.getElementById('nav-profil').onclick=()=>{
 };
 if(tg) tg.BackButton.onClick(()=>goToHome());
 
-// ── AVIS ──
 let selectedStar=0;
 document.querySelectorAll('.star').forEach(star=>{
   star.addEventListener('click',()=>{
@@ -1129,7 +1162,6 @@ document.getElementById('submit-avis-btn').onclick=()=>{
   alert('✅ Merci pour votre avis !');
 };
 
-// ── CART ──
 function renderCart() {
   const container=document.getElementById('cart-items');
   container.innerHTML='';
@@ -1196,7 +1228,6 @@ document.getElementById('submit-order-btn').onclick=()=>{
   else window.open(url,'_blank');
 };
 
-// ── PROFIL ──
 function renderProfilPage() {
   const page=document.getElementById('profil-page');
   const displayName=tgUser?(tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'')):'Invité';
@@ -1224,7 +1255,6 @@ function renderProfilPage() {
     }</div>`;
 }
 
-// ── RÉSEAUX ──
 document.querySelectorAll('.reseau-item[data-link]').forEach(el=>{
   el.onclick=()=>{
     const l=el.getAttribute('data-link');
@@ -1233,7 +1263,6 @@ document.querySelectorAll('.reseau-item[data-link]').forEach(el=>{
   };
 });
 
-// ── SPLASH & INIT ──
 document.addEventListener('DOMContentLoaded',()=>{
   const container=document.getElementById('splash-particles');
   const emojis=['🌸','✨','🍣','⭐','🌺','💫'];
