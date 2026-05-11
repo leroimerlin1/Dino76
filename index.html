@@ -2,661 +2,1259 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>DINO TERPS 76</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'M PLUS Rounded 1c', Orbitron, sans-serif;
-      background: #0f1117;
-      color: #e2e8f0;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    .container { position: relative; min-height: 100vh; background: url('dino.jpg') center/cover no-repeat fixed; }
-    .overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(3px); z-index: 1; }
-    .content { position: relative; z-index: 2; min-height: 100vh; padding-bottom: 220px; }
-    header {
-      position: sticky; top: 0; background: rgba(15, 23, 42, 0.94); backdrop-filter: blur(14px);
-      padding: 12px 16px; border-bottom: 1px solid rgba(59, 130, 246, 0.3); z-index: 10;
-      display: flex; align-items: center;
-    }
-    .header-inner { display: flex; align-items: center; width: 100%; position: relative; }
-    .back-btn {
-      background: rgba(59, 130, 246, 0.18); color: #60a5fa;
-      border: 1px solid #60a5fa; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer;
-      position: absolute; left: 16px; z-index: 11;
-    }
-    .header-title {
-      font-size: 1.55rem; font-weight: 900; letter-spacing: 2px; color: #60a5fa;
-      text-shadow: 0 0 12px rgba(96, 165, 250, 0.6); margin: 0 auto;
-    }
-    .welcome { padding: 20px 16px; background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.6)); border-bottom: 1px solid rgba(59, 130, 246, 0.25); }
-    .welcome-inner { display: flex; align-items: center; gap: 16px; }
-    .welcome-emoji { width: 60px; height: 60px; border-radius: 50%; background: rgba(59, 130, 246, 0.15); display: flex; align-items: center; justify-content: center; font-size: 2.4rem; box-shadow: 0 0 16px rgba(96, 165, 250, 0.35); }
-    #products-grid { padding: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; }
-    .card {
-      background: rgba(15, 23, 42, 0.78); border: 1px solid rgba(59, 130, 246, 0.28); border-radius: 14px;
-      overflow: hidden; backdrop-filter: blur(8px); transition: all 0.25s; cursor: pointer;
-    }
-    .card:hover { transform: scale(1.03); border-color: #60a5fa; box-shadow: 0 0 20px rgba(96, 165, 250, 0.35); }
-    .card-img { height: 240px; position: relative; background: #000; }
-    .card-img video { width: 100%; height: 100%; object-fit: cover; }
-    .badge-star { position: absolute; top: 10px; left: 10px; background: #60a5fa; color: #0f172a; font-size: 0.8rem; padding: 5px 12px; border-radius: 999px; font-weight: bold; }
-    .card-body { padding: 12px; }
-    .card-title { font-size: 1.15rem; color: #f1f5f9; margin-bottom: 4px; font-weight: 700; }
-    .card-farm { font-size: 0.95rem; color: #94a3b8; margin-bottom: 8px; }
-    .card-info { font-size: 0.9rem; color: #cbd5e1; }
-    #product-detail { display: none; padding-bottom: 160px; }
-    .product-hero { height: 340px; background: #000; position: relative; }
-    .product-hero video { width: 100%; height: 100%; object-fit: cover; }
-    .product-title { padding: 16px; font-size: 2.1rem; font-weight: 900; color: #60a5fa; text-shadow: 0 0 12px rgba(96, 165, 250, 0.6); }
-    .badges { padding: 0 16px 8px; display: flex; flex-wrap: wrap; gap: 10px; }
-    .badge { padding: 8px 16px; border-radius: 999px; font-size: 0.95rem; font-weight: bold; }
-    .badge-farm { background: rgba(59, 130, 246, 0.22); color: #60a5fa; border: 1px solid #60a5fa; max-width: fit-content; }
-    .strain-section { padding: 0 16px 16px; color: #94a3b8; font-size: 1.05rem; line-height: 1.5; }
-    .description-section { padding: 0 16px 24px; color: #cbd5e1; font-size: 1.1rem; line-height: 1.6; }
-    .quantity-section { padding: 16px; background: rgba(15, 23, 42, 0.7); margin: 12px 16px; border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.35); }
-    .quantity-title { font-size: 1.25rem; color: #60a5fa; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-    .quantity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    .qty-btn {
-      background: rgba(59, 130, 246, 0.18); border: 1px solid #60a5fa; color: #e2e8f0;
-      padding: 16px 10px; border-radius: 14px; text-align: center; cursor: pointer; font-weight: bold; transition: 0.25s;
-    }
-    .qty-btn:hover, .qty-btn.selected { background: #60a5fa; color: #0f172a; }
-    .add-to-cart {
-      margin: 16px; background: #60a5fa; color: #0f172a; border: none; padding: 18px;
-      font-size: 1.2rem; font-weight: bold; border-radius: 16px; display: flex; align-items: center; justify-content: center; gap: 12px;
-      cursor: pointer; box-shadow: 0 0 16px rgba(96, 165, 250, 0.5);
-    }
+/* ── SUSHI JAPAN THEME ── */
+:root {
+  --deep-black:     #0a0a08;
+  --dark-wood:      #12100c;
+  --mid-wood:       #1c1710;
+  --warm-wood:      #2a2018;
+  --lacquer-red:    #c0392b;
+  --crimson:        #e74c3c;
+  --neon-red:       #ff3b30;
+  --gold:           #d4af37;
+  --gold-light:     #f0d060;
+  --cream:          #f5f0e8;
+  --rice-white:     #faf8f2;
+  --nori-green:     #1a2e1a;
+  --wasabi:         #5a7a3a;
+  --salmon:         #e8856a;
+  --tuna:           #c44a3a;
+  --text-warm:      #e8dcc8;
+  --text-dim:       #8a7860;
+  --surface:        rgba(20, 16, 10, 0.94);
+  --surface-light:  rgba(30, 24, 16, 0.88);
+  --border-gold:    rgba(212, 175, 55, 0.35);
+  --border-red:     rgba(192, 57, 43, 0.4);
+  --glow-gold:      rgba(212, 175, 55, 0.45);
+  --glow-red:       rgba(231, 76, 60, 0.4);
+}
 
-    /* SWITCHER VIDÉO ULTRA MODERNE (miniatures avec aperçu + play) */
-    .video-switcher {
-      padding: 12px 16px 24px;
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-    .video-preview {
-      width: 96px;
-      height: 54px;
-      background-size: cover;
-      background-position: center;
-      border-radius: 12px;
-      position: relative;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-      overflow: hidden;
-    }
-    .video-preview:hover {
-      transform: scale(1.12) translateY(-2px);
-      border-color: #60a5fa;
-      box-shadow: 0 10px 25px rgba(96, 165, 250, 0.35);
-    }
-    .video-preview.active {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.5);
-      transform: scale(1.08);
-    }
-    .play-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 32px;
-      height: 32px;
-      background: rgba(15, 23, 42, 0.92);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: #60a5fa;
-      text-shadow: 0 0 8px rgba(96, 165, 250, 0.8);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-    }
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+  height:100%; min-height:100dvh; width:100%; overflow:hidden;
+  font-family:'Zen Kaku Gothic New','Noto Serif JP',sans-serif;
+  background: radial-gradient(ellipse at top, #1c1710 0%, #0a0a08 70%);
+  color: var(--text-warm); touch-action:manipulation;
+}
 
-    #cart-page { padding: 16px; }
-    .cart-item {
-      background: rgba(15, 23, 42, 0.82); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px;
-      padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;
-    }
-    .delete-btn { background: #ef4444; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; font-weight: bold; cursor: pointer; }
-    .cart-total { text-align: center; font-size: 1.3rem; color: #60a5fa; margin: 20px 0; }
-    .questionnaire { background: rgba(15, 23, 42, 0.78); border: 1px solid #60a5fa; border-radius: 14px; padding: 20px; margin-top: 24px; }
-    .question { margin-bottom: 20px; }
-    .question-label { display: block; font-size: 1.1rem; color: #94a3b8; margin-bottom: 10px; font-weight: 500; }
-    .option-btn {
-      width: 100%; padding: 14px; margin: 6px 0; background: rgba(59, 130, 246, 0.18);
-      border: 1px solid #60a5fa; color: #e2e8f0; border-radius: 12px; font-size: 1.05rem; cursor: pointer;
-    }
-    .option-btn.active { background: #60a5fa; color: #0f172a; font-weight: bold; }
-    input[type="time"], input[type="text"], textarea {
-      width: 100%; padding: 14px; border-radius: 10px; border: 1px solid #60a5fa;
-      background: rgba(30, 41, 59, 0.8); color: #f1f5f9; font-size: 1.05rem;
-    }
-    textarea { min-height: 90px; resize: vertical; }
-    #submit-order-btn {
-      width: 100%; padding: 18px; background: #10b981; color: white; border: none;
-      border-radius: 14px; font-size: 1.25rem; font-weight: bold; margin-top: 24px; cursor: pointer;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
-    }
-    #infos-page, #reseaux-page { display: none; padding: 16px; padding-bottom: 200px; font-size: 1.05rem; line-height: 1.6; }
-    .info-box {
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      border-radius: 16px;
-      padding: 20px;
-      margin: 20px 0;
-      backdrop-filter: blur(8px);
-    }
-    .section-title { font-size: 1.45rem; color: #60a5fa; margin-bottom: 16px; font-weight: bold; }
-    ul { padding-left: 24px; margin: 12px 0; }
-    .reseaux-list { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
-    .reseau-item {
-      background: rgba(59, 130, 246, 0.15); border: 1px solid #60a5fa; border-radius: 14px;
-      padding: 20px 16px; font-size: 1.3rem; font-weight: bold; color: #cbd5e1; text-align: center;
-      cursor: pointer; transition: 0.2s;
-    }
-    .reseau-item:hover { background: #60a5fa; color: #0f172a; transform: scale(1.02); }
-    nav {
-      position: fixed; bottom: 0; left: 0; right: 0; background: rgba(15, 23, 42, 0.96);
-      backdrop-filter: blur(18px); border-top: 1px solid rgba(59, 130, 246, 0.3); padding: 10px 0;
-      display: flex; justify-content: space-around; z-index: 20;
-    }
-    .nav-item { display: flex; flex-direction: column; align-items: center; color: #94a3b8; font-size: 0.78rem; gap: 4px; cursor: pointer; flex: 1; position: relative; }
-    .nav-item.active { color: #60a5fa; }
-    #cart-badge {
-      position: absolute; top: -6px; right: 12px; background: #ef4444; color: white;
-      border-radius: 50%; padding: 3px 7px; font-size: 0.7rem; min-width: 18px; text-align: center; display: none;
-    }
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 85%, rgba(192,57,43,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(212,175,55,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(192,57,43,0.08) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.018'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+
+/* ── SPLASH ── */
+.splash { position:fixed; inset:0; background:#0a0a08; z-index:9999; display:flex; align-items:center; justify-content:center; transition:opacity 0.8s ease; overflow:hidden; }
+.splash.hidden { opacity:0; pointer-events:none; }
+.splash-content { position:relative; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0; }
+.splash-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.06; filter:blur(8px); }
+.splash-vignette { position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(28,23,16,0.1) 0%,rgba(10,10,8,0.95) 100%); z-index:1; }
+
+/* Japanese pattern overlay */
+.splash-pattern {
+  position:absolute; inset:0; z-index:1; opacity:0.04;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(212,175,55,0.5) 39px, rgba(212,175,55,0.5) 40px),
+                    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(212,175,55,0.5) 39px, rgba(212,175,55,0.5) 40px);
+}
+
+.splash-glow { position:absolute; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle,rgba(192,57,43,0.15) 0%,rgba(212,175,55,0.08) 60%,transparent 100%); z-index:2; animation:glowPulse 3s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100%{transform:scale(1);opacity:0.6;}50%{transform:scale(1.4);opacity:1;} }
+
+/* Torii gate decorative element */
+.splash-torii {
+  position:absolute;
+  z-index:2;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:200px;
+  height:120px;
+  opacity:0.07;
+}
+
+.splash-logo-ring {
+  width:120px; height:120px; border-radius:50%;
+  background: radial-gradient(circle, rgba(192,57,43,0.2) 0%, rgba(10,10,8,0.8) 100%);
+  border:2px solid var(--gold);
+  box-shadow:0 0 0 6px rgba(212,175,55,0.08), 0 0 40px rgba(192,57,43,0.5), 0 0 80px rgba(212,175,55,0.15);
+  z-index:3;
+  display:flex; align-items:center; justify-content:center;
+  font-size:3.2rem;
+  animation:logoEntrance 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  margin-bottom:20px;
+}
+@keyframes logoEntrance { 0%{transform:scale(0.4) rotate(-10deg);opacity:0;}100%{transform:scale(1) rotate(0deg);opacity:1;} }
+
+.splash-title-jp {
+  font-family:'Noto Serif JP',serif;
+  font-size:0.9rem; font-weight:400;
+  color:rgba(212,175,55,0.5);
+  letter-spacing:8px;
+  text-transform:uppercase;
+  z-index:3;
+  margin-bottom:6px;
+  animation:fadeUp 0.6s 0.3s ease both;
+}
+.splash-title-main {
+  font-family:'Noto Serif JP',serif;
+  font-size:2rem; font-weight:900;
+  color:var(--gold);
+  letter-spacing:3px;
+  z-index:3;
+  text-shadow:0 0 30px rgba(212,175,55,0.7), 0 0 60px rgba(192,57,43,0.4);
+  animation:fadeUp 0.6s 0.2s ease both;
+  margin-bottom:4px;
+}
+.splash-title-sub {
+  font-size:0.75rem; font-weight:600;
+  color:rgba(192,57,43,0.6);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  z-index:3;
+  margin-bottom:40px;
+  animation:fadeUp 0.6s 0.45s ease both;
+}
+@keyframes fadeUp { 0%{opacity:0;transform:translateY(16px);}100%{opacity:1;transform:translateY(0);} }
+
+.splash-divider {
+  width:120px; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,0.6), transparent);
+  z-index:3;
+  margin-bottom:8px;
+  animation:fadeUp 0.6s 0.35s ease both;
+}
+
+.splash-progress-wrap { width:180px; height:2px; background:rgba(212,175,55,0.08); border-radius:999px; z-index:3; overflow:hidden; animation:fadeUp 0.6s 0.6s ease both; }
+.splash-progress-bar { height:100%; width:0%; background:linear-gradient(90deg,var(--lacquer-red),var(--gold),#fff); border-radius:999px; box-shadow:0 0 10px rgba(212,175,55,0.9); animation:loadBar 2.4s 0.5s ease forwards; }
+@keyframes loadBar { 0%{width:0%;}60%{width:70%;}100%{width:100%;} }
+.splash-text { color:rgba(138,120,96,0.5); font-size:0.68rem; font-weight:600; letter-spacing:3px; text-transform:uppercase; z-index:3; margin-top:14px; animation:fadeUp 0.6s 0.7s ease both; }
+
+.splash-particles { position:absolute; inset:0; z-index:2; pointer-events:none; }
+.petal { position:absolute; opacity:0; animation:petalFall var(--dur) var(--delay) ease-in-out infinite; font-size:var(--sz); }
+@keyframes petalFall { 0%{opacity:0;transform:translateY(-20px) rotate(0deg);}20%{opacity:0.6;}80%{opacity:0.3;}100%{opacity:0;transform:translateY(100px) rotate(180deg);} }
+
+/* ── CONTAINER ── */
+.container { position:relative; height:100dvh; width:100%; background:radial-gradient(ellipse at top center, #1c1710 0%, #0a0a08 70%); }
+.overlay {
+  position:absolute; inset:0; z-index:1;
+  background:
+    radial-gradient(ellipse at 20% 90%, rgba(192,57,43,0.04) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 90%, rgba(212,175,55,0.03) 0%, transparent 45%);
+}
+.content { position:relative; z-index:2; height:100dvh; width:100%; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:100px; }
+
+/* ── HOME LOGO / HEADER ── */
+#home-logo-wrapper {
+  position:sticky; top:0; z-index:100;
+  background:rgba(10,10,8,0.96);
+  border-bottom:1px solid rgba(212,175,55,0.2);
+  padding:14px 16px 10px;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+}
+.home-logo-emoji { font-size:2.2rem; line-height:1; filter:drop-shadow(0 0 12px rgba(192,57,43,0.7)); }
+.home-logo-title {
+  font-family:'Noto Serif JP',serif;
+  font-size:1.35rem; font-weight:900;
+  letter-spacing:3px;
+  color:var(--gold);
+  text-shadow:0 0 16px rgba(212,175,55,0.6);
+}
+.home-logo-jp {
+  font-size:0.6rem; font-weight:400;
+  color:rgba(212,175,55,0.4);
+  letter-spacing:5px;
+  text-transform:uppercase;
+}
+
+/* ── APP TITLE ── */
+.app-title-bar {
+  text-align:center; padding:6px 16px 14px;
+  font-family:'Noto Serif JP',serif; font-size:0.7rem; font-weight:400;
+  letter-spacing:3px; text-transform:uppercase;
+  color:rgba(192,57,43,0.7); text-shadow:0 0 10px rgba(192,57,43,0.5);
+}
+
+/* ── NEON LINE ── */
+.neon-line {
+  height:1px; margin:0 16px 14px;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,0.4), rgba(192,57,43,0.3), transparent);
+}
+
+/* ── PRODUCTS HEADER ── */
+#products-header {
+  margin:0 16px 14px;
+  background:var(--surface);
+  border-radius:18px;
+  border:1px solid var(--border-gold);
+  box-shadow:0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(212,175,55,0.06);
+  padding:16px 20px;
+  display:flex; align-items:center; justify-content:space-between;
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+}
+.products-title {
+  display:flex; align-items:center; gap:10px;
+  font-family:'Noto Serif JP',serif;
+  font-size:1rem; font-weight:700;
+  color:var(--text-dim); letter-spacing:1px;
+}
+.products-count {
+  display:flex; flex-direction:column; align-items:center;
+  background:rgba(212,175,55,0.06);
+  border:1.5px solid rgba(212,175,55,0.4);
+  border-radius:14px; padding:8px 20px;
+  box-shadow:0 0 20px rgba(212,175,55,0.1), inset 0 0 20px rgba(212,175,55,0.02);
+  min-width:80px;
+}
+.products-count-number {
+  font-family:'Noto Serif JP',serif;
+  font-size:1.8rem; font-weight:900;
+  color:var(--gold); line-height:1;
+  text-shadow:0 0 16px rgba(212,175,55,0.7);
+}
+.products-count-label {
+  font-size:0.62rem; font-weight:700;
+  color:rgba(212,175,55,0.5);
+  letter-spacing:2px; text-transform:uppercase; margin-top:3px;
+}
+
+/* ── FILTERS ── */
+#filters-bar { margin:0 16px 14px; }
+.filters-inner { display:flex; gap:10px; align-items:center; }
+.compact-select {
+  flex:1; height:44px; font-size:13px; padding:0 30px 0 14px;
+  font-family:'Zen Kaku Gothic New',sans-serif; font-weight:600;
+  background:var(--surface); border:1.5px solid var(--border-gold); border-radius:12px;
+  color:var(--text-warm); appearance:none; -webkit-appearance:none; cursor:pointer; outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d4af37' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 12px center;
+  background-color:var(--surface);
+}
+.compact-select:focus { border-color:var(--gold); box-shadow:0 0 12px rgba(212,175,55,0.25); }
+.compact-select option { background:#12100c; color:var(--text-warm); }
+
+/* ── CARDS ── */
+#products-grid { padding:0 16px 16px; display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.no-results { grid-column:1/-1; text-align:center; padding:48px 20px; color:rgba(212,175,55,0.4); font-family:'Noto Serif JP',serif; font-size:1rem; }
+
+.card {
+  background:transparent;
+  border:1.5px solid var(--gold);
+  border-radius:12px; overflow:hidden;
+  transition:all .25s; cursor:pointer;
+  box-shadow:0 4px 16px rgba(0,0,0,.8), 0 0 10px rgba(212,175,55,0.08);
+  position:relative; height:220px;
+}
+.card:active { transform:scale(0.97); border-color:var(--crimson); box-shadow:0 0 24px rgba(192,57,43,0.35); }
+
+/* Chopstick decorative top border */
+.card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0;
+  height:3px;
+  background:linear-gradient(90deg, transparent 10%, var(--lacquer-red) 30%, var(--gold) 50%, var(--lacquer-red) 70%, transparent 90%);
+  z-index:5; opacity:0;
+  transition:opacity 0.25s;
+}
+.card:active::before { opacity:1; }
+
+.card-img { height:100%; width:100%; position:relative; }
+.card-img img, .card-img video { width:100%; height:100%; object-fit:cover; display:block; }
+.card-overlay {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(to top,rgba(10,10,8,0.97) 0%,rgba(10,10,8,0.5) 60%, transparent 100%);
+  padding:16px 12px 12px; z-index:2;
+}
+.card-title {
+  font-family:'Noto Serif JP',serif;
+  font-size:0.95rem; color:var(--gold); font-weight:700;
+  letter-spacing:0.5px; margin-bottom:3px;
+  text-shadow:0 0 10px rgba(212,175,55,0.6);
+}
+.card-farm { font-size:0.78rem; color:rgba(192,57,43,0.9); font-weight:bold; text-shadow:0 0 6px rgba(192,57,43,0.5); }
+
+/* ── PRODUCT DETAIL ── */
+#product-detail { display:none; flex-direction:column; height:100dvh; background:#0a0a08; position:relative; }
+.product-info {
+  flex:1;
+  background:linear-gradient(180deg,#1c1710 0%,#0a0a08 100%);
+  overflow-y:auto; padding-bottom:90px;
+}
+.product-title {
+  padding:22px 16px 8px;
+  font-family:'Noto Serif JP',serif;
+  font-size:1.7rem; font-weight:900;
+  color:var(--gold);
+  text-shadow:0 0 20px rgba(212,175,55,0.6), 0 0 40px rgba(192,57,43,0.3);
+  letter-spacing:1px;
+}
+.badges { padding:0 16px 14px; display:flex; flex-wrap:wrap; gap:10px; }
+.badge { padding:7px 16px; border-radius:4px; font-size:.88rem; font-weight:bold; }
+.badge-farm {
+  background:rgba(192,57,43,0.1); color:var(--crimson);
+  border:1px solid rgba(192,57,43,0.4);
+  text-shadow:0 0 8px rgba(192,57,43,0.4);
+  border-radius:4px;
+}
+.strain-section { padding:0 16px 20px; color:#c8b89a; font-size:1rem; line-height:1.7; white-space:pre-line; }
+.strain-section .description { color:#8a7860; font-style:italic; }
+
+.quantity-section {
+  padding:16px; margin:10px 16px;
+  border-radius:12px;
+  border:1px solid rgba(212,175,55,0.18);
+  background:rgba(28,23,16,0.5);
+  position:relative; overflow:hidden;
+}
+.quantity-section::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity:0.4;
+}
+.quantity-title {
+  font-family:'Noto Serif JP',serif;
+  font-size:1.1rem; color:var(--gold);
+  margin-bottom:14px; display:flex; align-items:center; gap:10px;
+  font-weight:700; text-shadow:0 0 10px rgba(212,175,55,0.4);
+}
+.quantity-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.qty-btn {
+  background:rgba(20,16,10,0.9);
+  border:1px solid rgba(212,175,55,0.2);
+  color:var(--text-warm); padding:14px 10px;
+  border-radius:8px; text-align:center;
+  cursor:pointer; font-weight:bold; transition:.2s;
+  font-family:'Zen Kaku Gothic New',sans-serif;
+}
+.qty-btn.selected {
+  background:linear-gradient(135deg,rgba(212,175,55,0.2),rgba(192,57,43,0.15));
+  color:#fff; border-color:var(--gold);
+  box-shadow:0 0 14px rgba(212,175,55,0.3), inset 0 0 10px rgba(212,175,55,0.08);
+}
+.price-new { color:#7bc47b; font-weight:900; font-size:1.05rem; text-shadow:0 0 8px rgba(123,196,123,0.4); }
+
+.add-to-cart {
+  margin:14px 16px 36px;
+  background:linear-gradient(135deg,var(--lacquer-red),#8b0000,#5a0000);
+  color:var(--gold); border:1px solid rgba(212,175,55,0.4);
+  padding:17px; font-size:1.1rem; font-weight:bold;
+  border-radius:10px; display:flex; align-items:center; justify-content:center; gap:12px;
+  cursor:pointer;
+  box-shadow:0 0 24px rgba(192,57,43,0.5), 0 4px 16px rgba(0,0,0,0.5);
+  font-family:'Noto Serif JP',serif; letter-spacing:1px;
+}
+
+/* ── SWIPER ── */
+.swiper-wrap { position:relative; width:100%; overflow:hidden; background:#0a0a08; aspect-ratio:1/1; flex:0 0 auto; }
+.swiper-track { display:flex; transition:transform 0.35s ease; will-change:transform; height:100%; }
+.swiper-track>* { flex-shrink:0; width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; user-select:none; background:#0a0a08; }
+.swiper-track video { pointer-events:auto; object-fit:cover; }
+.swiper-btn {
+  position:absolute; top:50%; transform:translateY(-50%);
+  background:rgba(20,16,10,0.88);
+  border:1.5px solid rgba(212,175,55,0.4);
+  color:var(--gold); width:44px; height:44px; border-radius:50%;
+  font-size:18px; cursor:pointer; z-index:10;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Noto Serif JP',serif;
+}
+.swiper-btn-prev { left:12px; }
+.swiper-btn-next { right:12px; }
+.swiper-counter {
+  position:absolute; bottom:10px; right:14px;
+  background:rgba(20,16,10,0.9);
+  border:1px solid rgba(212,175,55,0.4);
+  border-radius:6px; padding:4px 12px;
+  font-size:12px; font-weight:700; color:var(--gold); letter-spacing:1px;
+  font-family:'Noto Serif JP',serif;
+}
+
+/* ── CART ── */
+#cart-page { padding:16px; display:none; }
+.cart-item {
+  background:var(--surface); border:1px solid var(--border-gold);
+  border-radius:10px; padding:14px; margin-bottom:12px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.cart-item-title { font-weight:bold; color:var(--gold); font-family:'Noto Serif JP',serif; }
+.cart-item-qty { color:var(--text-dim); font-size:0.9rem; }
+.delete-btn { background:var(--lacquer-red); color:var(--gold); border:1px solid rgba(212,175,55,0.3); width:32px; height:32px; border-radius:50%; font-weight:bold; cursor:pointer; font-size:1.1rem; }
+
+.cart-total {
+  text-align:center; font-size:1.3rem; color:var(--gold);
+  margin:20px 0; font-family:'Noto Serif JP',serif;
+  text-shadow:0 0 12px rgba(212,175,55,0.5);
+}
+.questionnaire {
+  background:var(--surface); border:1px solid var(--border-gold);
+  border-radius:12px; padding:20px; margin-top:20px;
+  position:relative; overflow:hidden;
+}
+.questionnaire::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--lacquer-red), var(--gold), transparent);
+  opacity:0.5;
+}
+.question { margin-bottom:20px; }
+.question-label { display:block; font-size:0.95rem; color:var(--text-dim); margin-bottom:10px; font-weight:600; }
+.option-btn {
+  width:100%; padding:13px; margin:6px 0;
+  background:rgba(20,16,10,0.8);
+  border:1px solid rgba(212,175,55,0.2);
+  color:var(--text-warm); border-radius:8px; font-size:0.95rem; cursor:pointer;
+  font-family:'Zen Kaku Gothic New',sans-serif;
+}
+.option-btn.active {
+  background:linear-gradient(135deg,rgba(212,175,55,0.18),rgba(192,57,43,0.12));
+  color:#fff; border-color:var(--gold); font-weight:bold;
+  box-shadow:0 0 12px rgba(212,175,55,0.25);
+}
+input[type="time"],input[type="text"],textarea {
+  width:100%; padding:13px; border-radius:8px;
+  border:1px solid rgba(212,175,55,0.25);
+  background:rgba(20,16,10,0.8); color:var(--text-warm); font-size:0.95rem;
+  font-family:'Zen Kaku Gothic New',sans-serif; outline:none;
+}
+input:focus, textarea:focus { border-color:var(--gold); box-shadow:0 0 8px rgba(212,175,55,0.2); }
+textarea { min-height:90px; resize:vertical; }
+#submit-order-btn {
+  width:100%; padding:17px;
+  background:linear-gradient(135deg,var(--lacquer-red),#8b0000);
+  color:var(--gold); border:1px solid rgba(212,175,55,0.4);
+  border-radius:12px; font-size:1.15rem; font-weight:bold;
+  margin-top:22px; cursor:pointer;
+  box-shadow:0 0 20px rgba(192,57,43,0.4);
+  font-family:'Noto Serif JP',serif; letter-spacing:2px;
+}
+#submit-order-btn:disabled { background:#1c1710; color:#333; cursor:not-allowed; }
+
+/* ── INFOS ── */
+#infos-page { display:none; padding:16px 16px 110px; }
+.info-card {
+  background:var(--surface); border:1.5px solid var(--border-gold);
+  border-radius:18px; padding:20px 18px; margin-bottom:16px;
+  box-shadow:0 6px 32px rgba(0,0,0,0.7), 0 0 20px rgba(212,175,55,0.04);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  position:relative; overflow:hidden;
+}
+.info-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--lacquer-red), var(--gold), transparent);
+  opacity:0.4;
+}
+.info-card-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+.info-card-icon {
+  width:46px; height:46px;
+  background:rgba(212,175,55,0.08);
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem; flex-shrink:0;
+  border:1px solid rgba(212,175,55,0.25);
+}
+.info-card-title {
+  font-family:'Noto Serif JP',serif; font-size:1.15rem; font-weight:800;
+  color:#fff; letter-spacing:0.5px;
+}
+.info-row { display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; }
+.info-row-icon { font-size:1rem; margin-top:2px; flex-shrink:0; color:var(--gold); }
+.info-row-label { color:var(--text-dim); font-size:0.9rem; font-weight:500; }
+.dept-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.dept-badge {
+  background:rgba(192,57,43,0.08);
+  border:1.5px solid rgba(192,57,43,0.35);
+  color:var(--crimson); padding:5px 14px;
+  border-radius:4px;
+  font-family:'Noto Serif JP',serif; font-size:0.95rem; font-weight:700;
+}
+.meetup-location-row {
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(255,255,255,0.02); border-radius:10px;
+  padding:13px 16px; margin-bottom:10px;
+  border:1px solid rgba(212,175,55,0.1);
+}
+.meetup-location-left { display:flex; align-items:center; gap:10px; }
+.meetup-location-name { font-size:1rem; font-weight:700; color:#fff; font-family:'Noto Serif JP',serif; }
+.disponible-badge {
+  background:rgba(123,196,123,0.1);
+  border:1.5px solid rgba(123,196,123,0.4);
+  color:#7bc47b;
+  font-family:'Noto Serif JP',serif; font-size:0.72rem; font-weight:800;
+  padding:5px 13px; border-radius:4px; letter-spacing:0.5px;
+}
+.meetup-horaires-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.meetup-horaires-text { color:var(--text-dim); font-size:0.88rem; font-weight:500; }
+
+/* ── RÉSEAUX ── */
+#reseaux-page { display:none; padding:16px 16px 110px; }
+.section-title {
+  font-family:'Noto Serif JP',serif; font-size:1.3rem; color:var(--gold);
+  margin:20px 0 16px; font-weight:bold; text-align:center;
+  text-shadow:0 0 16px rgba(212,175,55,0.6); letter-spacing:3px;
+}
+.reseaux-list { display:flex; flex-direction:column; gap:13px; margin-top:4px; }
+.reseau-item {
+  background:var(--surface); border:1.5px solid var(--border-gold);
+  border-radius:16px; padding:15px 18px;
+  display:flex; align-items:center; gap:16px;
+  cursor:pointer; transition:all .2s;
+  box-shadow:0 4px 18px rgba(0,0,0,0.6);
+  backdrop-filter:blur(6px);
+  position:relative; overflow:hidden;
+}
+.reseau-item::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
+}
+.reseau-item:active { transform:scale(0.97); border-color:var(--crimson); background:rgba(192,57,43,0.06); }
+.reseau-icon-wrap {
+  width:50px; height:50px; flex-shrink:0;
+  border-radius:12px; border:1.5px solid rgba(212,175,55,0.25);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; font-size:1.7rem;
+}
+.reseau-icon-wrap img { width:32px!important; height:32px!important; object-fit:contain; }
+.reseau-text { flex:1; }
+.reseau-name { font-family:'Noto Serif JP',serif; font-size:0.95rem; font-weight:800; color:#fff; letter-spacing:0.3px; }
+.reseau-sub { font-size:0.78rem; color:#6a5840; font-weight:500; margin-top:3px; }
+.reseau-arrow { font-size:1.5rem; color:var(--gold); font-weight:300; line-height:1; text-shadow:0 0 8px rgba(212,175,55,0.5); }
+
+/* ── AVIS ── */
+.star.on { color:var(--gold); text-shadow:0 0 8px rgba(212,175,55,0.8); }
+.star.off { color:#3a2e20; }
+.avis-card {
+  background:var(--surface); border:1.5px solid rgba(212,175,55,0.1);
+  border-radius:14px; padding:15px 18px; margin-bottom:12px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.6);
+}
+.avis-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.avis-user { font-family:'Noto Serif JP',serif; font-size:0.85rem; color:var(--crimson); font-weight:700; }
+.avis-stars { font-size:0.95rem; letter-spacing:2px; color:var(--gold); }
+.avis-date { font-size:0.72rem; color:#3a2e20; margin-bottom:8px; }
+.avis-comment { color:#c8b89a; font-size:0.88rem; line-height:1.5; }
+
+/* ── NAV ── */
+nav {
+  position:fixed; bottom:16px; left:12px; right:12px; height:62px;
+  background:rgba(10,10,8,0.97);
+  border-radius:22px;
+  border:1px solid rgba(212,175,55,0.22);
+  display:flex; justify-content:space-around; align-items:center;
+  z-index:1000;
+  box-shadow:0 10px 40px rgba(0,0,0,0.9), 0 0 30px rgba(212,175,55,0.06);
+  padding:0 4px;
+}
+/* Gold line on top of nav */
+nav::before {
+  content:'';
+  position:absolute; top:0; left:20%; right:20%; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
+}
+.nav-item {
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; width:44px; height:44px; border-radius:50%;
+  background:transparent; transition:all 0.25s ease; position:relative;
+}
+.nav-item.active {
+  background:rgba(212,175,55,0.15);
+  box-shadow:0 3px 18px rgba(212,175,55,0.3), 0 0 0 1px rgba(212,175,55,0.25);
+  transform:translateY(-3px) scale(1.08);
+}
+.nav-emoji { font-size:1.2rem; line-height:1; display:block; transition:transform 0.2s; }
+.nav-item.active .nav-emoji { transform:scale(1.1); }
+#cart-badge {
+  position:absolute; top:-2px; right:-2px;
+  background:var(--lacquer-red); color:var(--gold);
+  border-radius:50%; min-width:15px; height:15px;
+  padding:0 3px; font-size:0.55rem; font-weight:bold; line-height:15px;
+  box-shadow:0 0 8px rgba(192,57,43,0.7); display:none; z-index:2; text-align:center;
+}
+
+/* ── PROFIL ── */
+#profil-page { display:none; padding:16px 16px 110px; }
+.profil-header {
+  background:var(--surface); border:1.5px solid var(--border-gold);
+  border-radius:20px; padding:26px 20px 20px;
+  text-align:center; margin-bottom:16px;
+  box-shadow:0 0 30px rgba(212,175,55,0.06);
+  position:relative; overflow:hidden;
+}
+.profil-header::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold), var(--lacquer-red), var(--gold), transparent);
+  opacity:0.5;
+}
+.profil-avatar {
+  width:76px; height:76px;
+  background:rgba(212,175,55,0.08);
+  border:2px solid rgba(212,175,55,0.5);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:2rem; margin:0 auto 12px;
+  box-shadow:0 0 30px rgba(212,175,55,0.2); overflow:hidden;
+}
+.profil-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.profil-name { font-family:'Noto Serif JP',serif; font-size:1.1rem; font-weight:900; color:#fff; margin-bottom:3px; }
+.profil-section-title {
+  font-family:'Noto Serif JP',serif; font-size:0.88rem; font-weight:800;
+  color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin:18px 0 10px;
+}
+.profil-stats-block {
+  background:var(--surface); border:1.5px solid rgba(212,175,55,0.22);
+  border-radius:16px; padding:18px;
+  margin-bottom:16px; display:flex; align-items:center; gap:16px;
+  box-shadow:0 6px 24px rgba(0,0,0,0.6);
+}
+.profil-stats-icon {
+  width:52px; height:52px;
+  background:rgba(212,175,55,0.06);
+  border:1.5px solid rgba(212,175,55,0.25);
+  border-radius:12px; display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; flex-shrink:0;
+}
+.profil-stats-info { flex:1; }
+.profil-stats-number { font-family:'Noto Serif JP',serif; font-size:2rem; font-weight:900; color:var(--gold); line-height:1; text-shadow:0 0 16px rgba(212,175,55,0.5); }
+.profil-stats-label { font-size:0.78rem; color:#3a2e20; font-weight:600; margin-top:4px; }
+.commande-card {
+  background:var(--surface); border:1.5px solid rgba(255,255,255,0.04);
+  border-radius:14px; padding:14px 16px; margin-bottom:10px;
+}
+.commande-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.commande-date { font-size:0.76rem; color:#3a2e20; font-weight:600; }
+.commande-total { font-family:'Noto Serif JP',serif; font-size:0.88rem; font-weight:900; color:var(--gold); }
+.commande-items { font-size:0.85rem; color:#6a5840; line-height:1.6; }
+.commande-mode {
+  display:inline-block; margin-top:7px;
+  background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.18);
+  color:rgba(212,175,55,0.7); font-size:0.7rem; font-weight:700;
+  padding:3px 10px; border-radius:4px; letter-spacing:0.5px;
+}
   </style>
 </head>
 <body>
+
+<!-- SPLASH -->
+<div id="splash-screen" class="splash">
+  <div class="splash-content">
+    <div class="splash-vignette"></div>
+    <div class="splash-pattern"></div>
+    <div class="splash-particles" id="splash-particles"></div>
+    <div class="splash-glow"></div>
+
+    <div class="splash-logo-ring">🍣</div>
+    <div class="splash-title-jp">Premium Shop</div>
+    <div class="splash-title-main">DINO TERPS 76</div>
+    <div class="splash-divider"></div>
+    <div class="splash-title-sub">🔥 ディノテルプス 🔥</div>
+    <div class="splash-progress-wrap"><div class="splash-progress-bar"></div></div>
+    <div class="splash-text">Chargement...</div>
+  </div>
+</div>
 
 <div class="container">
   <div class="overlay"></div>
   <div class="content">
 
-    <header>
-      <button class="back-btn" id="btn-back" style="display:none;">← Retour</button>
-      <div class="header-inner">
-        <div class="header-title" id="page-title">DINO TERPS 76</div>
-      </div>
-    </header>
-
-    <!-- Page d'accueil -->
+    <!-- ACCUEIL -->
     <div id="home-page">
-      <section class="welcome">
-        <div class="welcome-inner">
-          <div class="welcome-emoji">🍣</div>
-          <div>
-            <h2 id="welcome-name">Chargement...</h2>
-            <p>Bienvenue sur le shop premium</p>
-          </div>
+      <div id="home-logo-wrapper">
+        <div class="home-logo-emoji">🍣</div>
+        <div class="home-logo-title">DINO TERPS 76</div>
+        <div class="home-logo-jp">ディノテルプス — Shop Premium</div>
+      </div>
+      <div class="neon-line"></div>
+      <div id="products-header">
+        <div class="products-title"><span style="font-size:1.3rem">🛍️</span>Catalogue</div>
+        <div id="products-count-modern" class="products-count">
+          <div class="products-count-number">3</div>
+          <div class="products-count-label">Produits</div>
         </div>
-      </section>
-
+      </div>
+      <div id="filters-bar">
+        <div class="filters-inner">
+          <select id="category-filter" class="compact-select" onchange="filterProducts()"><option value="">Toutes catégories</option></select>
+          <select id="farm-filter" class="compact-select" onchange="filterProducts()"><option value="">Toutes farms</option></select>
+        </div>
+      </div>
       <div id="products-grid"></div>
     </div>
 
-    <!-- Page détail produit -->
+    <!-- DÉTAIL PRODUIT -->
     <div id="product-detail">
-      <div class="product-hero">
-        <video id="detail-video" autoplay loop muted playsinline controls></video>
+      <div class="swiper-wrap">
+        <div class="swiper-track" id="swiper-track"></div>
+        <button class="swiper-btn swiper-btn-prev" onclick="swiperPrev()">&#8249;</button>
+        <button class="swiper-btn swiper-btn-next" onclick="swiperNext()">&#8250;</button>
+        <div class="swiper-counter" id="swiper-counter">1 / 1</div>
       </div>
-      <!-- Switcher moderne avec miniatures -->
-      <div id="video-switcher" class="video-switcher"></div>
-
-      <div class="product-title" id="detail-title"></div>
-      <div class="badges">
-        <div class="badge badge-farm" id="detail-farm-badge"></div>
+      <div class="product-info">
+        <div class="product-title" id="detail-title"></div>
+        <div class="badges"><div class="badge badge-farm" id="detail-farm-badge"></div></div>
+        <div class="strain-section" id="detail-strain-desc"></div>
+        <div class="quantity-section">
+          <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
+          <div class="quantity-grid" id="qty-grid"></div>
+        </div>
+        <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
       </div>
-      <div class="strain-section" id="detail-strain-desc"></div>
-      <div class="description-section" id="detail-description"></div>
-      <div class="quantity-section">
-        <div class="quantity-title"><span>🛍️</span> Sélectionner la Quantité</div>
-        <div class="quantity-grid" id="qty-grid"></div>
-      </div>
-      <button class="add-to-cart" id="add-to-cart-btn"><span>🛒</span> Ajouter au Panier</button>
     </div>
 
-    <!-- Page Panier -->
+    <!-- PANIER -->
     <div id="cart-page">
-      <h2 style="color:#60a5fa; text-align:center; margin:20px 0;">Votre Panier</h2>
+      <h2 style="color:var(--gold);text-align:center;margin:20px 0;font-family:'Noto Serif JP',serif;text-shadow:0 0 16px rgba(212,175,55,0.5);">Votre Panier</h2>
       <div id="cart-items"></div>
       <div id="cart-total" class="cart-total"></div>
-
-      <div class="questionnaire" id="questionnaire">
+      <div class="questionnaire">
         <div class="question">
           <span class="question-label">Mode de récupération :</span>
           <button class="option-btn" data-type="pickup">Venir sur place</button>
           <button class="option-btn" data-type="delivery">Livraison</button>
         </div>
-
-        <div id="pickup-questions" style="display:none;">
-          <div class="question">
-            <span class="question-label">Pour quelle heure ?</span>
-            <input type="time" id="pickup-time">
-          </div>
+        <div id="pickup-questions" style="display:none">
+          <div class="question"><span class="question-label">Pour quelle heure ?</span><input type="time" id="pickup-time"></div>
         </div>
-
-        <div id="delivery-questions" style="display:none;">
-          <div class="question">
-            <span class="question-label">Heure souhaitée</span>
-            <input type="time" id="delivery-time">
-          </div>
-          <div class="question">
-            <span class="question-label">Adresse complète</span>
-            <input type="text" id="delivery-address" placeholder="Rue, numéro, ville...">
-          </div>
-          <div class="question">
-            <span class="question-label">Précisions (étage, code, etc.)</span>
-            <textarea id="delivery-details" placeholder="Interphone, digicode, remarques..."></textarea>
-          </div>
+        <div id="delivery-questions" style="display:none">
+          <div class="question"><span class="question-label">Heure souhaitée</span><input type="time" id="delivery-time"></div>
+          <div class="question"><span class="question-label">Adresse complète</span><input type="text" id="delivery-address" placeholder="Rue, numéro, ville..."></div>
+          <div class="question"><span class="question-label">Précisions (étage, code, etc.)</span><textarea id="delivery-details" placeholder="Interphone, digicode, remarques..."></textarea></div>
         </div>
-
         <button id="submit-order-btn">Commander</button>
       </div>
     </div>
 
-    <!-- Page Infos -->
+    <!-- INFOS -->
     <div id="infos-page">
-      <div class="info-box">
-        <div class="section-title">🚚 LIVRAISON</div>
-        <p><strong>SALUT A TOUS LA TEAM !</strong></p>
-        <p>VOICI LES ZONES DE LIVRAISON 🚚 📦 : 76 / 27 / 14 / 60</p>
-        <p><strong>76 Centre et alentours :</strong></p>
-        <ul>
-          <li>10 km → 50 €</li>
-          <li>20 km → 80 €</li>
-          <li>30 km → 120 €</li>
-          <li>50 km → 350 €</li>
-          <li>100 km → 420 €</li>
-        </ul>
-        <p><strong>Paiement en espèces 💶 uniquement !</strong></p>
+      <div class="info-card" style="margin-top:8px">
+        <div class="info-card-header"><div class="info-card-icon">🚚</div><div class="info-card-title">Livraison</div></div>
+        <div style="color:#c8b89a;font-size:0.9rem;line-height:1.8;white-space:pre-line">SALUT À TOUS LA TEAM !
+
+VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--gold);font-weight:700">76 / 27 / 14 / 60</span>
+
+<span style="color:var(--crimson);font-weight:700">76 Centre et alentours :</span>
+  • 10 km → <span style="color:#7bc47b;font-weight:700">50 €</span>
+  • 20 km → <span style="color:#7bc47b;font-weight:700">80 €</span>
+  • 30 km → <span style="color:#7bc47b;font-weight:700">120 €</span>
+  • 50 km → <span style="color:#7bc47b;font-weight:700">350 €</span>
+  • 100 km → <span style="color:#7bc47b;font-weight:700">420 €</span></div>
+        <div style="margin-top:14px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:11px 14px;font-size:0.85rem;color:var(--gold);font-weight:700;text-align:center">💶 Paiement en espèces uniquement</div>
       </div>
 
-      <div class="info-box">
-        <div class="section-title">🏠 SERVICE MEET-UP</div>
-        <p>Vous pouvez passer directement sur place la famille !<br>Avant de venir, contactez-nous en privé et précisez :</p>
-        <ul>
-          <li>votre heure d’arrivée</li>
-          <li>votre commande souhaitée</li>
-        </ul>
-        <p>RDV avec 🚶📦 @dino76s 🍣</p>
-        <p><strong>Paiement en espèces 💶 uniquement !</strong></p>
-        <p>Horaires : 12h – 23h</p>
-        <p><strong>SAV disponible 24h/24 🕛</strong></p>
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Meet-up</div></div>
+        <div style="color:#c8b89a;font-size:0.9rem;line-height:1.8;margin-bottom:14px">
+          Vous pouvez passer directement sur place la famille !<br>
+          Avant de venir, contactez-nous en privé et précisez :
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 14px">
+            <span style="color:var(--gold)">→</span>
+            <span style="color:var(--text-warm);font-size:0.88rem">Votre heure d'arrivée</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(212,175,55,0.1);border-radius:8px;padding:10px 14px">
+            <span style="color:var(--gold)">→</span>
+            <span style="color:var(--text-warm);font-size:0.88rem">Votre commande souhaitée</span>
+          </div>
+        </div>
+        <div class="meetup-location-row">
+          <div class="meetup-location-left"><span style="color:var(--gold);font-size:1rem">📍</span><span class="meetup-location-name">@dino76s 🍣</span></div>
+          <div class="disponible-badge">Disponible</div>
+        </div>
+        <div class="meetup-horaires-row" style="margin-top:8px">
+          <span style="color:var(--gold);font-size:1rem">🕐</span>
+          <span class="meetup-horaires-text">Horaires : 12h – 23h</span>
+        </div>
+        <div class="meetup-horaires-row">
+          <span style="color:var(--crimson);font-size:1rem">✅</span>
+          <span class="meetup-horaires-text">SAV disponible 24h/24</span>
+        </div>
+        <div style="margin-top:12px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.2);border-radius:10px;padding:11px 14px;font-size:0.85rem;color:var(--gold);font-weight:700;text-align:center">💶 Paiement en espèces uniquement</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Zones desservies</div></div>
+        <div class="info-row"><span class="info-row-icon">🗺️</span>
+          <div><div class="info-row-label">Départements</div>
+          <div class="dept-badges">
+            <span class="dept-badge">76</span><span class="dept-badge">27</span><span class="dept-badge">14</span><span class="dept-badge">60</span>
+          </div></div>
+        </div>
       </div>
     </div>
 
-    <!-- Page Réseaux -->
+    <!-- RÉSEAUX -->
     <div id="reseaux-page">
-      <h2 style="text-align:center; color:#60a5fa; margin:30px 0 40px; font-size:1.8rem;">Nos réseaux</h2>
+      <h2 class="section-title">🔥 Nos réseaux</h2>
       <div class="reseaux-list">
-        <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3VjMGo4dGMxc2tz&utm_source=qr">Instagram 📸</div>
-        <div class="reseau-item" data-link="https://duanym138.org/DINOfslmogx8">Potato 🥔</div>
-        <div class="reseau-item" data-link="https://t.me/+j7EMkLSIaV83ZmU8">Canal Telegram 📢</div>
-        <div class="reseau-item" data-link="https://snapchat.com/t/EZAiDCkN">Snapchat 👻</div>
+        <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3VjMGo4dGMxc2tz&utm_source=qr">
+          <div class="reseau-icon-wrap" style="background:rgba(225,48,108,0.12);border-color:rgba(225,48,108,0.35)">📸</div>
+          <div class="reseau-text"><div class="reseau-name">Instagram</div><div class="reseau-sub">@dinoterps76</div></div>
+          <div class="reseau-arrow">›</div>
+        </div>
+        <div class="reseau-item" data-link="https://duanym138.org/DINOfslmogx8">
+          <div class="reseau-icon-wrap" style="background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3)">🥔</div>
+          <div class="reseau-text"><div class="reseau-name">Potato</div><div class="reseau-sub">Canal officiel 📢</div></div>
+          <div class="reseau-arrow">›</div>
+        </div>
+        <div class="reseau-item" data-link="https://t.me/+j7EMkLSIaV83ZmU8">
+          <div class="reseau-icon-wrap" style="background:rgba(41,182,246,0.12);border-color:rgba(41,182,246,0.3)">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/512px-Telegram_logo.svg.png" alt="Telegram">
+          </div>
+          <div class="reseau-text"><div class="reseau-name">Canal Telegram</div><div class="reseau-sub">Annonces & updates 📢</div></div>
+          <div class="reseau-arrow">›</div>
+        </div>
+        <div class="reseau-item" data-link="https://snapchat.com/t/EZAiDCkN">
+          <div class="reseau-icon-wrap" style="background:rgba(255,252,0,0.1);border-color:rgba(255,252,0,0.3)">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+              <circle cx="12" cy="11" r="5" fill="#FFFC00"/>
+              <path d="M7 16c0 0 1.5 3 5 3s5-3 5-3" stroke="#FFFC00" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="reseau-text"><div class="reseau-name">Snapchat</div><div class="reseau-sub">Lien direct 👻</div></div>
+          <div class="reseau-arrow">›</div>
+        </div>
       </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- AVIS -->
+    <div id="avis-page" style="display:none;padding:16px 16px 110px">
+      <h2 class="section-title">⭐ Avis clients</h2>
+      <div class="info-card" style="margin-bottom:20px">
+        <div class="info-card-header"><div class="info-card-icon">✍️</div><div class="info-card-title">Laisser un avis</div></div>
+        <div style="margin-bottom:14px">
+          <div style="color:var(--text-dim);font-size:0.88rem;margin-bottom:10px;font-weight:600">Votre note</div>
+          <div id="star-rating" style="display:flex;gap:8px;font-size:2rem;cursor:pointer">
+            <span class="star" data-v="1">☆</span><span class="star" data-v="2">☆</span><span class="star" data-v="3">☆</span><span class="star" data-v="4">☆</span><span class="star" data-v="5">☆</span>
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <div style="color:var(--text-dim);font-size:0.88rem;margin-bottom:8px;font-weight:600">Votre commentaire</div>
+          <textarea id="avis-text" placeholder="Partagez votre expérience..." style="width:100%;padding:13px;border-radius:8px;border:1.5px solid rgba(212,175,55,0.25);background:rgba(20,16,10,0.8);color:var(--text-warm);font-size:0.95rem;min-height:90px;resize:vertical;font-family:'Zen Kaku Gothic New',sans-serif;outline:none"></textarea>
+        </div>
+        <button id="submit-avis-btn" style="width:100%;padding:15px;background:linear-gradient(135deg,var(--lacquer-red),#8b0000);color:var(--gold);border:1px solid rgba(212,175,55,0.3);border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;font-family:'Noto Serif JP',serif;letter-spacing:1px;box-shadow:0 0 20px rgba(192,57,43,0.4)">Publier mon avis</button>
+      </div>
+      <div id="avis-list"></div>
+    </div>
+
+    <!-- PROFIL -->
+    <div id="profil-page"></div>
+
+    <!-- NAV -->
     <nav>
-      <div class="nav-item active" id="nav-home">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          <polyline points="9 22 9 12 15 12 15 22"></polyline>
-        </svg>
-        <span>Accueil</span>
-      </div>
-      <div class="nav-item" id="nav-cart">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="9" cy="21" r="1"/>
-          <circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        <span>Panier</span>
-        <span id="cart-badge"></span>
-      </div>
-      <div class="nav-item" id="nav-infos">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="16" x2="12" y2="12"/>
-          <line x1="12" y1="8" x2="12.01" y2="8"/>
-        </svg>
-        <span>Infos</span>
-      </div>
-      <div class="nav-item" id="nav-reseaux">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span>Réseaux</span>
-      </div>
+      <div class="nav-item active" id="nav-home"><span class="nav-emoji">🏠</span></div>
+      <div class="nav-item" id="nav-cart"><span class="nav-emoji">🛒</span><span id="cart-badge"></span></div>
+      <div class="nav-item" id="nav-avis"><span class="nav-emoji">⭐</span></div>
+      <div class="nav-item" id="nav-infos"><span class="nav-emoji">ℹ️</span></div>
+      <div class="nav-item" id="nav-reseaux"><span class="nav-emoji">📡</span></div>
+      <div class="nav-item" id="nav-profil"><span class="nav-emoji">👤</span></div>
     </nav>
 
   </div>
 </div>
 
 <script>
-  const tg = window.Telegram.WebApp;
-  tg.ready();
-  tg.expand();
-  tg.disableVerticalSwipes();
+// ── TELEGRAM ──
+const tg = window.Telegram?.WebApp;
+let tgUser = null;
+if (tg) {
+  tg.ready(); tg.expand();
+  if (typeof tg.requestFullscreen==='function') tg.requestFullscreen();
+  if (typeof tg.setHeaderColor==='function') tg.setHeaderColor('#0a0a08');
+  if (typeof tg.setBackgroundColor==='function') tg.setBackgroundColor('#0a0a08');
+  if (typeof tg.setBottomBarColor==='function') tg.setBottomBarColor('#0a0a08');
+  tg.enableClosingConfirmation();
+  tgUser = tg.initDataUnsafe?.user || null;
+}
 
-  const user = tg.initDataUnsafe?.user || {};
-  document.getElementById('welcome-name').textContent = user.first_name ? `Salut ${user.first_name} !` : 'Bienvenue !';
-
-  // ==================== PRODUITS (3G sur PIRATE seulement) ====================
-  const products = {
-    mtRiff: {
-      key: 'mtRiff',
-      title: 'FRESH FROZEN🧊',
-      farm: 'MT.RIFF',
-      strain: 'FORBIDEN 🍓🍉✅\nSTRAWNANA 🍓🍋‍🟩✅\nYOLLOW RUNTZ 🌈 ✅',
-      description: 'Voici une Farm réputée pour sa fraîcheur et sa pureté du vrai Frozen sift goût fruité. Arôme vif et frais en saveur !',
-      videos: [
-        { src: 'mt.riff.mp4', poster: 'mt.riff.jpg' },
-        { src: 'mt.riff2.mp4', poster: 'mt.riff2.jpg' }
-      ],
-      poster: 'mt.riff.jpg',
-      quantities: [
-        { qty: '5G', price: '70 €' },
-        { qty: '10G', price: '140 €' },
-        { qty: '20G', price: '280 €' }
-      ]
-    },
-    cali: {
-      key: 'cali',
-      title: 'CALI WEED🌳',
-      farm: '5A + *',
-      strain: 'RUNTZ 🌈 ✅\nCANDY KUSH 🍭 ✅',
-      description: 'Là on est sur une qualité de weed exceptionnelle, craquant, frais, riche terps pour les vrais connaisseurs et gros poumons 💨 THOP SELF 5A ++',
-      videos: [
-        { src: 'cali.mp4', poster: 'cali.jpg' },
-        { src: 'cali2.mp4', poster: 'cali2.jpg' }
-      ],
-      poster: 'cali.jpg',
-      quantities: [
-        { qty: '3.5G', price: '60 €' },
-        { qty: '5G', price: '80 €' },
-        { qty: '10G', price: '150 €' }
-      ]
-    },
-    pirate: {
-      key: 'pirate',
-      title: '❄️ Fresh Frozen ❄️ 160/45u',
-      farm: '🏴‍☠️PIRATE DEL SUR FARMZ🏴‍☠️',
-      strain: 'Sherbenger ⛽️💥\nFatso 🍭🚀\nTropico 🏝🍹',
-      description: 'Le frozen de l’année l\'équipe 🐰, une vraie foudre une pépite qu’il y’a pas souvent il se rapproche du blue magic patron ! ⚡️',
-      videos: [
-        { src: 'pirate.mp4', poster: 'pirate.jpg' }
-      ],
-      poster: 'pirate.jpg',
-      quantities: [
-        { qty: '3G', price: '50 €' },
-        { qty: '5G', price: '80 €' },
-        { qty: '10G', price: '160 €' },
-        { qty: '20G', price: '300 €' }
-      ]
-    }
-  };
-
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-  function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateBadge();
+// ── PRODUCTS (DINO TERPS 76 originals) ──
+const products = {
+  mtRiff: {
+    key:'mtRiff', title:'FRESH FROZEN 🧊', category:'Fresh Frozen 🧊', farm:'MT.RIFF',
+    image:'mt.riff.jpg', video:'mt.riff.mp4', extraVideos:['mt.riff2.mp4'],
+    strain:'FORBIDEN 🍓🍉 ✅\nSTRAWNANA 🍓🍋‍🟩 ✅\nYOLLOW RUNTZ 🌈 ✅',
+    description:'Voici une Farm réputée pour sa fraîcheur et sa pureté du vrai Frozen sift goût fruité. Arôme vif et frais en saveur !',
+    quantities:[
+      {qty:'5G', price:'70 €'},{qty:'10G', price:'140 €'},{qty:'20G', price:'280 €'}
+    ]
+  },
+  cali: {
+    key:'cali', title:'CALI WEED 🌳', category:'Cali Weed 🌳', farm:'5A + *',
+    image:'cali.jpg', video:'cali.mp4', extraVideos:['cali2.mp4'],
+    strain:'RUNTZ 🌈 ✅\nCANDY KUSH 🍭 ✅',
+    description:'Là on est sur une qualité de weed exceptionnelle, craquant, frais, riche terps pour les vrais connaisseurs et gros poumons 💨 THOP SELF 5A ++',
+    quantities:[
+      {qty:'3.5G', price:'60 €'},{qty:'5G', price:'80 €'},{qty:'10G', price:'150 €'}
+    ]
+  },
+  pirate: {
+    key:'pirate', title:'❄️ Fresh Frozen ❄️ 160/45u', category:'Fresh Frozen 🧊', farm:'🏴‍☠️ PIRATE DEL SUR FARMZ 🏴‍☠️',
+    image:'pirate.jpg', video:'pirate.mp4', extraVideos:[],
+    strain:'Sherbenger ⛽️💥\nFatso 🍭🚀\nTropico 🏝🍹',
+    description:'Le frozen de l\'année l\'équipe 🐰, une vraie foudre une pépite qu\'il y\'a pas souvent il se rapproche du blue magic patron ! ⚡️',
+    quantities:[
+      {qty:'3G', price:'50 €'},{qty:'5G', price:'80 €'},{qty:'10G', price:'160 €'},{qty:'20G', price:'300 €'}
+    ]
   }
+};
 
-  function updateBadge() {
-    const badge = document.getElementById('cart-badge');
-    badge.textContent = cart.length || '';
-    badge.style.display = cart.length > 0 ? 'inline-block' : 'none';
-  }
+// ── CART ──
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem('cart_dino76')) || []; } catch(e) { cart = []; }
+function saveCart() { try { localStorage.setItem('cart_dino76', JSON.stringify(cart)); } catch(e){} updateBadge(); }
+function updateBadge() { const b=document.getElementById('cart-badge'); b.textContent=cart.length||''; b.style.display=cart.length>0?'inline-block':'none'; }
 
-  function hideAllPages() {
-    document.getElementById('home-page').style.display = 'none';
-    document.getElementById('product-detail').style.display = 'none';
-    document.getElementById('cart-page').style.display = 'none';
-    document.getElementById('infos-page').style.display = 'none';
-    document.getElementById('reseaux-page').style.display = 'none';
-    document.getElementById('btn-back').style.display = 'none';
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    document.getElementById('page-title').textContent = 'DINO TERPS 76';
-    document.getElementById('page-title').style.fontSize = '1.55rem';
-  }
+// ── AVIS ──
+let avisList = [];
+try { avisList = JSON.parse(localStorage.getItem('avis_dino76')) || []; } catch(e) { avisList = []; }
+function saveAvis() { try { localStorage.setItem('avis_dino76', JSON.stringify(avisList)); } catch(e){} }
 
-  function loadVideo(src, poster) {
-    const videoEl = document.getElementById('detail-video');
-    videoEl.poster = poster || '';
-    videoEl.innerHTML = `<source src="${src}" type="video/mp4">`;
-    videoEl.load();
-    videoEl.play().catch(() => {});
-  }
+// ── COMMANDES ──
+let commandes = [];
+try { commandes = JSON.parse(localStorage.getItem('commandes_dino76')) || []; } catch(e) { commandes = []; }
+function saveCommandes() { try { localStorage.setItem('commandes_dino76', JSON.stringify(commandes)); } catch(e){} }
 
-  function renderProducts() {
-    const grid = document.getElementById('products-grid');
-    grid.innerHTML = '';
-    Object.values(products).forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="card-img">
-          <video autoplay muted loop playsinline poster="${p.poster || ''}">
-            <source src="${p.videos[0].src}" type="video/mp4">
-          </video>
-          <div class="badge-star">★</div>
-        </div>
-        <div class="card-body">
-          <div class="card-title">${p.title}</div>
-          ${p.farm ? `<div class="card-farm">${p.farm}</div>` : ''}
-          <div class="card-info">${p.strain.split('\n')[0]}</div>
-        </div>
-      `;
-      card.onclick = () => openProductDetail(p.key);
-      grid.appendChild(card);
-    });
-  }
+// ── FILTERS ──
+function populateFilters() {
+  const all = Object.values(products);
+  const cats = [...new Set(all.map(p=>p.category))].sort();
+  const farms = [...new Set(all.map(p=>p.farm))].sort();
+  const cs=document.getElementById('category-filter');
+  const fs=document.getElementById('farm-filter');
+  cats.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});
+  farms.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent=f;fs.appendChild(o);});
+}
+function filterProducts() {
+  const cf=document.getElementById('category-filter').value;
+  const ff=document.getElementById('farm-filter').value;
+  renderProducts(Object.values(products).filter(p=>(!cf||p.category===cf)&&(!ff||p.farm===ff)));
+}
+window.filterProducts=filterProducts;
 
-  function openProductDetail(key) {
-    const p = products[key];
-
-    document.getElementById('detail-title').textContent = p.title;
-    document.getElementById('detail-farm-badge').textContent = p.farm || 'Premium';
-    document.getElementById('detail-strain-desc').innerHTML = p.strain ? p.strain.replace(/\n/g, '<br>') : '';
-    document.getElementById('detail-description').innerHTML = p.description ? p.description.replace(/\n/g, '<br>') : '';
-
-    // Quantités
-    const qtyGrid = document.getElementById('qty-grid');
-    qtyGrid.innerHTML = '';
-    p.quantities.forEach((item, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'qty-btn';
-      btn.innerHTML = `${item.qty}<br>${item.price}`;
-      btn.dataset.idx = idx;
-      btn.onclick = () => {
-        qtyGrid.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-      };
-      qtyGrid.appendChild(btn);
-    });
-
-    // Switcher miniatures modernes
-    const switcher = document.getElementById('video-switcher');
-    switcher.innerHTML = '';
-    if (p.videos.length > 1) {
-      switcher.style.display = 'flex';
-      p.videos.forEach((vid, idx) => {
-        const preview = document.createElement('div');
-        preview.className = `video-preview ${idx === 0 ? 'active' : ''}`;
-        preview.style.backgroundImage = `url('${vid.poster}')`;
-        
-        const play = document.createElement('div');
-        play.className = 'play-icon';
-        play.innerHTML = '▶';
-        preview.appendChild(play);
-
-        preview.onclick = () => {
-          switcher.querySelectorAll('.video-preview').forEach(b => b.classList.remove('active'));
-          preview.classList.add('active');
-          loadVideo(vid.src, vid.poster);
-        };
-        switcher.appendChild(preview);
-      });
+function renderProducts(list) {
+  if (!list) list=Object.values(products);
+  const grid=document.getElementById('products-grid');
+  grid.innerHTML='';
+  const n=list.length;
+  const ce=document.getElementById('products-count-modern');
+  ce.querySelector('.products-count-number').textContent=n;
+  ce.querySelector('.products-count-label').textContent=n>1?'Produits':'Produit';
+  if (n===0) { grid.innerHTML='<div class="no-results">Aucun produit 🔍</div>'; return; }
+  list.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='card';
+    if (p.image) {
+      card.innerHTML=`<div class="card-img"><img src="${p.image}" alt="${p.title}"><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
     } else {
-      switcher.style.display = 'none';
+      card.innerHTML=`<div class="card-img" style="background:linear-gradient(135deg,#1c1710,#0a0a08);display:flex;align-items:center;justify-content:center;"><span style="font-size:3rem">🎬</span><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
     }
-
-    // Première vidéo
-    loadVideo(p.videos[0].src, p.videos[0].poster);
-
-    document.getElementById('page-title').textContent = p.title;
-    document.getElementById('page-title').style.fontSize = '1.35rem';
-
-    hideAllPages();
-    document.getElementById('product-detail').style.display = 'block';
-    document.getElementById('btn-back').style.display = 'inline-block';
-  }
-
-  document.getElementById('btn-back').onclick = () => {
-    hideAllPages();
-    document.getElementById('home-page').style.display = 'block';
-    document.getElementById('nav-home').classList.add('active');
-  };
-
-  document.getElementById('add-to-cart-btn').onclick = () => {
-    const selected = document.querySelector('.qty-btn.selected');
-    if (!selected) return alert('Sélectionnez une quantité !');
-
-    const title = document.getElementById('detail-title').textContent;
-    const key = Object.keys(products).find(k => products[k].title === title);
-    const item = products[key].quantities[selected.dataset.idx];
-
-    cart.push({ title, qty: item.qty, price: item.price });
-    saveCart();
-    alert('Ajouté au panier !');
-  };
-
-  function showCart() {
-    hideAllPages();
-    document.getElementById('cart-page').style.display = 'block';
-    document.getElementById('nav-cart').classList.add('active');
-
-    const itemsDiv = document.getElementById('cart-items');
-    itemsDiv.innerHTML = '';
-
-    if (cart.length === 0) {
-      itemsDiv.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:80px 0;">Votre panier est vide</p>';
-      document.getElementById('questionnaire').style.display = 'none';
-      document.getElementById('cart-total').textContent = '';
-      return;
-    }
-
-    cart.forEach((item, index) => {
-      const div = document.createElement('div');
-      div.className = 'cart-item';
-      div.innerHTML = `
-        <div>
-          <strong>${item.title}</strong><br>
-          ${item.qty} — ${item.price}
-        </div>
-        <button class="delete-btn" data-index="${index}">X</button>
-      `;
-      itemsDiv.appendChild(div);
-    });
-
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.onclick = () => {
-        const idx = parseInt(btn.dataset.index);
-        cart.splice(idx, 1);
-        saveCart();
-        showCart();
-      };
-    });
-
-    document.getElementById('cart-total').textContent = `Total : ${cart.length} article${cart.length > 1 ? 's' : ''}`;
-    document.getElementById('questionnaire').style.display = 'block';
-  }
-
-  document.querySelectorAll('.option-btn').forEach(btn => {
-    btn.onclick = () => {
-      document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const type = btn.dataset.type;
-      document.getElementById('pickup-questions').style.display = type === 'pickup' ? 'block' : 'none';
-      document.getElementById('delivery-questions').style.display = type === 'delivery' ? 'block' : 'none';
-    };
+    card.onclick=()=>openProductDetail(p.key);
+    grid.appendChild(card);
   });
+}
 
-  document.getElementById('submit-order-btn').onclick = () => {
-    const modeBtn = document.querySelector('.option-btn.active');
-    if (!modeBtn) return alert('Choisis un mode de récupération !');
-
-    const mode = modeBtn.dataset.type;
-    let message = `Commande de ${user.first_name || 'Client'} (@${user.username || 'pas de pseudo'})\n\n`;
-    message += `Mode : ${mode === 'pickup' ? 'Meet-up' : 'Livraison'}\n\n`;
-
-    cart.forEach(item => {
-      message += `• ${item.title} × ${item.qty} (${item.price})\n`;
-    });
-
-    if (mode === 'pickup') {
-      const time = document.getElementById('pickup-time').value;
-      if (time) message += `\nHeure meet-up souhaitée : ${time}`;
-    } else {
-      const time = document.getElementById('delivery-time').value;
-      const address = document.getElementById('delivery-address').value.trim();
-      const details = document.getElementById('delivery-details').value.trim();
-      if (time) message += `\nHeure livraison souhaitée : ${time}`;
-      if (address) message += `\nAdresse : ${address}`;
-      if (details) message += `\nDétails : ${details}`;
-    }
-
-    message += `\n\nMerci !`;
-
-    const encoded = encodeURIComponent(message);
-    tg.openTelegramLink(`https://t.me/DINO76S?text=${encoded}`);
-  };
-
-  document.getElementById('nav-home').onclick = () => {
-    hideAllPages();
-    document.getElementById('home-page').style.display = 'block';
-    document.getElementById('nav-home').classList.add('active');
-  };
-
-  document.getElementById('nav-cart').onclick = () => {
-    showCart();
-  };
-
-  document.getElementById('nav-infos').onclick = () => {
-    hideAllPages();
-    document.getElementById('infos-page').style.display = 'block';
-    document.getElementById('nav-infos').classList.add('active');
-  };
-
-  document.getElementById('nav-reseaux').onclick = () => {
-    hideAllPages();
-    document.getElementById('reseaux-page').style.display = 'block';
-    document.getElementById('nav-reseaux').classList.add('active');
-  };
-
-  document.querySelectorAll('.reseau-item').forEach(item => {
-    item.onclick = () => tg.openLink(item.dataset.link);
+// ── NAV ──
+function hideAllPages() {
+  ['home-page','product-detail','cart-page','infos-page','reseaux-page','avis-page','profil-page'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
   });
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+}
+function scrollToTop() { document.querySelector('.content').scrollTo({top:0,behavior:'instant'}); }
+function goToHome() {
+  hideAllPages();
+  document.getElementById('home-page').style.display='block';
+  document.getElementById('nav-home').classList.add('active');
+  if(tg) tg.BackButton.hide();
+  scrollToTop();
+}
 
-  // Initialisation
+// ── SWIPER ──
+let swiperIndex=0, swiperItems=[];
+function buildProductMedia(imageSrc, videoSrc, extraVideos) {
+  const track=document.getElementById('swiper-track');
+  const counter=document.getElementById('swiper-counter');
+  const btnPrev=document.querySelector('.swiper-btn-prev');
+  const btnNext=document.querySelector('.swiper-btn-next');
+  track.innerHTML=''; swiperItems=[]; swiperIndex=0;
+  if (imageSrc) {
+    const img=document.createElement('img');
+    img.src=imageSrc;
+    img.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#0a0a08;pointer-events:none;user-select:none;';
+    track.appendChild(img); swiperItems.push('img');
+  }
+  const allVideos=[];
+  if (videoSrc) allVideos.push(videoSrc);
+  if (extraVideos && extraVideos.length) allVideos.push(...extraVideos);
+  allVideos.forEach(src=>{
+    const vid=document.createElement('video');
+    vid.src=src; vid.controls=true; vid.playsInline=true; vid.loop=true; vid.muted=false;
+    vid.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#0a0a08;pointer-events:auto;';
+    track.appendChild(vid); swiperItems.push('video');
+  });
+  const total=swiperItems.length;
+  if (total<=1) { btnPrev.style.display='none'; btnNext.style.display='none'; counter.style.display='none'; }
+  else { btnPrev.style.display='flex'; btnNext.style.display='flex'; counter.style.display='block'; counter.textContent=`1 / ${total}`; }
+  updateSwiperPosition();
+}
+function updateSwiperPosition() {
+  const track=document.getElementById('swiper-track');
+  const counter=document.getElementById('swiper-counter');
+  track.style.transform=`translateX(-${swiperIndex*100}%)`;
+  if (swiperItems.length>1) counter.textContent=`${swiperIndex+1} / ${swiperItems.length}`;
+  track.querySelectorAll('video').forEach(v=>v.pause());
+}
+function swiperPrev() { if(swiperItems.length<=1)return; swiperIndex=(swiperIndex-1+swiperItems.length)%swiperItems.length; updateSwiperPosition(); }
+function swiperNext() { if(swiperItems.length<=1)return; swiperIndex=(swiperIndex+1)%swiperItems.length; updateSwiperPosition(); }
+window.swiperPrev=swiperPrev; window.swiperNext=swiperNext;
+
+// ── PRODUCT DETAIL ──
+function openProductDetail(key) {
+  const p=products[key];
+  document.getElementById('detail-title').textContent=p.title;
+  document.getElementById('detail-farm-badge').textContent=p.farm;
+  let content='';
+  if (p.strain) content+=`<div style="color:var(--gold);font-weight:700;margin-bottom:12px;font-size:0.95rem;text-shadow:0 0 8px rgba(212,175,55,0.4)">Strains :\n${p.strain}</div>`;
+  if (p.description) content+=`<div class="description" style="margin-top:8px;color:#c8b89a;font-size:0.92rem;line-height:1.7">${p.description.replace(/\n/g,'<br>')}</div>`;
+  document.getElementById('detail-strain-desc').innerHTML=content||'';
+  const qtyGrid=document.getElementById('qty-grid');
+  qtyGrid.innerHTML='';
+  p.quantities.forEach((item,idx)=>{
+    const btn=document.createElement('button');
+    btn.className='qty-btn';
+    btn.innerHTML=`${item.qty}<br><span class="price-new">${item.price}</span>`;
+    btn.dataset.idx=idx;
+    btn.onclick=()=>{ qtyGrid.querySelectorAll('.qty-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); };
+    qtyGrid.appendChild(btn);
+  });
+  buildProductMedia(p.image||null, p.video||null, p.extraVideos||[]);
+  hideAllPages();
+  document.getElementById('product-detail').style.display='flex';
+  if(tg) tg.BackButton.show();
+  scrollToTop();
+}
+
+document.getElementById('add-to-cart-btn').onclick=()=>{
+  const sel=document.querySelector('.qty-btn.selected');
+  if (!sel) { alert('Sélectionnez une quantité !'); return; }
+  const title=document.getElementById('detail-title').textContent;
+  const key=Object.keys(products).find(k=>products[k].title===title);
+  const item=products[key].quantities[parseInt(sel.dataset.idx)];
+  cart.push({title, qty:item.qty, price:item.price});
+  saveCart();
+  alert('✅ Ajouté au panier !');
+};
+
+// ── NAV EVENTS ──
+document.getElementById('nav-home').onclick=goToHome;
+document.getElementById('nav-cart').onclick=()=>{
+  hideAllPages();
+  document.getElementById('cart-page').style.display='block';
+  document.getElementById('nav-cart').classList.add('active');
+  if(tg) tg.BackButton.hide();
+  renderCart(); scrollToTop();
+};
+document.getElementById('nav-infos').onclick=()=>{
+  hideAllPages();
+  document.getElementById('infos-page').style.display='block';
+  document.getElementById('nav-infos').classList.add('active');
+  if(tg) tg.BackButton.hide(); scrollToTop();
+};
+document.getElementById('nav-reseaux').onclick=()=>{
+  hideAllPages();
+  document.getElementById('reseaux-page').style.display='block';
+  document.getElementById('nav-reseaux').classList.add('active');
+  if(tg) tg.BackButton.hide(); scrollToTop();
+};
+document.getElementById('nav-avis').onclick=()=>{
+  hideAllPages();
+  document.getElementById('avis-page').style.display='block';
+  document.getElementById('nav-avis').classList.add('active');
+  if(tg) tg.BackButton.hide();
+  renderAvis(); scrollToTop();
+};
+document.getElementById('nav-profil').onclick=()=>{
+  hideAllPages();
+  document.getElementById('profil-page').style.display='block';
+  document.getElementById('nav-profil').classList.add('active');
+  if(tg) tg.BackButton.hide();
+  renderProfilPage(); scrollToTop();
+};
+if(tg) tg.BackButton.onClick(()=>goToHome());
+
+// ── AVIS ──
+let selectedStar=0;
+document.querySelectorAll('.star').forEach(star=>{
+  star.addEventListener('click',()=>{
+    selectedStar=parseInt(star.dataset.v);
+    document.querySelectorAll('.star').forEach(s=>{
+      s.textContent=parseInt(s.dataset.v)<=selectedStar?'★':'☆';
+      s.classList.toggle('on',parseInt(s.dataset.v)<=selectedStar);
+    });
+  });
+});
+function renderAvis() {
+  const list=document.getElementById('avis-list');
+  if (!avisList.length) { list.innerHTML='<p style="text-align:center;color:#3a2e20;padding:30px 0">Aucun avis pour l\'instant.</p>'; return; }
+  list.innerHTML=[...avisList].reverse().map(a=>
+    `<div class="avis-card"><div class="avis-header"><span class="avis-user">${a.user}</span><span class="avis-stars">${'★'.repeat(a.note)}${'☆'.repeat(5-a.note)}</span></div><div class="avis-date">${a.date}</div><div class="avis-comment">${a.comment}</div></div>`
+  ).join('');
+}
+document.getElementById('submit-avis-btn').onclick=()=>{
+  const comment=document.getElementById('avis-text').value.trim();
+  if (!selectedStar) { alert('Veuillez sélectionner une note ⭐'); return; }
+  if (!comment) { alert('Veuillez écrire un commentaire'); return; }
+  const username=tgUser?.first_name||tgUser?.username||'Anonyme';
+  avisList.push({user:username, note:selectedStar, comment, date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})});
+  saveAvis();
+  document.getElementById('avis-text').value='';
+  selectedStar=0;
+  document.querySelectorAll('.star').forEach(s=>{s.textContent='☆';s.classList.remove('on');});
+  renderAvis();
+  alert('✅ Merci pour votre avis !');
+};
+
+// ── CART ──
+function renderCart() {
+  const container=document.getElementById('cart-items');
+  container.innerHTML='';
+  if (!cart.length) {
+    container.innerHTML='<p style="text-align:center;color:#3a2e20;padding:40px 0">Votre panier est vide</p>';
+    document.getElementById('cart-total').textContent=''; return;
+  }
+  let total=0;
+  cart.forEach((item,index)=>{
+    total+=parseInt(item.price)||0;
+    const div=document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML=`<div><div class="cart-item-title">${item.title}</div><div class="cart-item-qty">${item.qty} — ${item.price}</div></div><button class="delete-btn" data-index="${index}">×</button>`;
+    container.appendChild(div);
+  });
+  document.getElementById('cart-total').innerHTML=`Total : <strong>${total} €</strong>`;
+}
+document.getElementById('cart-page').addEventListener('click',e=>{
+  if (e.target.classList.contains('delete-btn')) {
+    cart.splice(parseInt(e.target.dataset.index),1);
+    saveCart(); renderCart();
+  }
+});
+document.querySelectorAll('.option-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pickup-questions').style.display=btn.dataset.type==='pickup'?'block':'none';
+    document.getElementById('delivery-questions').style.display=btn.dataset.type==='delivery'?'block':'none';
+  });
+});
+document.getElementById('submit-order-btn').onclick=()=>{
+  if (!cart.length) { alert('Votre panier est vide'); return; }
+  const modeBtn=document.querySelector('.option-btn.active');
+  if (!modeBtn) { alert('Veuillez choisir un mode de récupération.'); return; }
+  const mode=modeBtn.dataset.type==='pickup'?'Venir sur place':'Livraison';
+  const senderName=tgUser?.username?'@'+tgUser.username:(tgUser?.first_name||'Utilisateur');
+  let message=`🍣 *NOUVELLE COMMANDE — DINO TERPS 76* 🍣\n\n`;
+  message+=`👤 ${senderName}\n`;
+  message+=`📅 ${new Date().toLocaleString('fr-FR')}\n\n🛍️ *Articles :*\n`;
+  let total=0; let itemsText='';
+  cart.forEach(item=>{
+    total+=parseInt(item.price)||0;
+    message+=`• ${item.title} — ${item.qty} (${item.price})\n`;
+    itemsText+=`• ${item.title} ${item.qty} (${item.price})\n`;
+  });
+  message+=`\n💰 *Total : ${total} €*\n\n📦 *Mode :* ${mode}\n`;
+  if (modeBtn.dataset.type==='pickup') {
+    const time=document.getElementById('pickup-time').value;
+    if (time) message+=`\n🕐 Heure meet-up : ${time}`;
+  } else {
+    const time=document.getElementById('delivery-time').value;
+    const address=document.getElementById('delivery-address').value.trim();
+    const details=document.getElementById('delivery-details').value.trim();
+    if (time) message+=`\n🕐 Heure livraison : ${time}`;
+    if (address) message+=`\n📍 Adresse : ${address}`;
+    if (details) message+=`\n📝 Détails : ${details}`;
+  }
+  message+=`\n\nMerci ! 🙏`;
+  commandes.push({tgName:tgUser?.first_name||'Invité', items:itemsText.trim(), total, mode, date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})});
+  saveCommandes();
+  const url=`https://t.me/DINO76S?text=${encodeURIComponent(message)}`;
+  if(tg) tg.openTelegramLink(url);
+  else window.open(url,'_blank');
+};
+
+// ── PROFIL ──
+function renderProfilPage() {
+  const page=document.getElementById('profil-page');
+  const displayName=tgUser?(tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'')):'Invité';
+  const username=tgUser?.username?'@'+tgUser.username:'';
+  const photoUrl=tgUser?.photo_url||'';
+  page.innerHTML=`
+    <div class="profil-header">
+      <div class="profil-avatar">${photoUrl?`<img src="${photoUrl}" alt="avatar">`:'<span>👤</span>'}</div>
+      <div class="profil-name">${displayName}</div>
+      ${username?`<div style="color:#3a2e20;font-size:0.78rem;margin-top:2px">${username}</div>`:''}
+      ${tgUser?.id?`<div style="color:#2a1e10;font-size:0.68rem;margin-top:4px">ID Telegram: ${tgUser.id}</div>`:''}
+    </div>
+    <div class="profil-stats-block">
+      <div class="profil-stats-icon">📦</div>
+      <div class="profil-stats-info">
+        <div class="profil-stats-number">${commandes.length}</div>
+        <div class="profil-stats-label">commande(s) passée(s)</div>
+      </div>
+    </div>
+    <div class="profil-section-title">📦 Mes commandes</div>
+    <div id="profil-commandes">${
+      commandes.length===0
+        ?'<p style="color:#3a2e20;text-align:center;padding:20px;font-size:0.88rem">Aucune commande pour l\'instant.</p>'
+        :[...commandes].reverse().map(c=>`<div class="commande-card"><div class="commande-header"><span class="commande-date">${c.date}</span><span class="commande-total">${c.total} €</span></div><div class="commande-items">${c.items}</div><span class="commande-mode">${c.mode}</span></div>`).join('')
+    }</div>`;
+}
+
+// ── RÉSEAUX ──
+document.querySelectorAll('.reseau-item[data-link]').forEach(el=>{
+  el.onclick=()=>{
+    const l=el.getAttribute('data-link');
+    if(tg) tg.openLink(l);
+    else window.open(l,'_blank');
+  };
+});
+
+// ── SPLASH & INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  const container=document.getElementById('splash-particles');
+  const emojis=['🌸','✨','🍣','⭐','🌺','💫'];
+  for (let i=0;i<24;i++) {
+    const s=document.createElement('div');
+    s.className='petal';
+    s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    s.style.cssText=`left:${Math.random()*100}%;top:${20+Math.random()*50}%;--dur:${2+Math.random()*3}s;--delay:${Math.random()*2.5}s;--sz:${0.7+Math.random()*0.8}rem;`;
+    container.appendChild(s);
+  }
+  populateFilters();
   renderProducts();
   updateBadge();
+  goToHome();
+
+  const splash=document.getElementById('splash-screen');
+  setTimeout(()=>{
+    splash.classList.add('hidden');
+    setTimeout(()=>{ splash.style.display='none'; },700);
+  },2600);
+});
 </script>
 </body>
 </html>
