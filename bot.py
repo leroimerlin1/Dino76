@@ -18,6 +18,7 @@ token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
 CHANNEL_ID = -1003733915057
 CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
 MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"
+GROUP_LINK = "https://t.me/+mktubkoTrqM0ZjI0"
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -63,7 +64,10 @@ def main_keyboard():
     keyboard = [
         [
             InlineKeyboardButton("ℹ️ Information", callback_data="info"),
-            InlineKeyboardButton("🛍 Boutique", web_app=WebAppInfo(url=MINI_APP_URL))
+            InlineKeyboardButton("👥 Groupe", url=GROUP_LINK)
+        ],
+        [
+            InlineKeyboardButton("🛍 Boutique", web_app=WebAppInfo(url=MINI_APP_URL))  # Seul sur sa ligne
         ],
         [
             InlineKeyboardButton("📞 Contact", url="https://t.me/dino76s"),
@@ -141,7 +145,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
     elif query.data == "info":
-        # Envoi des informations avec bouton Retour
         keyboard = [[InlineKeyboardButton("⬅️ Retour au menu", callback_data="back")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -151,7 +154,6 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
     elif query.data == "back":
-        # Retour au menu principal avec image
         with open("dino.jpg", "rb") as photo:
             await query.message.reply_photo(
                 photo=photo,
