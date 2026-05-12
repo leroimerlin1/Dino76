@@ -15,7 +15,7 @@ from telegram.ext import (
 # 🔐 METS TON NOUVEAU TOKEN ICI
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
 
-CHANNEL_ID = -1003733915057  # Mets le vrai ID
+CHANNEL_ID = -1003733915057
 CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
 MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"
 
@@ -23,6 +23,54 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
 )
+
+# ================================
+# Texte Information
+# ================================
+INFO_TEXT = """🪧 Bienvenue chez DINO TERPS 76 🍱 🪧
+
+NORMANDIE 🇫🇷
+✅ QUALITÉ VALIDÉE
+🏆 SERVICE NUMÉRO UNO
+
+🌿 DES FRUITS FRAIS 🍇🍊
+💎 MEILLEURE QUALITÉ
+💰 MEILLEURS PRIX
+📦 QUANTITÉ & SATISFACTION GARANTIE ✅
+
+- LIVRAISON •
+- MEET UP • 
+
+SERVICE RAPIDE 🚚
+🍓 NOTRE ÉQUIPE SE DÉPLACE POUR TOUT LE MONDE ❤️
+
+authenticité, respect et proximité
+👉 offrir le meilleur tout en respectant nos prochains 
+
+1 AMIS PARRAINER = -20 SUR COMMANDE🤝 🎁 
+
+Pay*m*nt en Esp*ce 💶 ! 
+
+Ouvert 12h 23h
+
+SAV : 24h 24h ! 🕛
+@dino76s"""
+
+# ================================
+# Clavier Menu Principal
+# ================================
+def main_keyboard():
+    keyboard = [
+        [
+            InlineKeyboardButton("ℹ️ Information", callback_data="info"),
+            InlineKeyboardButton("🛍 Boutique", web_app=WebAppInfo(url=MINI_APP_URL))
+        ],
+        [
+            InlineKeyboardButton("📞 Contact", url="https://t.me/dino76s"),
+            InlineKeyboardButton("📸 Instagram", url="https://www.instagram.com/dinoterps76?igsh=MWlsa2Nkc3lodHVvbg==")
+        ]
+    ]
+    return InlineKeyboardMarkup(keyboard)
 
 # ================================
 # Vérification abonnement
@@ -41,7 +89,6 @@ async def check_subscription(user_id, context):
 # ================================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-
     if not user:
         return
 
@@ -63,43 +110,54 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    # ✅ ABONNÉ
-    keyboard = [
-        [InlineKeyboardButton("🛍 Ouvrir la boutique", web_app=WebAppInfo(url=MINI_APP_URL))]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-
-    await update.message.reply_text(
-        "🍱 Bienvenue chez DINO TERPS 76\n\n"
-        "🔥 Accès autorisé\n\n"
-        "Clique ci-dessous pour ouvrir la boutique 👇",
-        reply_markup=reply_markup
-    )
+    # ✅ ABONNÉ → Envoi de l'image + menu principal
+    with open("dino.jpg", "rb") as photo:
+        await update.message.reply_photo(
+            photo=photo,
+            caption="🍱 Bienvenue chez DINO TERPS 76\n\n🔥 Accès autorisé\n\nChoisis une option ci-dessous 👇",
+            reply_markup=main_keyboard()
+        )
 
 
 # ================================
-# Bouton Vérifier abonnement
+# Gestion des boutons
 # ================================
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    is_subscribed = await check_subscription(query.from_user.id, context)
+    if query.data == "check_sub":
+        is_subscribed = await check_subscription(query.from_user.id, context)
+        if not is_subscribed:
+            await query.answer("❌ Tu n'es pas encore abonné.", show_alert=True)
+            return
 
-    if not is_subscribed:
-        await query.answer("❌ Tu n'es pas encore abonné.", show_alert=True)
-        return
+        # Envoi du menu principal avec image
+        with open("dino.jpg", "rb") as photo:
+            await query.message.reply_photo(
+                photo=photo,
+                caption="🍱 Accès confirmé !\n\n🔥 Bienvenue dans la boutique exclusive",
+                reply_markup=main_keyboard()
+            )
 
-    keyboard = [
-        [InlineKeyboardButton("🛍 Ouvrir la boutique", web_app=WebAppInfo(url=MINI_APP_URL))]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    elif query.data == "info":
+        # Envoi des informations avec bouton Retour
+        keyboard = [[InlineKeyboardButton("⬅️ Retour au menu", callback_data="back")]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
 
-    await query.message.reply_text(
-        "🍱 Accès confirmé !\n\n"
-        "🔥 Bienvenue dans la boutique exclusive 👇",
-        reply_markup=reply_markup
-    )
+        await query.message.reply_text(
+            INFO_TEXT,
+            reply_markup=reply_markup
+        )
+
+    elif query.data == "back":
+        # Retour au menu principal avec image
+        with open("dino.jpg", "rb") as photo:
+            await query.message.reply_photo(
+                photo=photo,
+                caption="🍱 Bienvenue chez DINO TERPS 76\n\n🔥 Accès autorisé\n\nChoisis une option ci-dessous 👇",
+                reply_markup=main_keyboard()
+            )
 
 
 # ================================
@@ -109,7 +167,7 @@ def main():
     app = ApplicationBuilder().token(token).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(button_handler, pattern="check_sub"))
+    app.add_handler(CallbackQueryHandler(button_handler))
 
     print("Bot lancé 🚀")
     app.run_polling()
