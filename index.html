@@ -216,6 +216,18 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
 .commande-items{font-size:0.83rem;color:#6a4a28;line-height:1.5;}
 .commande-mode{display:inline-block;margin-top:6px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.18);color:rgba(255,170,68,0.7);font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:4px;letter-spacing:0.5px;}
 .manga-corner{position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 28px 28px 0;border-color:transparent var(--orange) transparent transparent;z-index:3;opacity:0.6;}
+/* Restock badge animation */
+@keyframes restockPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.15);}}
+.restock-spin{display:inline-block;animation:restockPulse 1.2s ease-in-out infinite;}
+/* Crypto shipping block */
+.crypto-block{background:linear-gradient(135deg,rgba(255,122,0,0.12),rgba(214,50,0,0.08));border:2px solid rgba(255,122,0,0.45);border-radius:10px;padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;}
+.crypto-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:0.6;}
+.crypto-title{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--orange-light);margin-bottom:10px;text-align:center;}
+.crypto-coins{display:flex;gap:10px;justify-content:center;margin-bottom:10px;}
+.crypto-coin{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,122,0,0.35);border-radius:8px;padding:10px 20px;text-align:center;min-width:80px;}
+.crypto-coin-symbol{font-size:1.6rem;line-height:1;margin-bottom:4px;}
+.crypto-coin-name{font-family:'Bangers',cursive;font-size:0.9rem;letter-spacing:1px;}
+.crypto-info{background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:7px;padding:9px 12px;font-size:0.82rem;color:var(--cream-dim);font-weight:700;text-align:center;}
   </style>
 </head>
 <body>
@@ -304,6 +316,7 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
           <span class="question-label">Mode de récupération :</span>
           <button class="option-btn" data-type="pickup">Venir sur place</button>
           <button class="option-btn" data-type="delivery">Livraison</button>
+          <button class="option-btn" data-type="shipping">Envoi 📦🌟✅</button>
         </div>
         <div id="pickup-questions" style="display:none">
           <div class="question"><span class="question-label">Pour quelle heure ?</span><input type="time" id="pickup-time"></div>
@@ -312,6 +325,24 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
           <div class="question"><span class="question-label">Heure souhaitée</span><input type="time" id="delivery-time"></div>
           <div class="question"><span class="question-label">Adresse complète</span><input type="text" id="delivery-address" placeholder="Rue, numéro, ville..."></div>
           <div class="question"><span class="question-label">Précisions (étage, code, etc.)</span><textarea id="delivery-details" placeholder="Interphone, digicode, remarques..."></textarea></div>
+        </div>
+        <div id="shipping-questions" style="display:none">
+          <div class="crypto-block">
+            <div class="crypto-title">💳 PAIEMENT EN CRYPTO EN PV ✍️</div>
+            <div class="crypto-coins">
+              <div class="crypto-coin">
+                <div class="crypto-coin-symbol">₿</div>
+                <div class="crypto-coin-name" style="color:#f7931a;">BTC ✅</div>
+              </div>
+              <div class="crypto-coin">
+                <div class="crypto-coin-symbol">Ξ</div>
+                <div class="crypto-coin-name" style="color:#627eea;">ETH ✅</div>
+              </div>
+            </div>
+            <div class="crypto-info">📲 Contactez-nous en PV pour les détails de paiement</div>
+          </div>
+          <div class="question"><span class="question-label">Adresse postale complète</span><input type="text" id="shipping-address" placeholder="Nom, Rue, Code postal, Ville..."></div>
+          <div class="question"><span class="question-label">Précisions supplémentaires</span><textarea id="shipping-details" placeholder="Instructions, remarques..."></textarea></div>
         </div>
         <button id="submit-order-btn">Commander 🍣</button>
       </div>
@@ -348,6 +379,7 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
         <div style="display:flex;gap:8px;margin-bottom:14px;">
           <div style="flex:1;background:rgba(214,50,0,0.1);border:1.5px solid rgba(214,50,0,0.35);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1rem;margin-bottom:3px">🚚</div><div style="font-family:'Bangers',cursive;font-size:0.85rem;letter-spacing:1px;color:var(--orange)">LIVRAISON</div></div>
           <div style="flex:1;background:rgba(214,50,0,0.1);border:1.5px solid rgba(214,50,0,0.35);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1rem;margin-bottom:3px">🤝</div><div style="font-family:'Bangers',cursive;font-size:0.85rem;letter-spacing:1px;color:var(--orange)">MEET UP</div></div>
+          <div style="flex:1;background:rgba(214,50,0,0.1);border:1.5px solid rgba(214,50,0,0.35);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1rem;margin-bottom:3px">📦</div><div style="font-family:'Bangers',cursive;font-size:0.85rem;letter-spacing:1px;color:var(--orange)">ENVOI</div></div>
         </div>
         <div style="background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
           <span style="font-size:1.2rem">🚚</span>
@@ -380,6 +412,25 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-w
   • 50 km → <span style="color:#6dcc60;font-weight:800">350 €</span> <span style="color:var(--orange-light);font-size:0.8rem">(+ 15 € de frais)</span>
   • 100 km → <span style="color:#6dcc60;font-weight:800">420 €</span> <span style="color:var(--orange-light);font-size:0.8rem">(+ 20 € de frais)</span></div>
         <div style="margin-top:12px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;font-size:0.83rem;color:var(--orange);font-weight:800;text-align:center">💶 Paiement en espèces uniquement</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-header"><div class="info-card-icon">📦</div><div class="info-card-title">Envoi postal</div></div>
+        <div style="color:#c8a87a;font-size:0.88rem;line-height:1.8;margin-bottom:12px">Commandez depuis n'importe où, on envoie partout ! 🌟✅</div>
+        <div class="crypto-block" style="margin-bottom:12px;">
+          <div class="crypto-title">💳 PAIEMENT EN CRYPTO EN PV ✍️</div>
+          <div class="crypto-coins">
+            <div class="crypto-coin">
+              <div class="crypto-coin-symbol">₿</div>
+              <div class="crypto-coin-name" style="color:#f7931a;">BTC ✅</div>
+            </div>
+            <div class="crypto-coin">
+              <div class="crypto-coin-symbol">Ξ</div>
+              <div class="crypto-coin-name" style="color:#627eea;">ETH ✅</div>
+            </div>
+          </div>
+          <div class="crypto-info">📲 Contactez-nous en PV pour les adresses de wallet</div>
+        </div>
+        <div style="background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;font-size:0.83rem;color:var(--orange);font-weight:800;text-align:center">📦 Envoi sécurisé & discret</div>
       </div>
       <div class="info-card">
         <div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Meet-up</div></div>
@@ -489,7 +540,7 @@ const products = {
   eggs_frozen:{key:'eggs_frozen',title:'Format-EGGS Frozen 🧊',category:'Fresh Frozen 🧊',farm:'HONCLE FARM',video:'eggs_frozen.mp4',strain:'- Lemon Cherry 🍋🍒\n- Grapes 🍇',description:'Eggs de Frozen, la famille c\'est pétant élevé hight excellent pour la journée et soirée. 🌆🔥🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'240 €'}]},
   bnf_mintz:{key:'bnf_mintz',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_mintz.mp4',strain:'- Original Mintz 🍊',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'270 €'}]},
   bnf_icc:{key:'bnf_icc',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_icc.mp4',strain:'- Wedding Cake 🎂🥧',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'270 €'}]},
-  psg_static:{key:'psg_static',title:'STATIC SIFT 140/75u ⚡️',category:'Static Sift ⚡️',farm:'PSG F*RM 🗼',video:'psg_static.mp4',strain:'- Peach Tsunami 🌊🍑\n- Forbidden 🍓🍉',description:'La capitale !! PSG farm une farm reconnue static frais sec pétant — très élevé excellent rien à dire. 🍋🍓🍉🔥🔥',quantities:[{qty:'2G',price:'40 €'},{qty:'5G',price:'90 €'},{qty:'10G',price:'180 €'},{qty:'20G',price:'300 €'}]},
+  psg_static:{key:'psg_static',title:'STATIC SIFT 140/75u ⚡️',category:'Static Sift ⚡️',farm:'PSG F*RM 🗼',video:'psg_static.mp4',restock:true,strain:'- Peach Tsunami 🌊🍑\n- Forbidden 🍓🍉',description:'La capitale !! PSG farm une farm reconnue static frais sec pétant — très élevé excellent rien à dire. 🍋🍓🍉🔥🔥',quantities:[{qty:'2G',price:'40 €'},{qty:'5G',price:'90 €'},{qty:'10G',price:'180 €'},{qty:'20G',price:'300 €'}]},
   golden_dry:{key:'golden_dry',title:'DRY TECH 🌟🌟',category:'Dry 🍫',farm:'GOLDEN FARM',video:'golden_dry.mp4',strain:'- Yellow Runtz ✨🌈\n- Mac Melon 🍡🍈',description:'Golden Farm haute qualité de resiné très bon — consommer en journée ou soirée goutu TERPS validé ! 🔥🔥',quantities:[{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'260 €'}]}
 };
 
@@ -537,7 +588,8 @@ function renderProducts(list){
     const mediaHTML=p.video
       ?`<video src="${p.video}" muted autoplay loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
       :`<div class="card-no-video">🎬</div>`;
-    card.innerHTML=`<div class="card-media">${mediaHTML}<div class="manga-corner"></div><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
+    const restockBadge=p.restock?`<div style="position:absolute;top:8px;left:8px;z-index:6;background:linear-gradient(135deg,#1a0a00,#2a1200);border:1.5px solid rgba(255,170,0,0.7);border-radius:6px;padding:4px 10px;font-family:'Bangers',cursive;font-size:0.8rem;letter-spacing:1.5px;color:#ffcc00;box-shadow:0 0 10px rgba(255,180,0,0.4);display:flex;align-items:center;gap:4px;"><span class="restock-spin">⏳</span> RESTOCK</div>`:'';
+    card.innerHTML=`<div class="card-media">${mediaHTML}${restockBadge}<div class="manga-corner"></div><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
     card.onclick=()=>openProductDetail(p.key);
     grid.appendChild(card);
   });
@@ -591,6 +643,17 @@ function openProductDetail(key){
   const p=products[key];
   document.getElementById('detail-title').textContent=p.title;
   document.getElementById('detail-farm-badge').textContent=p.farm;
+  // Restock badge in detail
+  const badgesEl=document.querySelector('.badges');
+  const existingRestock=document.getElementById('restock-badge-detail');
+  if(existingRestock)existingRestock.remove();
+  if(p.restock){
+    const rb=document.createElement('div');
+    rb.id='restock-badge-detail';
+    rb.style.cssText='background:linear-gradient(135deg,#1a0a00,#2a1200);border:1.5px solid rgba(255,170,0,0.7);border-radius:6px;padding:5px 14px;font-family:\'Bangers\',cursive;font-size:0.95rem;letter-spacing:2px;color:#ffcc00;box-shadow:0 0 14px rgba(255,180,0,0.35);display:flex;align-items:center;gap:6px;';
+    rb.innerHTML='<span class="restock-spin">⏳</span> RESTOCK';
+    badgesEl.appendChild(rb);
+  }
   let content='';
   if(p.strain)content+=`<div style="color:#ffffff;font-weight:800;margin-bottom:10px;font-size:0.93rem;text-shadow:0 0 8px rgba(255,122,0,0.3)">Strains :\n${p.strain}</div>`;
   if(p.description)content+=`<div style="margin-top:8px;color:#c8a87a;font-size:0.9rem;line-height:1.7;font-style:italic">${p.description.replace(/\n/g,'<br>')}</div>`;
@@ -602,9 +665,27 @@ function openProductDetail(key){
     btn.className='qty-btn';
     btn.innerHTML=`${item.qty}<br><span class="price-new">${item.price}</span>`;
     btn.dataset.idx=idx;
-    btn.onclick=()=>{qtyGrid.querySelectorAll('.qty-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');};
+    if(p.restock){btn.disabled=true;btn.style.opacity='0.3';btn.style.cursor='not-allowed';}
+    else btn.onclick=()=>{qtyGrid.querySelectorAll('.qty-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');};
     qtyGrid.appendChild(btn);
   });
+  // Add to cart button state
+  const addBtn=document.getElementById('add-to-cart-btn');
+  if(p.restock){
+    addBtn.disabled=true;
+    addBtn.style.background='linear-gradient(135deg,#1a0a00,#2a1200)';
+    addBtn.style.color='#ffcc00';
+    addBtn.style.border='1.5px solid rgba(255,170,0,0.5)';
+    addBtn.style.cursor='not-allowed';
+    addBtn.style.boxShadow='0 0 14px rgba(255,180,0,0.2)';
+    addBtn.style.opacity='0.75';
+    addBtn.innerHTML='<span class="restock-spin">⏳</span> RESTOCK EN COURS...';
+  } else {
+    addBtn.disabled=false;
+    addBtn.style.background='';addBtn.style.color='';addBtn.style.border='';
+    addBtn.style.cursor='';addBtn.style.boxShadow='';addBtn.style.opacity='';
+    addBtn.innerHTML='<span>🛒</span> Ajouter au Panier';
+  }
   buildProductMedia(p.video||null);
   hideAllPages();
   document.getElementById('product-detail').style.display='flex';
@@ -677,22 +758,41 @@ document.querySelectorAll('.option-btn').forEach(btn=>{
     btn.classList.add('active');
     document.getElementById('pickup-questions').style.display=btn.dataset.type==='pickup'?'block':'none';
     document.getElementById('delivery-questions').style.display=btn.dataset.type==='delivery'?'block':'none';
+    document.getElementById('shipping-questions').style.display=btn.dataset.type==='shipping'?'block':'none';
   });
 });
 document.getElementById('submit-order-btn').onclick=()=>{
   if(!cart.length){alert('Votre panier est vide');return;}
   const modeBtn=document.querySelector('.option-btn.active');
   if(!modeBtn){alert('Veuillez choisir un mode de récupération.');return;}
-  const mode=modeBtn.dataset.type==='pickup'?'Venir sur place':'Livraison';
+  let modeLabel='';
+  if(modeBtn.dataset.type==='pickup') modeLabel='Venir sur place';
+  else if(modeBtn.dataset.type==='delivery') modeLabel='Livraison';
+  else modeLabel='Envoi postal 📦';
   const senderName=tgUser?.username?'@'+tgUser.username:(tgUser?.first_name||'Utilisateur');
   let message=`🍣 *NOUVELLE COMMANDE — DINO TERPS 76* 🍣\n\n👤 ${senderName}\n📅 ${new Date().toLocaleString('fr-FR')}\n\n🛍️ *Articles :*\n`;
   let total=0;let itemsText='';
   cart.forEach(item=>{total+=parseInt(item.price)||0;message+=`• ${item.title} — ${item.qty} (${item.price})\n`;itemsText+=`• ${item.title} ${item.qty} (${item.price})\n`;});
-  message+=`\n💰 *Total : ${total} €*\n\n📦 *Mode :* ${mode}\n`;
-  if(modeBtn.dataset.type==='pickup'){const time=document.getElementById('pickup-time').value;if(time)message+=`\n🕐 Heure meet-up : ${time}`;}
-  else{const time=document.getElementById('delivery-time').value;const address=document.getElementById('delivery-address').value.trim();const details=document.getElementById('delivery-details').value.trim();if(time)message+=`\n🕐 Heure livraison : ${time}`;if(address)message+=`\n📍 Adresse : ${address}`;if(details)message+=`\n📝 Détails : ${details}`;}
+  message+=`\n💰 *Total : ${total} €*\n\n📦 *Mode :* ${modeLabel}\n`;
+  if(modeBtn.dataset.type==='pickup'){
+    const time=document.getElementById('pickup-time').value;
+    if(time)message+=`\n🕐 Heure meet-up : ${time}`;
+  } else if(modeBtn.dataset.type==='delivery'){
+    const time=document.getElementById('delivery-time').value;
+    const address=document.getElementById('delivery-address').value.trim();
+    const details=document.getElementById('delivery-details').value.trim();
+    if(time)message+=`\n🕐 Heure livraison : ${time}`;
+    if(address)message+=`\n📍 Adresse : ${address}`;
+    if(details)message+=`\n📝 Détails : ${details}`;
+  } else if(modeBtn.dataset.type==='shipping'){
+    const address=document.getElementById('shipping-address').value.trim();
+    const details=document.getElementById('shipping-details').value.trim();
+    message+=`\n💳 Paiement : Crypto (ETH/BTC) en PV`;
+    if(address)message+=`\n📮 Adresse postale : ${address}`;
+    if(details)message+=`\n📝 Précisions : ${details}`;
+  }
   message+=`\n\nMerci ! 🙏`;
-  commandes.push({tgName:tgUser?.first_name||'Invité',items:itemsText.trim(),total,mode,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})});
+  commandes.push({tgName:tgUser?.first_name||'Invité',items:itemsText.trim(),total,mode:modeLabel,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})});
   saveCommandes();
   const url=`https://t.me/DINO76S?text=${encodeURIComponent(message)}`;
   if(tg)tg.openTelegramLink(url);else window.open(url,'_blank');
