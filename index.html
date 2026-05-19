@@ -110,8 +110,17 @@ body::before{
   animation:spinLines 20s linear infinite;
   pointer-events:none;
 }
-.hero-logo-ring{width:110px;height:110px;border-radius:50%;overflow:hidden;border:3px solid var(--orange);box-shadow:0 0 0 6px rgba(255,122,0,0.1),0 0 30px rgba(255,122,0,0.55),0 0 60px rgba(214,50,0,0.25);position:relative;z-index:2;flex-shrink:0;}
-.hero-logo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
+/* Le logo devient le trigger admin — cursor normal, pas de highlight */
+.hero-logo-ring{
+  width:110px;height:110px;border-radius:50%;overflow:hidden;
+  border:3px solid var(--orange);
+  box-shadow:0 0 0 6px rgba(255,122,0,0.1),0 0 30px rgba(255,122,0,0.55),0 0 60px rgba(214,50,0,0.25);
+  position:relative;z-index:2;flex-shrink:0;
+  cursor:default;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.hero-logo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;pointer-events:none;}
 .hero-brand{font-family:'Bangers',cursive;font-size:2.6rem;letter-spacing:3px;color:var(--cream);line-height:1;margin-top:12px;text-shadow:3px 3px 0 var(--orange-glow),5px 5px 0 var(--brown);position:relative;z-index:2;}
 .hero-tagline{font-family:'Bangers',cursive;font-size:1rem;letter-spacing:5px;color:var(--orange-light);margin-top:4px;text-shadow:1px 1px 0 var(--brown);position:relative;z-index:2;}
 .hero-strip{display:flex;gap:8px;margin-top:14px;position:relative;z-index:2;}
@@ -317,7 +326,6 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
   border-radius:8px;font-family:'Bangers',cursive;font-size:0.85rem;
   letter-spacing:1px;cursor:pointer;white-space:nowrap;
 }
-/* Admin Form */
 .admin-form{
   background:#111111;border:1.5px solid rgba(255,122,0,0.3);
   border-radius:14px;padding:18px;margin-top:16px;
@@ -378,11 +386,10 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
   border-radius:10px;font-family:'Bangers',cursive;font-size:1rem;
   letter-spacing:1px;cursor:pointer;
 }
-/* Admin Login */
 #admin-login{
   display:none;position:fixed;inset:0;z-index:99998;
   background:rgba(0,0,0,0.98);
-  display:none;flex-direction:column;align-items:center;justify-content:center;
+  flex-direction:column;align-items:center;justify-content:center;
   padding:30px;
 }
 #admin-login.open{display:flex;}
@@ -424,9 +431,7 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
   animation:shake 0.4s ease;
 }
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
-/* Restock toggle badge */
 .admin-restock-on{color:#ffcc00;font-size:0.74rem;font-weight:800;background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);padding:3px 10px;border-radius:4px;display:inline-flex;align-items:center;gap:4px;}
-/* Add product button */
 .admin-add-btn{
   width:100%;padding:14px;
   background:linear-gradient(135deg,rgba(255,122,0,0.15),rgba(214,50,0,0.1));
@@ -435,7 +440,6 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
   letter-spacing:2px;cursor:pointer;margin-bottom:16px;
   display:flex;align-items:center;justify-content:center;gap:10px;
 }
-/* Admin toast */
 .admin-toast{
   position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
   background:#1a0800;border:1.5px solid rgba(255,122,0,0.5);
@@ -446,8 +450,6 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
   box-shadow:0 4px 24px rgba(0,0,0,0.8),0 0 16px rgba(255,122,0,0.2);
 }
 .admin-toast.show{opacity:1;}
-/* Hidden trigger zone — invisible tap zone in logo */
-#admin-trigger{position:absolute;top:0;right:0;width:60px;height:60px;z-index:200;cursor:default;-webkit-tap-highlight-color:transparent;}
   </style>
 </head>
 <body>
@@ -516,7 +518,6 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
     <div class="admin-section-title">📦 Produits actuels</div>
     <div id="admin-products-list"></div>
   </div>
-  <!-- Edit/Add form -->
   <div class="admin-section" id="admin-form-section" style="display:none">
     <div class="admin-form">
       <div class="admin-form-title" id="admin-form-title">✏️ Nouveau produit</div>
@@ -574,9 +575,8 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
     <!-- ACCUEIL -->
     <div id="home-page">
       <div id="home-hero" style="position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
-        <!-- Hidden admin trigger: triple-tap on top-right corner of hero -->
-        <div id="admin-trigger" title=""></div>
-        <div class="hero-logo-ring">
+        <!-- Logo — 5 taps rapides ouvrent le panel admin -->
+        <div class="hero-logo-ring" id="admin-trigger">
           <img src="dino.jpg" alt="Dino Terps 76" onerror="this.parentElement.style.background='#271508'">
         </div>
         <div class="hero-brand">DINO TERPS 76</div>
@@ -851,7 +851,7 @@ if (tg) {
 }
 
 /* ═══════════════════════════════════════════
-   BASE PRODUCTS (hardcodés — toujours présents)
+   BASE PRODUCTS
 ═══════════════════════════════════════════ */
 const BASE_PRODUCTS = {
   dry_black:{key:'dry_black',title:'🍫 Dry',category:'Dry 🍫',farm:'⬛️ BLACK F*RM',video:'dry_black.mp4',strain:'- Acai S1 🫐\n- Forbidden 🍒🍉\n- Tiramisu 🍰🍨\n- Lamponi 🍓🌈',description:'Le meilleur dura la famille imbattable pour sa qualité TERPS élevé en goût ! 🍇🍉🍒🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'50 €'},{qty:'10G',price:'100 €'},{qty:'20G',price:'180 €'}]},
@@ -863,53 +863,27 @@ const BASE_PRODUCTS = {
 };
 
 /* ═══════════════════════════════════════════
-   PRODUCTS STORAGE — merge base + admin custom
+   PRODUCTS STORAGE
 ═══════════════════════════════════════════ */
-function loadCustomProducts(){
-  try{return JSON.parse(localStorage.getItem('admin_products_dino76'))||{};}
-  catch(e){return {};}
-}
-function saveCustomProducts(obj){
-  try{localStorage.setItem('admin_products_dino76',JSON.stringify(obj));}
-  catch(e){}
-}
-// Deleted base product keys
-function loadDeletedBase(){
-  try{return JSON.parse(localStorage.getItem('admin_deleted_base_dino76'))||[];}
-  catch(e){return [];}
-}
-function saveDeletedBase(arr){
-  try{localStorage.setItem('admin_deleted_base_dino76',JSON.stringify(arr));}
-  catch(e){}
-}
-// Overridden base products (edited)
-function loadOverrides(){
-  try{return JSON.parse(localStorage.getItem('admin_overrides_dino76'))||{};}
-  catch(e){return {};}
-}
-function saveOverrides(obj){
-  try{localStorage.setItem('admin_overrides_dino76',JSON.stringify(obj));}
-  catch(e){}
-}
+function loadCustomProducts(){try{return JSON.parse(localStorage.getItem('admin_products_dino76'))||{};}catch(e){return {};}}
+function saveCustomProducts(obj){try{localStorage.setItem('admin_products_dino76',JSON.stringify(obj));}catch(e){}}
+function loadDeletedBase(){try{return JSON.parse(localStorage.getItem('admin_deleted_base_dino76'))||[];}catch(e){return [];}}
+function saveDeletedBase(arr){try{localStorage.setItem('admin_deleted_base_dino76',JSON.stringify(arr));}catch(e){}}
+function loadOverrides(){try{return JSON.parse(localStorage.getItem('admin_overrides_dino76'))||{};}catch(e){return {};}}
+function saveOverrides(obj){try{localStorage.setItem('admin_overrides_dino76',JSON.stringify(obj));}catch(e){}}
 
 function getAllProducts(){
-  const deleted = loadDeletedBase();
-  const overrides = loadOverrides();
-  const custom = loadCustomProducts();
-  const result = {};
-  // Base products (not deleted, apply overrides)
+  const deleted=loadDeletedBase();
+  const overrides=loadOverrides();
+  const custom=loadCustomProducts();
+  const result={};
   Object.values(BASE_PRODUCTS).forEach(p=>{
-    if(!deleted.includes(p.key)){
-      result[p.key] = overrides[p.key] ? {...p,...overrides[p.key]} : {...p};
-    }
+    if(!deleted.includes(p.key)){result[p.key]=overrides[p.key]?{...p,...overrides[p.key]}:{...p};}
   });
-  // Custom products added via admin
-  Object.values(custom).forEach(p=>{
-    result[p.key] = {...p};
-  });
+  Object.values(custom).forEach(p=>{result[p.key]={...p};});
   return result;
 }
-let products = getAllProducts();
+let products=getAllProducts();
 
 /* ═══════════════════════════════════════════
    CART & COMMANDES
@@ -920,11 +894,11 @@ function saveCart(){try{localStorage.setItem('cart_dino76',JSON.stringify(cart))
 function updateBadge(){const b=document.getElementById('cart-badge');b.textContent=cart.length||'';b.style.display=cart.length>0?'inline-block':'none';}
 
 let avisList=[];
-window.loadAvisFromFirestore = async function(){
+window.loadAvisFromFirestore=async function(){
   try{
     const list=document.getElementById('avis-list');
-    if(list) list.innerHTML='<p style="text-align:center;color:#3a2010;padding:30px 0;font-weight:700">Chargement... ⏳</p>';
-    const q=window._fsQ(window._fsCol(window._db,'avis'), window._fsOrder('timestamp','desc'));
+    if(list)list.innerHTML='<p style="text-align:center;color:#3a2010;padding:30px 0;font-weight:700">Chargement... ⏳</p>';
+    const q=window._fsQ(window._fsCol(window._db,'avis'),window._fsOrder('timestamp','desc'));
     const snap=await window._fsGet(q);
     avisList=snap.docs.map(d=>d.data());
     renderAvis();
@@ -944,7 +918,6 @@ function populateFilters(){
   const farms=[...new Set(all.map(p=>p.farm))].sort();
   const cs=document.getElementById('category-filter');
   const fs=document.getElementById('farm-filter');
-  // reset
   cs.innerHTML='<option value="">Toutes catégories</option>';
   fs.innerHTML='<option value="">Toutes farms</option>';
   cats.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});
@@ -980,7 +953,7 @@ function renderProducts(list){
 }
 
 function refreshProductData(){
-  products = getAllProducts();
+  products=getAllProducts();
   populateFilters();
   renderProducts();
 }
@@ -1133,9 +1106,9 @@ document.getElementById('submit-avis-btn').onclick=async()=>{
   const username=tgUser?.first_name||tgUser?.username||'Anonyme';
   const avis={user:username,note:selectedStar,comment,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}),timestamp:Date.now()};
   const btn=document.getElementById('submit-avis-btn');
-  btn.disabled=true; btn.textContent='Publication...';
+  btn.disabled=true;btn.textContent='Publication...';
   try{
-    await window._fsAdd(window._fsCol(window._db,'avis'), avis);
+    await window._fsAdd(window._fsCol(window._db,'avis'),avis);
     avisList.unshift(avis);
     document.getElementById('avis-text').value='';
     selectedStar=0;
@@ -1145,7 +1118,7 @@ document.getElementById('submit-avis-btn').onclick=async()=>{
   }catch(e){
     console.error(e);alert('❌ Erreur lors de la publication. Réessaie.');
   }finally{
-    btn.disabled=false; btn.innerHTML='Publier mon avis ⭐';
+    btn.disabled=false;btn.innerHTML='Publier mon avis ⭐';
   }
 };
 
@@ -1171,7 +1144,6 @@ document.getElementById('cart-page').addEventListener('click',e=>{
 });
 document.querySelectorAll('.option-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    // Only handle the cart questionnaire buttons (not admin)
     if(btn.closest('.questionnaire')){
       document.querySelectorAll('.questionnaire .option-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
@@ -1186,8 +1158,8 @@ document.getElementById('submit-order-btn').onclick=()=>{
   const modeBtn=document.querySelector('.questionnaire .option-btn.active');
   if(!modeBtn){alert('Veuillez choisir un mode de récupération.');return;}
   let modeLabel='';
-  if(modeBtn.dataset.type==='pickup') modeLabel='Venir sur place';
-  else if(modeBtn.dataset.type==='delivery') modeLabel='Livraison';
+  if(modeBtn.dataset.type==='pickup')modeLabel='Venir sur place';
+  else if(modeBtn.dataset.type==='delivery')modeLabel='Livraison';
   else modeLabel='Envoi postal 📦';
   const senderName=tgUser?.username?'@'+tgUser.username:(tgUser?.first_name||'Utilisateur');
   let message=`🍣 *NOUVELLE COMMANDE — DINO TERPS 76* 🍣\n\n👤 ${senderName}\n📅 ${new Date().toLocaleString('fr-FR')}\n\n🛍️ *Articles :*\n`;
@@ -1241,23 +1213,23 @@ document.querySelectorAll('.reseau-item[data-link]').forEach(el=>{
 ══════════════════════════════════════════════════ */
 const ADMIN_PIN = '7600'; // 🔐 CHANGE THIS PIN
 
-// ── Hidden trigger: 5 rapid taps on top-right corner ──
-let adminTapCount = 0;
-let adminTapTimer = null;
-document.getElementById('admin-trigger').addEventListener('click', ()=>{
+/* ── Trigger : 5 taps rapides sur le LOGO ── */
+let adminTapCount=0;
+let adminTapTimer=null;
+document.getElementById('admin-trigger').addEventListener('click',()=>{
   adminTapCount++;
   clearTimeout(adminTapTimer);
-  adminTapTimer = setTimeout(()=>{ adminTapCount=0; }, 1200);
-  if(adminTapCount >= 5){
-    adminTapCount = 0;
+  adminTapTimer=setTimeout(()=>{adminTapCount=0;},1200);
+  if(adminTapCount>=5){
+    adminTapCount=0;
     openAdminLogin();
   }
 });
 
-// ── PIN LOGIN ──
-let currentPin = '';
+/* ── PIN LOGIN ── */
+let currentPin='';
 function openAdminLogin(){
-  currentPin = '';
+  currentPin='';
   updatePinDots();
   document.getElementById('pin-error').style.display='none';
   document.getElementById('admin-login').classList.add('open');
@@ -1269,53 +1241,39 @@ function closeAdminLogin(){
 }
 function updatePinDots(){
   for(let i=0;i<4;i++){
-    const dot=document.getElementById('dot-'+i);
-    dot.classList.toggle('filled', i < currentPin.length);
+    document.getElementById('dot-'+i).classList.toggle('filled',i<currentPin.length);
   }
 }
 document.querySelectorAll('.kp-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const v=btn.dataset.v;
-    if(v==='del'){ currentPin=currentPin.slice(0,-1); updatePinDots(); return; }
-    if(v==='enter'){ checkPin(); return; }
-    if(currentPin.length<4){ currentPin+=v; updatePinDots(); }
-    if(currentPin.length===4) setTimeout(checkPin,150);
+    if(v==='del'){currentPin=currentPin.slice(0,-1);updatePinDots();return;}
+    if(v==='enter'){checkPin();return;}
+    if(currentPin.length<4){currentPin+=v;updatePinDots();}
+    if(currentPin.length===4)setTimeout(checkPin,150);
   });
 });
 function checkPin(){
-  if(currentPin===ADMIN_PIN){
-    closeAdminLogin();
-    openAdmin();
-  } else {
+  if(currentPin===ADMIN_PIN){closeAdminLogin();openAdmin();}
+  else{
     document.getElementById('pin-error').style.display='block';
-    currentPin='';
-    updatePinDots();
-    setTimeout(()=>{ document.getElementById('pin-error').style.display='none'; }, 2000);
+    currentPin='';updatePinDots();
+    setTimeout(()=>{document.getElementById('pin-error').style.display='none';},2000);
   }
 }
 
-// ── ADMIN PANEL OPEN/CLOSE ──
-function openAdmin(){
-  renderAdminProductsList();
-  closeAdminForm();
-  document.getElementById('admin-overlay').classList.add('open');
-}
-function closeAdmin(){
-  document.getElementById('admin-overlay').classList.remove('open');
-}
+/* ── ADMIN OPEN/CLOSE ── */
+function openAdmin(){renderAdminProductsList();closeAdminForm();document.getElementById('admin-overlay').classList.add('open');}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');}
 
-// ── RENDER ADMIN PRODUCTS LIST ──
+/* ── RENDER ADMIN LIST ── */
 function renderAdminProductsList(){
-  const list = document.getElementById('admin-products-list');
-  const all = getAllProducts();
+  const list=document.getElementById('admin-products-list');
+  const all=getAllProducts();
   list.innerHTML='';
-  if(!Object.keys(all).length){
-    list.innerHTML='<p style="color:#3a2010;text-align:center;padding:20px;font-weight:700">Aucun produit.</p>';
-    return;
-  }
+  if(!Object.keys(all).length){list.innerHTML='<p style="color:#3a2010;text-align:center;padding:20px;font-weight:700">Aucun produit.</p>';return;}
   Object.values(all).forEach(p=>{
-    const isBase = !!BASE_PRODUCTS[p.key];
-    const isOverridden = !!loadOverrides()[p.key];
+    const isBase=!!BASE_PRODUCTS[p.key];
     const div=document.createElement('div');
     div.className='admin-product-card';
     div.innerHTML=`
@@ -1338,71 +1296,51 @@ function renderAdminProductsList(){
   });
 }
 
-// ── RESTOCK TOGGLE ──
+/* ── RESTOCK TOGGLE ── */
 function toggleRestock(key){
-  const all = getAllProducts();
-  const p = all[key];
-  const isBase = !!BASE_PRODUCTS[key];
-  const isCustom = !!loadCustomProducts()[key];
-  const newVal = !p.restock;
-  if(isBase){
-    const overrides = loadOverrides();
-    overrides[key] = {...(overrides[key]||{}), restock: newVal};
-    saveOverrides(overrides);
-  } else if(isCustom){
-    const custom = loadCustomProducts();
-    custom[key].restock = newVal;
-    saveCustomProducts(custom);
-  }
-  refreshProductData();
-  renderAdminProductsList();
+  const all=getAllProducts();
+  const p=all[key];
+  const isBase=!!BASE_PRODUCTS[key];
+  const isCustom=!!loadCustomProducts()[key];
+  const newVal=!p.restock;
+  if(isBase){const overrides=loadOverrides();overrides[key]={...(overrides[key]||{}),restock:newVal};saveOverrides(overrides);}
+  else if(isCustom){const custom=loadCustomProducts();custom[key].restock=newVal;saveCustomProducts(custom);}
+  refreshProductData();renderAdminProductsList();
   showAdminToast(newVal?'⏳ Restock activé':'✅ Produit disponible');
 }
 
-// ── DELETE ──
+/* ── DELETE ── */
 function deleteAdminProduct(key){
-  const isBase = !!BASE_PRODUCTS[key];
-  const isCustom = !!loadCustomProducts()[key];
-  if(!confirm('Supprimer ce produit ?')) return;
+  const isBase=!!BASE_PRODUCTS[key];
+  const isCustom=!!loadCustomProducts()[key];
+  if(!confirm('Supprimer ce produit ?'))return;
   if(isBase){
-    const deleted = loadDeletedBase();
-    if(!deleted.includes(key)) deleted.push(key);
-    saveDeletedBase(deleted);
-    // Also remove override if any
-    const overrides = loadOverrides();
-    delete overrides[key];
-    saveOverrides(overrides);
-  } else if(isCustom){
-    const custom = loadCustomProducts();
-    delete custom[key];
-    saveCustomProducts(custom);
-  }
-  refreshProductData();
-  renderAdminProductsList();
+    const deleted=loadDeletedBase();if(!deleted.includes(key))deleted.push(key);saveDeletedBase(deleted);
+    const overrides=loadOverrides();delete overrides[key];saveOverrides(overrides);
+  } else if(isCustom){const custom=loadCustomProducts();delete custom[key];saveCustomProducts(custom);}
+  refreshProductData();renderAdminProductsList();
   showAdminToast('🗑️ Produit supprimé');
 }
 
-// ── FORM: OPEN ──
-let adminRestockValue = false;
+/* ── FORM OPEN ── */
+let adminRestockValue=false;
 function openAdminForm(key){
-  const formSection = document.getElementById('admin-form-section');
+  const formSection=document.getElementById('admin-form-section');
   formSection.style.display='block';
   formSection.scrollIntoView({behavior:'smooth'});
-  document.getElementById('admin-edit-key').value = key||'';
+  document.getElementById('admin-edit-key').value=key||'';
   if(key){
-    // Edit mode
     document.getElementById('admin-form-title').textContent='✏️ Modifier le produit';
-    const p = getAllProducts()[key];
-    document.getElementById('af-title').value = p.title||'';
-    document.getElementById('af-category').value = p.category||'';
-    document.getElementById('af-farm').value = p.farm||'';
-    document.getElementById('af-video').value = p.video||'';
-    document.getElementById('af-strain').value = p.strain||'';
-    document.getElementById('af-description').value = p.description||'';
-    adminRestockValue = !!p.restock;
+    const p=getAllProducts()[key];
+    document.getElementById('af-title').value=p.title||'';
+    document.getElementById('af-category').value=p.category||'';
+    document.getElementById('af-farm').value=p.farm||'';
+    document.getElementById('af-video').value=p.video||'';
+    document.getElementById('af-strain').value=p.strain||'';
+    document.getElementById('af-description').value=p.description||'';
+    adminRestockValue=!!p.restock;
     renderQtyRows(p.quantities||[]);
   } else {
-    // New product
     document.getElementById('admin-form-title').textContent='➕ Nouveau produit';
     document.getElementById('af-title').value='';
     document.getElementById('af-category').value='';
@@ -1410,35 +1348,27 @@ function openAdminForm(key){
     document.getElementById('af-video').value='';
     document.getElementById('af-strain').value='';
     document.getElementById('af-description').value='';
-    adminRestockValue = false;
+    adminRestockValue=false;
     renderQtyRows([{qty:'',price:''}]);
   }
   updateRestockButtons();
 }
-function closeAdminForm(){
-  document.getElementById('admin-form-section').style.display='none';
-}
-
-// Restock toggle in form
-function setRestockAdmin(val){
-  adminRestockValue=val;
-  updateRestockButtons();
-}
+function closeAdminForm(){document.getElementById('admin-form-section').style.display='none';}
+function setRestockAdmin(val){adminRestockValue=val;updateRestockButtons();}
 function updateRestockButtons(){
   document.getElementById('restock-no').classList.toggle('active',!adminRestockValue);
   document.getElementById('restock-yes').classList.toggle('active',adminRestockValue);
 }
 window.setRestockAdmin=setRestockAdmin;
 
-// Quantity rows
 function renderQtyRows(quantities){
-  const cont = document.getElementById('qty-rows');
+  const cont=document.getElementById('qty-rows');
   cont.innerHTML='';
-  quantities.forEach((q,i)=>{ addQtyRowFilled(q.qty,q.price,i); });
+  quantities.forEach((q,i)=>{addQtyRowFilled(q.qty,q.price,i);});
 }
 function addQtyRowFilled(qtyVal,priceVal,idx){
-  const cont = document.getElementById('qty-rows');
-  const row = document.createElement('div');
+  const cont=document.getElementById('qty-rows');
+  const row=document.createElement('div');
   row.className='admin-qty-row';
   row.dataset.idx=idx||cont.children.length;
   row.innerHTML=`
@@ -1447,9 +1377,7 @@ function addQtyRowFilled(qtyVal,priceVal,idx){
     <button class="admin-qty-del" onclick="this.parentElement.remove()">×</button>`;
   cont.appendChild(row);
 }
-function addQtyRow(){
-  addQtyRowFilled('','',document.getElementById('qty-rows').children.length);
-}
+function addQtyRow(){addQtyRowFilled('','',document.getElementById('qty-rows').children.length);}
 window.addQtyRow=addQtyRow;
 
 function getQtyRows(){
@@ -1459,50 +1387,30 @@ function getQtyRows(){
     const inputs=row.querySelectorAll('input');
     const qty=inputs[0].value.trim();
     const price=inputs[1].value.trim();
-    if(qty&&price) result.push({qty,price});
+    if(qty&&price)result.push({qty,price});
   });
   return result;
 }
 
-// ── SAVE ──
+/* ── SAVE ── */
 function saveAdminProduct(){
-  const key = document.getElementById('admin-edit-key').value;
-  const title = document.getElementById('af-title').value.trim();
-  const category = document.getElementById('af-category').value.trim();
-  const farm = document.getElementById('af-farm').value.trim();
-  const video = document.getElementById('af-video').value.trim();
-  const strain = document.getElementById('af-strain').value.trim();
-  const description = document.getElementById('af-description').value.trim();
-  const quantities = getQtyRows();
-  if(!title||!category||!farm){
-    alert('⚠️ Titre, catégorie et farm sont obligatoires !');return;
-  }
-  if(!quantities.length){
-    alert('⚠️ Ajoutez au moins une quantité !');return;
-  }
-  const productData = {title,category,farm,video,strain,description,quantities,restock:adminRestockValue};
-  const isBase = key && !!BASE_PRODUCTS[key];
-  const isCustom = key && !!loadCustomProducts()[key];
-  if(isBase){
-    // Save as override
-    const overrides = loadOverrides();
-    overrides[key] = {...productData, key};
-    saveOverrides(overrides);
-  } else if(isCustom){
-    // Update custom
-    const custom = loadCustomProducts();
-    custom[key] = {...custom[key],...productData};
-    saveCustomProducts(custom);
-  } else {
-    // New custom product
-    const newKey = 'custom_'+Date.now();
-    const custom = loadCustomProducts();
-    custom[newKey] = {key:newKey,...productData};
-    saveCustomProducts(custom);
-  }
-  refreshProductData();
-  renderAdminProductsList();
-  closeAdminForm();
+  const key=document.getElementById('admin-edit-key').value;
+  const title=document.getElementById('af-title').value.trim();
+  const category=document.getElementById('af-category').value.trim();
+  const farm=document.getElementById('af-farm').value.trim();
+  const video=document.getElementById('af-video').value.trim();
+  const strain=document.getElementById('af-strain').value.trim();
+  const description=document.getElementById('af-description').value.trim();
+  const quantities=getQtyRows();
+  if(!title||!category||!farm){alert('⚠️ Titre, catégorie et farm sont obligatoires !');return;}
+  if(!quantities.length){alert('⚠️ Ajoutez au moins une quantité !');return;}
+  const productData={title,category,farm,video,strain,description,quantities,restock:adminRestockValue};
+  const isBase=key&&!!BASE_PRODUCTS[key];
+  const isCustom=key&&!!loadCustomProducts()[key];
+  if(isBase){const overrides=loadOverrides();overrides[key]={...productData,key};saveOverrides(overrides);}
+  else if(isCustom){const custom=loadCustomProducts();custom[key]={...custom[key],...productData};saveCustomProducts(custom);}
+  else{const newKey='custom_'+Date.now();const custom=loadCustomProducts();custom[newKey]={key:newKey,...productData};saveCustomProducts(custom);}
+  refreshProductData();renderAdminProductsList();closeAdminForm();
   showAdminToast('✅ Produit sauvegardé !');
 }
 window.saveAdminProduct=saveAdminProduct;
@@ -1511,11 +1419,10 @@ window.closeAdminForm=closeAdminForm;
 window.deleteAdminProduct=deleteAdminProduct;
 window.toggleRestock=toggleRestock;
 
-// ── TOAST ──
+/* ── TOAST ── */
 function showAdminToast(msg){
   const t=document.getElementById('admin-toast');
-  t.textContent=msg;
-  t.classList.add('show');
+  t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
 }
 
