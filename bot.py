@@ -9,10 +9,11 @@ from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     CallbackQueryHandler,
+    MessageHandler,
+    filters,
     ContextTypes
 )
 
-# 🔐 METS TON NOUVEAU TOKEN ICI
 token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
 
 CHANNEL_ID = -1003733915057
@@ -24,6 +25,27 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
 )
+
+# Logger dédié aux utilisateurs
+user_logger = logging.getLogger("USER_TRACKER")
+user_logger.setLevel(logging.INFO)
+
+# Handler fichier pour sauvegarder les logs utilisateurs
+file_handler = logging.FileHandler("users.log", encoding="utf-8")
+file_handler.setFormatter(logging.Formatter("%(asctime)s - %(message)s"))
+user_logger.addHandler(file_handler)
+
+
+# ================================
+# Fonction de log utilisateur
+# ================================
+def log_user(action: str, user):
+    username = f"@{user.username}" if user.username else "Pas de username"
+    full_name = user.full_name or "Inconnu"
+    msg = f"[{action}] Nom: {full_name} | Username: {username} | ID: {user.id}"
+    user_logger.info(msg)
+    print(f"👤 {msg}")  # Affiché aussi dans la console
+
 
 # ================================
 # Texte Information
@@ -57,6 +79,7 @@ Ouvert 12h 23h
 SAV : 24h 24h ! 🕛
 @dino76s"""
 
+
 # ================================
 # Clavier Menu Principal
 # ================================
@@ -67,7 +90,7 @@ def main_keyboard():
             InlineKeyboardButton("👥 Groupe", url=GROUP_LINK)
         ],
         [
-            InlineKeyboardButton("🛍 Boutique", web_app=WebAppInfo(url=MINI_APP_URL))  # Seul sur sa ligne
+            InlineKeyboardButton("🛍 Boutique", web_app=WebAppInfo(url=MINI_APP_URL))
         ],
         [
             InlineKeyboardButton("📞 Contact", url="https://t.me/dino76s"),
@@ -75,6 +98,7 @@ def main_keyboard():
         ]
     ]
     return InlineKeyboardMarkup(keyboard)
+
 
 # ================================
 # Vérification abonnement
@@ -96,9 +120,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not user:
         return
 
+    log_user("START", user)  # 👈 LOG ICI
+
     is_subscribed = await check_subscription(user.id, context)
 
-    # ❌ PAS ABONNÉ
     if not is_subscribed:
         keyboard = [
             [InlineKeyboardButton("🔔 Rejoindre le canal", url=CHANNEL_LINK)],
@@ -114,7 +139,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    # ✅ ABONNÉ → Envoi de l'image + menu principal
     with open("dino.jpg", "rb") as photo:
         await update.message.reply_photo(
             photo=photo,
@@ -128,15 +152,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ================================
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
+    user = query.from_user
     await query.answer()
 
     if query.data == "check_sub":
-        is_subscribed = await check_subscription(query.from_user.id, context)
+        is_subscribed = await check_subscription(user.id, context)
         if not is_subscribed:
             await query.answer("❌ Tu n'es pas encore abonné.", show_alert=True)
             return
 
-        # Envoi du menu principal avec image
+        log_user("ACCÈS CONFIRMÉ (abonnement vérifié)", user)  # 👈 LOG ICI
+
         with open("dino.jpg", "rb") as photo:
             await query.message.reply_photo(
                 photo=photo,
@@ -145,21 +171,30 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
     elif query.data == "info":
+        log_user("CLIQUE INFO", user)  # 👈 LOG ICI
+
         keyboard = [[InlineKeyboardButton("⬅️ Retour au menu", callback_data="back")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
-
-        await query.message.reply_text(
-            INFO_TEXT,
-            reply_markup=reply_markup
-        )
+        await query.message.reply_text(INFO_TEXT, reply_markup=reply_markup)
 
     elif query.data == "back":
+        log_user("RETOUR MENU", user)  # 👈 LOG ICI
+
         with open("dino.jpg", "rb") as photo:
             await query.message.reply_photo(
                 photo=photo,
                 caption="🍱 Bienvenue chez DINO TERPS 76\n\n🔥 Accès autorisé\n\nChoisis une option ci-dessous 👇",
                 reply_markup=main_keyboard()
             )
+
+
+# ================================
+# Détection ouverture Mini App (web_app_data)
+# ================================
+async def web_app_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    if user:
+        log_user("MINI APP OUVERTE", user)  # 👈 LOG ICI
 
 
 # ================================
@@ -170,6 +205,7 @@ def main():
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(button_handler))
+    app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, web_app_handler))
 
     print("Bot lancé 🚀")
     app.run_polling()
