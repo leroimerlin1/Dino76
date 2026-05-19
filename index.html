@@ -5,44 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>DINO TERPS 76</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCDlaHQOdFqglYjFuKsdW8oqePLbdcCluc",
+      authDomain: "dino76.firebaseapp.com",
+      projectId: "dino76",
+      storageBucket: "dino76.firebasestorage.app",
+      messagingSenderId: "170852919621",
+      appId: "1:170852919621:web:9679dac77f35f1094d362c",
+      measurementId: "G-S4F0FYYQ5F"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window._db = db;
+    window._fs = { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, orderBy, query, serverTimestamp };
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        if(window.initApp) window.initApp();
+      }, 300);
+    });
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-:root {
-  --bg-dark:#000000;
-  --bg-mid:#0a0a0a;
-  --bg-card:#111111;
-  --orange:#ff7a00;
-  --orange-light:#ffaa44;
-  --orange-glow:#ff6600;
-  --cream:#fff4e0;
-  --cream-dim:#c8a87a;
-  --brown:#5c2e0a;
-  --brown-light:#8a4a18;
-  --red:#d63200;
-  --green:#4a9c3f;
-  --green-light:#6dcc60;
-  --white:#fff8f0;
-  --border-orange:rgba(255,122,0,0.45);
-  --border-cream:rgba(255,244,224,0.15);
-  --surface:rgba(0,0,0,0.95);
-  --glow-orange:rgba(255,122,0,0.5);
-}
+:root{--bg-dark:#000000;--bg-mid:#0a0a0a;--bg-card:#111111;--orange:#ff7a00;--orange-light:#ffaa44;--orange-glow:#ff6600;--cream:#fff4e0;--cream-dim:#c8a87a;--brown:#5c2e0a;--brown-light:#8a4a18;--red:#d63200;--green:#4a9c3f;--green-light:#6dcc60;--white:#fff8f0;--border-orange:rgba(255,122,0,0.45);--border-cream:rgba(255,244,224,0.15);--surface:rgba(0,0,0,0.95);--glow-orange:rgba(255,122,0,0.5);}
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{
-  height:100%;min-height:100dvh;width:100%;overflow:hidden;
-  font-family:'Nunito',sans-serif;
-  background:#000000;
-  color:var(--cream);
-  touch-action:manipulation;
-}
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse at 50% 0%,rgba(255,122,0,0.12) 0%,transparent 55%),
-    radial-gradient(ellipse at 15% 90%,rgba(214,50,0,0.08) 0%,transparent 45%),
-    radial-gradient(ellipse at 85% 85%,rgba(255,170,68,0.07) 0%,transparent 45%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23000000'/%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ffffff' fill-opacity='0.025'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ffffff' fill-opacity='0.015'/%3E%3C/svg%3E");
-}
+html,body{height:100%;min-height:100dvh;width:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#000000;color:var(--cream);touch-action:manipulation;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(255,122,0,0.12) 0%,transparent 55%),radial-gradient(ellipse at 15% 90%,rgba(214,50,0,0.08) 0%,transparent 45%),radial-gradient(ellipse at 85% 85%,rgba(255,170,68,0.07) 0%,transparent 45%);}
 .splash{position:fixed;inset:0;background:#000000;z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity 0.8s ease;overflow:hidden;}
 .splash.hidden{opacity:0;pointer-events:none;}
 .splash-content{position:relative;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;}
@@ -53,11 +43,7 @@ body::before{
 .splash-ring:nth-child(3){width:420px;height:420px;animation-delay:0.8s;border-color:rgba(255,122,0,0.04);}
 @keyframes ringPulse{0%,100%{transform:scale(1);opacity:0.5;}50%{transform:scale(1.06);opacity:1;}}
 .splash-speed-lines{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:0.06;}
-.splash-speed-lines::before{
-  content:'';position:absolute;inset:-50%;
-  background:conic-gradient(from 0deg,transparent 0deg,rgba(255,122,0,0.8) 0.3deg,transparent 0.6deg,transparent 3.6deg,rgba(255,122,0,0.6) 3.9deg,transparent 4.2deg,transparent 7.2deg,rgba(255,122,0,0.7) 7.5deg,transparent 7.8deg,transparent 10.8deg,rgba(255,122,0,0.5) 11.1deg,transparent 11.4deg,transparent 14.4deg,rgba(255,122,0,0.8) 14.7deg,transparent 15deg);
-  animation:spinLines 8s linear infinite;
-}
+.splash-speed-lines::before{content:'';position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent 0deg,rgba(255,122,0,0.8) 0.3deg,transparent 0.6deg,transparent 3.6deg,rgba(255,122,0,0.6) 3.9deg,transparent 4.2deg,transparent 7.2deg,rgba(255,122,0,0.7) 7.5deg,transparent 7.8deg,transparent 10.8deg,rgba(255,122,0,0.5) 11.1deg,transparent 11.4deg,transparent 14.4deg,rgba(255,122,0,0.8) 14.7deg,transparent 15deg);animation:spinLines 8s linear infinite;}
 @keyframes spinLines{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 .splash-logo{width:160px;height:160px;border-radius:50%;overflow:hidden;border:4px solid var(--orange);box-shadow:0 0 0 8px rgba(255,122,0,0.12),0 0 50px rgba(255,122,0,0.6),0 0 100px rgba(214,50,0,0.3);z-index:3;animation:popIn 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;margin-bottom:18px;flex-shrink:0;}
 .splash-logo img{width:100%;height:100%;object-fit:cover;}
@@ -72,33 +58,14 @@ body::before{
 .splash-loading-txt{color:rgba(200,168,122,0.5);font-size:0.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;z-index:3;margin-top:12px;animation:fadeSlideUp 0.5s 0.7s ease both;}
 .container{position:relative;height:100dvh;width:100%;background:#000000;}
 .content{position:relative;z-index:2;height:100dvh;width:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:100px;}
-#home-hero{
-  position:relative;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:22px 16px 18px;
-  background:linear-gradient(180deg,rgba(255,122,0,0.1) 0%,rgba(26,14,5,0) 100%);
-  border-bottom:2px solid rgba(255,122,0,0.2);
-  overflow:hidden;
-}
-#home-hero::before{
-  content:'';position:absolute;inset:0;
-  background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,122,0,0.04) 0.5deg,transparent 1deg,transparent 4deg,rgba(255,122,0,0.03) 4.5deg,transparent 5deg);
-  animation:spinLines 20s linear infinite;
-  pointer-events:none;
-}
+#home-hero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 16px 18px;background:linear-gradient(180deg,rgba(255,122,0,0.1) 0%,rgba(26,14,5,0) 100%);border-bottom:2px solid rgba(255,122,0,0.2);overflow:hidden;}
+#home-hero::before{content:'';position:absolute;inset:0;background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(255,122,0,0.04) 0.5deg,transparent 1deg,transparent 4deg,rgba(255,122,0,0.03) 4.5deg,transparent 5deg);animation:spinLines 20s linear infinite;pointer-events:none;}
 .hero-logo-ring{width:110px;height:110px;border-radius:50%;overflow:hidden;border:3px solid var(--orange);box-shadow:0 0 0 6px rgba(255,122,0,0.1),0 0 30px rgba(255,122,0,0.55),0 0 60px rgba(214,50,0,0.25);position:relative;z-index:2;flex-shrink:0;}
 .hero-logo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
 .hero-brand{font-family:'Bangers',cursive;font-size:2.6rem;letter-spacing:3px;color:var(--cream);line-height:1;margin-top:12px;text-shadow:3px 3px 0 var(--orange-glow),5px 5px 0 var(--brown);position:relative;z-index:2;}
 .hero-tagline{font-family:'Bangers',cursive;font-size:1rem;letter-spacing:5px;color:var(--orange-light);margin-top:4px;text-shadow:1px 1px 0 var(--brown);position:relative;z-index:2;}
 .hero-strip{display:flex;gap:8px;margin-top:14px;position:relative;z-index:2;}
-.hero-chip{
-  background:#000000;
-  border:1.5px solid rgba(255,122,0,0.35);
-  color:#ffffff;
-  font-size:0.72rem;font-weight:800;
-  padding:4px 12px;border-radius:4px;letter-spacing:1px;
-}
-.orange-line{height:2px;margin:0 16px 14px;background:linear-gradient(90deg,transparent,rgba(255,122,0,0.5),rgba(214,50,0,0.4),transparent);}
+.hero-chip{background:#000000;border:1.5px solid rgba(255,122,0,0.35);color:#ffffff;font-size:0.72rem;font-weight:800;padding:4px 12px;border-radius:4px;letter-spacing:1px;}
 #products-header{margin:0 16px 12px;background:var(--bg-card);border-radius:14px;border:1.5px solid var(--border-orange);box-shadow:0 6px 24px rgba(0,0,0,0.7),0 0 16px rgba(255,122,0,0.06);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);}
 .products-title{display:flex;align-items:center;gap:10px;font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;color:var(--cream-dim);}
 .products-count{display:flex;flex-direction:column;align-items:center;background:rgba(255,122,0,0.07);border:1.5px solid rgba(255,122,0,0.4);border-radius:12px;padding:7px 18px;box-shadow:0 0 18px rgba(255,122,0,0.1);}
@@ -155,8 +122,8 @@ body::before{
 .question-label{display:block;font-size:0.88rem;color:var(--cream-dim);margin-bottom:10px;font-weight:800;}
 .option-btn{width:100%;padding:12px;margin:6px 0;background:rgba(0,0,0,0.8);border:1.5px solid rgba(255,122,0,0.2);color:var(--cream);border-radius:8px;font-size:0.9rem;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;}
 .option-btn.active{background:linear-gradient(135deg,rgba(255,122,0,0.2),rgba(214,50,0,0.14));color:#fff;border-color:var(--orange);font-weight:900;box-shadow:0 0 12px rgba(255,122,0,0.25);}
-input[type="time"],input[type="text"],textarea{width:100%;padding:12px;border-radius:8px;border:1.5px solid rgba(255,122,0,0.25);background:rgba(0,0,0,0.8);color:var(--cream);font-size:0.9rem;font-family:'Nunito',sans-serif;outline:none;}
-input:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 8px rgba(255,122,0,0.2);}
+input[type="time"],input[type="text"],input[type="number"],input[type="password"],textarea,select.admin-select{width:100%;padding:12px;border-radius:8px;border:1.5px solid rgba(255,122,0,0.25);background:rgba(0,0,0,0.8);color:var(--cream);font-size:0.9rem;font-family:'Nunito',sans-serif;outline:none;}
+input:focus,textarea:focus,select.admin-select:focus{border-color:var(--orange);box-shadow:0 0 8px rgba(255,122,0,0.2);}
 textarea{min-height:80px;resize:vertical;}
 #submit-order-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--red),#8b1500);color:var(--orange-light);border:1.5px solid rgba(255,122,0,0.4);border-radius:12px;font-size:1.2rem;font-weight:400;margin-top:20px;cursor:pointer;box-shadow:0 0 20px rgba(214,50,0,0.4);font-family:'Bangers',cursive;letter-spacing:3px;}
 #submit-order-btn:disabled{background:#271508;color:#333;cursor:not-allowed;}
@@ -216,10 +183,8 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
 .commande-items{font-size:0.83rem;color:#6a4a28;line-height:1.5;}
 .commande-mode{display:inline-block;margin-top:6px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.18);color:rgba(255,170,68,0.7);font-size:0.68rem;font-weight:800;padding:3px 10px;border-radius:4px;letter-spacing:0.5px;}
 .manga-corner{position:absolute;top:0;right:0;width:0;height:0;border-style:solid;border-width:0 28px 28px 0;border-color:transparent var(--orange) transparent transparent;z-index:3;opacity:0.6;}
-/* Restock badge animation */
 @keyframes restockPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.15);}}
 .restock-spin{display:inline-block;animation:restockPulse 1.2s ease-in-out infinite;}
-/* Crypto shipping block */
 .crypto-block{background:linear-gradient(135deg,rgba(255,122,0,0.12),rgba(214,50,0,0.08));border:2px solid rgba(255,122,0,0.45);border-radius:10px;padding:14px 16px;margin-bottom:14px;position:relative;overflow:hidden;}
 .crypto-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:0.6;}
 .crypto-title{font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--orange-light);margin-bottom:10px;text-align:center;}
@@ -228,22 +193,60 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
 .crypto-coin-symbol{font-size:1.6rem;line-height:1;margin-bottom:4px;}
 .crypto-coin-name{font-family:'Bangers',cursive;font-size:0.9rem;letter-spacing:1px;}
 .crypto-info{background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:7px;padding:9px 12px;font-size:0.82rem;color:var(--cream-dim);font-weight:700;text-align:center;}
+
+/* ===== ADMIN ===== */
+#admin-page{display:none;padding:16px 16px 110px;}
+.admin-login{background:var(--bg-card);border:2px solid rgba(255,122,0,0.5);border-radius:16px;padding:28px 20px;margin-top:20px;position:relative;overflow:hidden;}
+.admin-login::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),var(--orange),transparent);}
+.admin-title{font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:3px;color:var(--orange);text-align:center;margin-bottom:20px;text-shadow:2px 2px 0 var(--brown),0 0 16px rgba(255,122,0,0.5);}
+.admin-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),#8b1500);color:var(--orange-light);border:1.5px solid rgba(255,122,0,0.4);border-radius:10px;font-size:1.1rem;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px;box-shadow:0 0 18px rgba(214,50,0,0.3);margin-top:10px;}
+.admin-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.admin-btn-secondary{background:rgba(255,122,0,0.1);border:1.5px solid rgba(255,122,0,0.3);color:var(--orange-light);}
+.admin-btn-danger{background:linear-gradient(135deg,#8b0000,#4a0000);border-color:rgba(214,50,0,0.5);}
+.admin-panel{display:none;}
+.admin-section{background:var(--bg-card);border:1.5px solid rgba(255,122,0,0.25);border-radius:14px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;}
+.admin-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:0.4;}
+.admin-section-title{font-family:'Bangers',cursive;font-size:1.2rem;color:var(--orange);letter-spacing:2px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.admin-field{margin-bottom:12px;}
+.admin-field label{display:block;font-size:0.8rem;font-weight:800;color:var(--cream-dim);margin-bottom:6px;letter-spacing:0.5px;}
+.admin-field input,.admin-field textarea,.admin-field select{background:rgba(0,0,0,0.7);border:1.5px solid rgba(255,122,0,0.2);color:var(--cream);border-radius:8px;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:0.88rem;width:100%;outline:none;}
+.admin-field input:focus,.admin-field textarea:focus,.admin-field select:focus{border-color:var(--orange);}
+.admin-field select option{background:#111;}
+.qty-row{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
+.qty-row input{flex:1;}
+.qty-row button{background:var(--red);color:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;flex-shrink:0;}
+.add-qty-btn{background:rgba(255,122,0,0.1);border:1.5px dashed rgba(255,122,0,0.3);color:var(--orange);padding:8px;border-radius:8px;width:100%;cursor:pointer;font-size:0.82rem;font-weight:800;margin-bottom:12px;}
+.toggle-restock{display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,170,0,0.06);border:1.5px solid rgba(255,170,0,0.2);border-radius:8px;cursor:pointer;}
+.toggle-restock input[type=checkbox]{width:20px;height:20px;accent-color:var(--orange);cursor:pointer;}
+.toggle-restock span{font-size:0.88rem;font-weight:800;color:var(--cream-dim);}
+.video-upload-zone{border:2px dashed rgba(255,122,0,0.3);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:rgba(255,122,0,0.03);}
+.video-upload-zone:hover{border-color:var(--orange);background:rgba(255,122,0,0.07);}
+.video-upload-zone.has-video{border-color:#6dcc60;background:rgba(109,204,96,0.06);}
+.video-upload-txt{color:var(--cream-dim);font-size:0.82rem;font-weight:700;margin-top:8px;}
+.product-admin-card{background:rgba(0,0,0,0.5);border:1.5px solid rgba(255,122,0,0.15);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.product-admin-thumb{width:52px;height:52px;border-radius:8px;background:#111;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,122,0,0.2);}
+.product-admin-thumb video{width:100%;height:100%;object-fit:cover;}
+.product-admin-info{flex:1;min-width:0;}
+.product-admin-name{font-family:'Bangers',cursive;font-size:0.95rem;color:var(--orange-light);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.product-admin-farm{font-size:0.72rem;color:var(--cream-dim);font-weight:700;}
+.product-admin-actions{display:flex;gap:6px;flex-shrink:0;}
+.btn-edit{background:rgba(255,122,0,0.15);border:1.5px solid rgba(255,122,0,0.4);color:var(--orange);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
+.btn-del{background:rgba(214,50,0,0.15);border:1.5px solid rgba(214,50,0,0.4);color:var(--red);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;}
+.restock-badge-inline{background:linear-gradient(135deg,#1a0a00,#2a1200);border:1.5px solid rgba(255,170,0,0.6);color:#ffcc00;font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:4px;margin-left:4px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:flex-end;justify-content:center;padding-bottom:20px;}
+.modal-overlay.hidden{display:none;}
+.modal-box{background:#0f0f0f;border:1.5px solid rgba(255,122,0,0.4);border-radius:20px 20px 16px 16px;width:100%;max-width:480px;max-height:88dvh;overflow-y:auto;padding:20px 16px 30px;position:relative;}
+.modal-box::before{content:'';position:absolute;top:0;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);}
+.modal-close{position:absolute;top:14px;right:14px;background:rgba(255,122,0,0.1);border:1px solid rgba(255,122,0,0.3);color:var(--orange);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;}
   </style>
 </head>
 <body>
 
-<!-- SPLASH -->
 <div id="splash-screen" class="splash">
   <div class="splash-content">
-    <div class="splash-bg-rings">
-      <div class="splash-ring"></div>
-      <div class="splash-ring"></div>
-      <div class="splash-ring"></div>
-    </div>
+    <div class="splash-bg-rings"><div class="splash-ring"></div><div class="splash-ring"></div><div class="splash-ring"></div></div>
     <div class="splash-speed-lines"></div>
-    <div class="splash-logo">
-      <img src="dino.jpg" alt="Dino Terps 76" onerror="this.style.background='#271508';">
-    </div>
+    <div class="splash-logo"><img src="dino.jpg" alt="Dino Terps 76" onerror="this.style.background='#271508';"></div>
     <div class="splash-name">DINO TERPS 76</div>
     <div class="splash-divider"></div>
     <div class="splash-sub">🍣 PREMIUM SHOP 🍣</div>
@@ -258,9 +261,7 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
     <!-- ACCUEIL -->
     <div id="home-page">
       <div id="home-hero" style="position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
-        <div class="hero-logo-ring">
-          <img src="dino.jpg" alt="Dino Terps 76" onerror="this.parentElement.style.background='#271508'">
-        </div>
+        <div class="hero-logo-ring"><img src="dino.jpg" alt="Dino Terps 76" onerror="this.parentElement.style.background='#271508'"></div>
         <div class="hero-brand">DINO TERPS 76</div>
         <div class="hero-tagline">🍣 PREMIUM TERPS SHOP 🍣</div>
         <div class="hero-strip">
@@ -273,8 +274,8 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
       <div id="products-header">
         <div class="products-title">🛍️ Catalogue</div>
         <div id="products-count-modern" class="products-count">
-          <div class="products-count-number">6</div>
-          <div class="products-count-label">Produits</div>
+          <div class="products-count-number" id="prod-count-num">0</div>
+          <div class="products-count-label" id="prod-count-lbl">Produits</div>
         </div>
       </div>
       <div id="filters-bar">
@@ -330,14 +331,8 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
           <div class="crypto-block">
             <div class="crypto-title">💳 PAIEMENT EN CRYPTO EN PV ✍️</div>
             <div class="crypto-coins">
-              <div class="crypto-coin">
-                <div class="crypto-coin-symbol">₿</div>
-                <div class="crypto-coin-name" style="color:#f7931a;">BTC ✅</div>
-              </div>
-              <div class="crypto-coin">
-                <div class="crypto-coin-symbol">Ξ</div>
-                <div class="crypto-coin-name" style="color:#627eea;">ETH ✅</div>
-              </div>
+              <div class="crypto-coin"><div class="crypto-coin-symbol">₿</div><div class="crypto-coin-name" style="color:#f7931a;">BTC ✅</div></div>
+              <div class="crypto-coin"><div class="crypto-coin-symbol">Ξ</div><div class="crypto-coin-name" style="color:#627eea;">ETH ✅</div></div>
             </div>
             <div class="crypto-info">📲 Contactez-nous en PV pour les détails de paiement</div>
           </div>
@@ -351,24 +346,11 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
     <!-- INFOS -->
     <div id="infos-page">
       <div class="info-card" style="margin-top:8px;background:linear-gradient(135deg,rgba(46,26,10,0.98),rgba(20,10,2,0.98));border-color:rgba(255,122,0,0.6);box-shadow:0 0 30px rgba(255,122,0,0.12),0 6px 28px rgba(0,0,0,0.8);">
-        <div style="text-align:center;margin-bottom:16px;">
-          <div style="font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:3px;color:var(--orange-light);text-shadow:2px 2px 0 var(--brown),0 0 20px rgba(255,122,0,0.6);line-height:1.2;">🪧 Bienvenue chez<br>DINO TERPS 76 🍱 🪧</div>
-        </div>
-        <div style="display:flex;justify-content:center;margin-bottom:14px;">
-          <div style="background:rgba(255,122,0,0.1);border:2px solid rgba(255,122,0,0.5);border-radius:8px;padding:8px 22px;display:flex;align-items:center;gap:10px;">
-            <span style="font-size:1.4rem">🇫🇷</span>
-            <span style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:3px;color:var(--cream)">NORMANDIE</span>
-          </div>
-        </div>
+        <div style="text-align:center;margin-bottom:16px;"><div style="font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:3px;color:var(--orange-light);text-shadow:2px 2px 0 var(--brown),0 0 20px rgba(255,122,0,0.6);line-height:1.2;">🪧 Bienvenue chez<br>DINO TERPS 76 🍱 🪧</div></div>
+        <div style="display:flex;justify-content:center;margin-bottom:14px;"><div style="background:rgba(255,122,0,0.1);border:2px solid rgba(255,122,0,0.5);border-radius:8px;padding:8px 22px;display:flex;align-items:center;gap:10px;"><span style="font-size:1.4rem">🇫🇷</span><span style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:3px;color:var(--cream)">NORMANDIE</span></div></div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
-          <div style="display:flex;align-items:center;gap:10px;background:rgba(109,204,96,0.06);border:1px solid rgba(109,204,96,0.25);border-radius:8px;padding:10px 14px;">
-            <span style="font-size:1.1rem">✅</span>
-            <span style="color:#6dcc60;font-weight:800;font-size:0.9rem;letter-spacing:0.5px">QUALITÉ VALIDÉE</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;">
-            <span style="font-size:1.1rem">🏆</span>
-            <span style="color:var(--orange-light);font-weight:800;font-size:0.9rem;letter-spacing:0.5px">SERVICE NUMÉRO UNO</span>
-          </div>
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(109,204,96,0.06);border:1px solid rgba(109,204,96,0.25);border-radius:8px;padding:10px 14px;"><span style="font-size:1.1rem">✅</span><span style="color:#6dcc60;font-weight:800;font-size:0.9rem;letter-spacing:0.5px">QUALITÉ VALIDÉE</span></div>
+          <div style="display:flex;align-items:center;gap:10px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;"><span style="font-size:1.1rem">🏆</span><span style="color:var(--orange-light);font-weight:800;font-size:0.9rem;letter-spacing:0.5px">SERVICE NUMÉRO UNO</span></div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
           <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1.4rem;margin-bottom:4px">🌿🍇🍊</div><div style="color:var(--cream-dim);font-size:0.75rem;font-weight:800">FRUITS FRAIS</div></div>
@@ -381,18 +363,7 @@ nav::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1.5px;b
           <div style="flex:1;background:rgba(214,50,0,0.1);border:1.5px solid rgba(214,50,0,0.35);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1rem;margin-bottom:3px">🤝</div><div style="font-family:'Bangers',cursive;font-size:0.85rem;letter-spacing:1px;color:var(--orange)">MEET UP</div></div>
           <div style="flex:1;background:rgba(214,50,0,0.1);border:1.5px solid rgba(214,50,0,0.35);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1rem;margin-bottom:3px">📦</div><div style="font-family:'Bangers',cursive;font-size:0.85rem;letter-spacing:1px;color:var(--orange)">ENVOI</div></div>
         </div>
-        <div style="background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:11px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
-          <span style="font-size:1.2rem">🚚</span>
-          <span style="color:var(--cream);font-size:0.86rem;font-weight:800">SERVICE RAPIDE — notre équipe se déplace pour tout le monde ❤️</span>
-        </div>
-        <div style="background:rgba(255,255,255,0.015);border:1px solid rgba(255,244,224,0.08);border-radius:8px;padding:11px 14px;margin-bottom:12px;font-style:italic;color:var(--cream-dim);font-size:0.84rem;line-height:1.6;text-align:center;">
-          Authenticité, respect et proximité<br>
-          <span style="color:var(--orange-light)">👉 Offrir le meilleur tout en respectant nos prochains</span>
-        </div>
-        <div style="background:linear-gradient(135deg,rgba(255,122,0,0.15),rgba(214,50,0,0.1));border:2px solid rgba(255,122,0,0.45);border-radius:10px;padding:13px 16px;margin-bottom:12px;text-align:center;">
-          <div style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--orange-light);margin-bottom:4px;">🤝 PARRAINAGE 🎁</div>
-          <div style="color:var(--cream);font-size:0.88rem;font-weight:800;">1 AMI PARRAINÉ = <span style="color:#6dcc60;font-size:1.05rem">−20€</span> SUR COMMANDE</div>
-        </div>
+        <div style="background:linear-gradient(135deg,rgba(255,122,0,0.15),rgba(214,50,0,0.1));border:2px solid rgba(255,122,0,0.45);border-radius:10px;padding:13px 16px;margin-bottom:12px;text-align:center;"><div style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:2px;color:var(--orange-light);margin-bottom:4px;">🤝 PARRAINAGE 🎁</div><div style="color:var(--cream);font-size:0.88rem;font-weight:800;">1 AMI PARRAINÉ = <span style="color:#6dcc60;font-size:1.05rem">−20€</span> SUR COMMANDE</div></div>
         <div style="display:flex;gap:8px;">
           <div style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1rem;margin-bottom:3px">🕐</div><div style="color:var(--cream-dim);font-size:0.72rem;font-weight:800;margin-bottom:2px">OUVERT</div><div style="color:var(--cream);font-size:0.8rem;font-weight:900">12h – 23h</div></div>
           <div style="flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.15);border-radius:8px;padding:10px;text-align:center;"><div style="font-size:1rem;margin-bottom:3px">🕛</div><div style="color:var(--cream-dim);font-size:0.72rem;font-weight:800;margin-bottom:2px">SAV</div><div style="color:#6dcc60;font-size:0.8rem;font-weight:900">24h / 24h</div></div>
@@ -416,20 +387,7 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-w
       <div class="info-card">
         <div class="info-card-header"><div class="info-card-icon">📦</div><div class="info-card-title">Envoi postal</div></div>
         <div style="color:#c8a87a;font-size:0.88rem;line-height:1.8;margin-bottom:12px">Commandez depuis n'importe où, on envoie partout ! 🌟✅</div>
-        <div class="crypto-block" style="margin-bottom:12px;">
-          <div class="crypto-title">💳 PAIEMENT EN CRYPTO EN PV ✍️</div>
-          <div class="crypto-coins">
-            <div class="crypto-coin">
-              <div class="crypto-coin-symbol">₿</div>
-              <div class="crypto-coin-name" style="color:#f7931a;">BTC ✅</div>
-            </div>
-            <div class="crypto-coin">
-              <div class="crypto-coin-symbol">Ξ</div>
-              <div class="crypto-coin-name" style="color:#627eea;">ETH ✅</div>
-            </div>
-          </div>
-          <div class="crypto-info">📲 Contactez-nous en PV pour les adresses de wallet</div>
-        </div>
+        <div class="crypto-block" style="margin-bottom:12px;"><div class="crypto-title">💳 PAIEMENT EN CRYPTO EN PV ✍️</div><div class="crypto-coins"><div class="crypto-coin"><div class="crypto-coin-symbol">₿</div><div class="crypto-coin-name" style="color:#f7931a;">BTC ✅</div></div><div class="crypto-coin"><div class="crypto-coin-symbol">Ξ</div><div class="crypto-coin-name" style="color:#627eea;">ETH ✅</div></div></div><div class="crypto-info">📲 Contactez-nous en PV pour les adresses de wallet</div></div>
         <div style="background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;font-size:0.83rem;color:var(--orange);font-weight:800;text-align:center">📦 Envoi sécurisé & discret</div>
       </div>
       <div class="info-card">
@@ -439,20 +397,14 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-w
           <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.12);border-radius:7px;padding:9px 12px"><span style="color:var(--orange)">→</span><span style="color:var(--cream);font-size:0.86rem">Votre heure d'arrivée</span></div>
           <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,122,0,0.12);border-radius:7px;padding:9px 12px"><span style="color:var(--orange)">→</span><span style="color:var(--cream);font-size:0.86rem">Votre commande souhaitée</span></div>
         </div>
-        <div class="meetup-location-row">
-          <div style="display:flex;align-items:center;gap:10px"><span style="color:var(--orange)">📍</span><span class="meetup-location-name">@dino76s 🍣</span></div>
-          <div class="disponible-badge">Disponible</div>
-        </div>
+        <div class="meetup-location-row"><div style="display:flex;align-items:center;gap:10px"><span style="color:var(--orange)">📍</span><span class="meetup-location-name">@dino76s 🍣</span></div><div class="disponible-badge">Disponible</div></div>
         <div class="meetup-horaires-row" style="margin-top:8px"><span style="color:var(--orange)">🕐</span><span class="meetup-horaires-text">Horaires : 12h – 23h</span></div>
         <div class="meetup-horaires-row"><span style="color:var(--green)">✅</span><span class="meetup-horaires-text">SAV disponible 24h/24</span></div>
         <div style="margin-top:10px;background:rgba(255,122,0,0.06);border:1px solid rgba(255,122,0,0.2);border-radius:8px;padding:10px 14px;font-size:0.83rem;color:var(--orange);font-weight:800;text-align:center">💶 Paiement en espèces uniquement</div>
       </div>
       <div class="info-card">
         <div class="info-card-header"><div class="info-card-icon">📍</div><div class="info-card-title">Zones desservies</div></div>
-        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px">
-          <span style="color:var(--orange);font-size:1rem;margin-top:2px">🗺️</span>
-          <div><div style="color:var(--cream-dim);font-size:0.88rem;font-weight:600">Départements</div><div class="dept-badges"><span class="dept-badge">76</span><span class="dept-badge">27</span><span class="dept-badge">14</span><span class="dept-badge">60</span></div></div>
-        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px"><span style="color:var(--orange);font-size:1rem;margin-top:2px">🗺️</span><div><div style="color:var(--cream-dim);font-size:0.88rem;font-weight:600">Départements</div><div class="dept-badges"><span class="dept-badge">76</span><span class="dept-badge">27</span><span class="dept-badge">14</span><span class="dept-badge">60</span></div></div></div>
       </div>
     </div>
 
@@ -460,30 +412,10 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-w
     <div id="reseaux-page">
       <h2 class="section-title">🔥 Nos réseaux</h2>
       <div class="reseaux-list">
-        <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3VjMGo4dGMxc2tz&utm_source=qr">
-          <div class="reseau-icon-wrap" style="background:rgba(225,48,108,0.12);border-color:rgba(225,48,108,0.35)">📸</div>
-          <div class="reseau-text"><div class="reseau-name">Instagram</div><div class="reseau-sub">@dinoterps76</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
-        <div class="reseau-item" data-link="https://duanym138.org/DINOfslmogx8">
-          <div class="reseau-icon-wrap" style="background:rgba(255,122,0,0.1);border-color:rgba(255,122,0,0.3)">🥔</div>
-          <div class="reseau-text"><div class="reseau-name">Potato</div><div class="reseau-sub">Canal officiel 📢</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
-        <div class="reseau-item" data-link="https://t.me/+j7EMkLSIaV83ZmU8">
-          <div class="reseau-icon-wrap" style="background:rgba(41,182,246,0.12);border-color:rgba(41,182,246,0.3)">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/512px-Telegram_logo.svg.png" alt="Telegram">
-          </div>
-          <div class="reseau-text"><div class="reseau-name">Canal Telegram</div><div class="reseau-sub">Annonces & updates 📢</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
-        <div class="reseau-item" data-link="https://snapchat.com/t/EZAiDCkN">
-          <div class="reseau-icon-wrap" style="background:rgba(255,252,0,0.1);border-color:rgba(255,252,0,0.3)">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="12" cy="11" r="5" fill="#FFFC00"/><path d="M7 16c0 0 1.5 3 5 3s5-3 5-3" stroke="#FFFC00" stroke-width="1.5" fill="none"/></svg>
-          </div>
-          <div class="reseau-text"><div class="reseau-name">Snapchat</div><div class="reseau-sub">Lien direct 👻</div></div>
-          <div class="reseau-arrow">›</div>
-        </div>
+        <div class="reseau-item" data-link="https://www.instagram.com/dinoterps76?igsh=b3VjMGo4dGMxc2tz&utm_source=qr"><div class="reseau-icon-wrap" style="background:rgba(225,48,108,0.12);border-color:rgba(225,48,108,0.35)">📸</div><div class="reseau-text"><div class="reseau-name">Instagram</div><div class="reseau-sub">@dinoterps76</div></div><div class="reseau-arrow">›</div></div>
+        <div class="reseau-item" data-link="https://duanym138.org/DINOfslmogx8"><div class="reseau-icon-wrap" style="background:rgba(255,122,0,0.1);border-color:rgba(255,122,0,0.3)">🥔</div><div class="reseau-text"><div class="reseau-name">Potato</div><div class="reseau-sub">Canal officiel 📢</div></div><div class="reseau-arrow">›</div></div>
+        <div class="reseau-item" data-link="https://t.me/+j7EMkLSIaV83ZmU8"><div class="reseau-icon-wrap" style="background:rgba(41,182,246,0.12);border-color:rgba(41,182,246,0.3)"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/512px-Telegram_logo.svg.png" alt="Telegram"></div><div class="reseau-text"><div class="reseau-name">Canal Telegram</div><div class="reseau-sub">Annonces & updates 📢</div></div><div class="reseau-arrow">›</div></div>
+        <div class="reseau-item" data-link="https://snapchat.com/t/EZAiDCkN"><div class="reseau-icon-wrap" style="background:rgba(255,252,0,0.1);border-color:rgba(255,252,0,0.3)"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="12" cy="11" r="5" fill="#FFFC00"/><path d="M7 16c0 0 1.5 3 5 3s5-3 5-3" stroke="#FFFC00" stroke-width="1.5" fill="none"/></svg></div><div class="reseau-text"><div class="reseau-name">Snapchat</div><div class="reseau-sub">Lien direct 👻</div></div><div class="reseau-arrow">›</div></div>
       </div>
     </div>
 
@@ -492,16 +424,8 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-w
       <h2 class="section-title">⭐ Avis clients</h2>
       <div class="info-card" style="margin-bottom:18px">
         <div class="info-card-header"><div class="info-card-icon">✍️</div><div class="info-card-title">Laisser un avis</div></div>
-        <div style="margin-bottom:14px">
-          <div style="color:var(--cream-dim);font-size:0.86rem;margin-bottom:8px;font-weight:800">Votre note</div>
-          <div id="star-rating" style="display:flex;gap:8px;font-size:2rem;cursor:pointer">
-            <span class="star" data-v="1">☆</span><span class="star" data-v="2">☆</span><span class="star" data-v="3">☆</span><span class="star" data-v="4">☆</span><span class="star" data-v="5">☆</span>
-          </div>
-        </div>
-        <div style="margin-bottom:14px">
-          <div style="color:var(--cream-dim);font-size:0.86rem;margin-bottom:8px;font-weight:800">Votre commentaire</div>
-          <textarea id="avis-text" placeholder="Partagez votre expérience..."></textarea>
-        </div>
+        <div style="margin-bottom:14px"><div style="color:var(--cream-dim);font-size:0.86rem;margin-bottom:8px;font-weight:800">Votre note</div><div id="star-rating" style="display:flex;gap:8px;font-size:2rem;cursor:pointer"><span class="star" data-v="1">☆</span><span class="star" data-v="2">☆</span><span class="star" data-v="3">☆</span><span class="star" data-v="4">☆</span><span class="star" data-v="5">☆</span></div></div>
+        <div style="margin-bottom:14px"><div style="color:var(--cream-dim);font-size:0.86rem;margin-bottom:8px;font-weight:800">Votre commentaire</div><textarea id="avis-text" placeholder="Partagez votre expérience..."></textarea></div>
         <button id="submit-avis-btn" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--red),#8b1500);color:var(--orange-light);border:1.5px solid rgba(255,122,0,0.3);border-radius:10px;font-size:1.1rem;cursor:pointer;font-family:'Bangers',cursive;letter-spacing:2px;box-shadow:0 0 18px rgba(214,50,0,0.4)">Publier mon avis ⭐</button>
       </div>
       <div id="avis-list"></div>
@@ -509,6 +433,95 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-w
 
     <!-- PROFIL -->
     <div id="profil-page"></div>
+
+    <!-- ADMIN -->
+    <div id="admin-page">
+      <!-- Login -->
+      <div id="admin-login-block" class="admin-login">
+        <div class="admin-title">🔐 ADMIN</div>
+        <div class="admin-field"><label>Mot de passe</label><input type="password" id="admin-pw-input" placeholder="Entrez le mot de passe..."></div>
+        <button class="admin-btn" id="admin-login-btn">Connexion 🔑</button>
+      </div>
+      <!-- Panel -->
+      <div id="admin-panel-block" class="admin-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:8px;">
+          <div style="font-family:'Bangers',cursive;font-size:1.6rem;color:var(--orange);letter-spacing:3px;text-shadow:2px 2px 0 var(--brown);">⚙️ ADMIN PANEL</div>
+          <button class="admin-btn admin-btn-secondary" id="admin-logout-btn" style="width:auto;padding:8px 16px;margin-top:0;font-size:0.85rem;">Déco 🚪</button>
+        </div>
+
+        <!-- Ajouter produit -->
+        <div class="admin-section">
+          <div class="admin-section-title">➕ Nouveau produit</div>
+          <div class="admin-field"><label>Titre du produit</label><input type="text" id="p-title" placeholder="Ex: STATIC SIFT 140u ⚡️"></div>
+          <div class="admin-field"><label>Farm</label><input type="text" id="p-farm" placeholder="Ex: PSG F*RM 🗼"></div>
+          <div class="admin-field"><label>Catégorie</label><input type="text" id="p-category" placeholder="Ex: Fresh Frozen 🧊"></div>
+          <div class="admin-field"><label>Strains (une par ligne)</label><textarea id="p-strains" placeholder="- Peach Tsunami 🍑&#10;- Forbidden 🍓" style="min-height:70px;"></textarea></div>
+          <div class="admin-field"><label>Description</label><textarea id="p-desc" placeholder="Description du produit..."></textarea></div>
+          <div class="admin-field">
+            <label>Quantités & Prix</label>
+            <div id="qty-rows-add"></div>
+            <button class="add-qty-btn" id="add-qty-btn-add">+ Ajouter une quantité</button>
+          </div>
+          <div class="admin-field">
+            <div class="toggle-restock">
+              <input type="checkbox" id="p-restock">
+              <span>⏳ Badge RESTOCK (désactive l'achat)</span>
+            </div>
+          </div>
+          <div class="admin-field">
+            <label>Vidéo (depuis votre téléphone)</label>
+            <div class="video-upload-zone" id="video-drop-add" onclick="document.getElementById('video-input-add').click()">
+              <div style="font-size:2rem">🎬</div>
+              <div class="video-upload-txt">Appuyer pour choisir une vidéo</div>
+              <div style="font-size:0.72rem;color:#3a2010;margin-top:4px">MP4, MOV — max 50 Mo</div>
+            </div>
+            <input type="file" id="video-input-add" accept="video/*" style="display:none">
+            <div id="video-preview-add" style="margin-top:8px;display:none;"><video id="video-el-add" controls style="width:100%;border-radius:8px;max-height:160px;"></video></div>
+          </div>
+          <button class="admin-btn" id="save-product-btn">💾 Enregistrer le produit</button>
+        </div>
+
+        <!-- Liste produits -->
+        <div class="admin-section">
+          <div class="admin-section-title">📦 Produits en ligne (<span id="admin-prod-count">0</span>)</div>
+          <div id="admin-products-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ÉDITION -->
+    <div id="edit-modal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <button class="modal-close" id="modal-close-btn">✕</button>
+        <div style="font-family:'Bangers',cursive;font-size:1.4rem;color:var(--orange);letter-spacing:2px;margin-bottom:16px;margin-top:4px;">✏️ MODIFIER PRODUIT</div>
+        <div class="admin-field"><label>Titre</label><input type="text" id="e-title"></div>
+        <div class="admin-field"><label>Farm</label><input type="text" id="e-farm"></div>
+        <div class="admin-field"><label>Catégorie</label><input type="text" id="e-category"></div>
+        <div class="admin-field"><label>Strains</label><textarea id="e-strains" style="min-height:70px;"></textarea></div>
+        <div class="admin-field"><label>Description</label><textarea id="e-desc"></textarea></div>
+        <div class="admin-field">
+          <label>Quantités & Prix</label>
+          <div id="qty-rows-edit"></div>
+          <button class="add-qty-btn" id="add-qty-btn-edit">+ Ajouter une quantité</button>
+        </div>
+        <div class="admin-field">
+          <div class="toggle-restock">
+            <input type="checkbox" id="e-restock">
+            <span>⏳ Badge RESTOCK</span>
+          </div>
+        </div>
+        <div class="admin-field">
+          <label>Remplacer la vidéo (optionnel)</label>
+          <div class="video-upload-zone" id="video-drop-edit" onclick="document.getElementById('video-input-edit').click()">
+            <div style="font-size:1.5rem">🎬</div>
+            <div class="video-upload-txt" id="edit-video-txt">Appuyer pour changer la vidéo</div>
+          </div>
+          <input type="file" id="video-input-edit" accept="video/*" style="display:none">
+          <div id="video-preview-edit" style="margin-top:8px;display:none;"><video id="video-el-edit" controls style="width:100%;border-radius:8px;max-height:140px;"></video></div>
+        </div>
+        <button class="admin-btn" id="save-edit-btn" style="margin-top:4px;">💾 Sauvegarder</button>
+      </div>
+    </div>
 
     <!-- NAV -->
     <nav>
@@ -518,85 +531,185 @@ VOICI LES ZONES DE LIVRAISON 🚚 📦 : <span style="color:var(--orange);font-w
       <div class="nav-item" id="nav-infos"><span class="nav-emoji">ℹ️</span></div>
       <div class="nav-item" id="nav-reseaux"><span class="nav-emoji">📡</span></div>
       <div class="nav-item" id="nav-profil"><span class="nav-emoji">👤</span></div>
+      <div class="nav-item" id="nav-admin"><span class="nav-emoji">⚙️</span></div>
     </nav>
   </div>
 </div>
 
 <script>
+const ADMIN_PWD = '@dino76s!!!';
 const tg = window.Telegram?.WebApp;
 let tgUser = null;
-if (tg) {
-  tg.ready(); tg.expand();
-  if (typeof tg.requestFullscreen==='function') tg.requestFullscreen();
-  if (typeof tg.setHeaderColor==='function') tg.setHeaderColor('#000000');
-  if (typeof tg.setBackgroundColor==='function') tg.setBackgroundColor('#000000');
-  if (typeof tg.setBottomBarColor==='function') tg.setBottomBarColor('#000000');
-  tg.enableClosingConfirmation();
-  tgUser = tg.initDataUnsafe?.user || null;
-}
+if(tg){tg.ready();tg.expand();if(typeof tg.requestFullscreen==='function')tg.requestFullscreen();if(typeof tg.setHeaderColor==='function')tg.setHeaderColor('#000000');if(typeof tg.setBackgroundColor==='function')tg.setBackgroundColor('#000000');if(typeof tg.setBottomBarColor==='function')tg.setBottomBarColor('#000000');tg.enableClosingConfirmation();tgUser=tg.initDataUnsafe?.user||null;}
 
-const products = {
-  dry_black:{key:'dry_black',title:'🍫 Dry',category:'Dry 🍫',farm:'⬛️ BLACK F*RM',video:'dry_black.mp4',strain:'- Acai S1 🫐\n- Forbidden 🍒🍉\n- Tiramisu 🍰🍨\n- Lamponi 🍓🌈',description:'Le meilleur dura la famille imbattable pour sa qualité TERPS élevé en goût ! 🍇🍉🍒🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'50 €'},{qty:'10G',price:'100 €'},{qty:'20G',price:'180 €'}]},
-  eggs_frozen:{key:'eggs_frozen',title:'Format-EGGS Frozen 🧊',category:'Fresh Frozen 🧊',farm:'HONCLE FARM',video:'eggs_frozen.mp4',strain:'- Lemon Cherry 🍋🍒\n- Grapes 🍇',description:'Eggs de Frozen, la famille c\'est pétant élevé hight excellent pour la journée et soirée. 🌆🔥🔥',quantities:[{qty:'2G',price:'30 €'},{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'240 €'}]},
-  bnf_mintz:{key:'bnf_mintz',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_mintz.mp4',strain:'- Original Mintz 🍊',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'270 €'}]},
-  bnf_icc:{key:'bnf_icc',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_icc.mp4',strain:'- Wedding Cake 🎂🥧',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'270 €'}]},
-  psg_static:{key:'psg_static',title:'STATIC SIFT 140/75u ⚡️',category:'Static Sift ⚡️',farm:'PSG F*RM 🗼',video:'psg_static.mp4',restock:true,strain:'- Peach Tsunami 🌊🍑\n- Forbidden 🍓🍉',description:'La capitale !! PSG farm une farm reconnue static frais sec pétant — très élevé excellent rien à dire. 🍋🍓🍉🔥🔥',quantities:[{qty:'2G',price:'40 €'},{qty:'5G',price:'90 €'},{qty:'10G',price:'180 €'},{qty:'20G',price:'300 €'}]},
-  golden_dry:{key:'golden_dry',title:'DRY TECH 🌟🌟',category:'Dry 🍫',farm:'GOLDEN FARM',video:'golden_dry.mp4',strain:'- Yellow Runtz ✨🌈\n- Mac Melon 🍡🍈',description:'Golden Farm haute qualité de resiné très bon — consommer en journée ou soirée goutu TERPS validé ! 🔥🔥',quantities:[{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'260 €'}]}
-};
-
-let cart=[];
+// ---- State ----
+let productsList = []; // [{id, title, farm, category, strains, description, quantities, restock, videoUrl, videoBase64, timestamp}]
+let cart = [];
 try{cart=JSON.parse(localStorage.getItem('cart_dino76'))||[];}catch(e){cart=[];}
 function saveCart(){try{localStorage.setItem('cart_dino76',JSON.stringify(cart));}catch(e){}updateBadge();}
 function updateBadge(){const b=document.getElementById('cart-badge');b.textContent=cart.length||'';b.style.display=cart.length>0?'inline-block':'none';}
-
-let avisList=[];
-try{avisList=JSON.parse(localStorage.getItem('avis_dino76'))||[];}catch(e){avisList=[];}
-function saveAvis(){try{localStorage.setItem('avis_dino76',JSON.stringify(avisList));}catch(e){}}
-
 let commandes=[];
 try{commandes=JSON.parse(localStorage.getItem('commandes_dino76'))||[];}catch(e){commandes=[];}
 function saveCommandes(){try{localStorage.setItem('commandes_dino76',JSON.stringify(commandes));}catch(e){}}
+let avisList=[];
+let adminLoggedIn=false;
+let currentEditId=null;
+let addVideoBase64=null;
+let editVideoBase64=null;
 
+// ---- Init ----
+window.initApp = async function(){
+  await loadProductsFromFirestore();
+  updateBadge();
+  goToHome();
+  const splash=document.getElementById('splash-screen');
+  setTimeout(()=>{splash.classList.add('hidden');setTimeout(()=>{splash.style.display='none';},700);},2600);
+};
+
+// ---- Firestore Products ----
+async function loadProductsFromFirestore(){
+  try{
+    const db=window._db; const fs=window._fs;
+    const q=fs.query(fs.collection(db,'products'), fs.orderBy('timestamp','desc'));
+    const snap=await fs.getDocs(q);
+    productsList=snap.docs.map(d=>({id:d.id,...d.data()}));
+    populateFilters();
+    renderProducts();
+  }catch(e){console.error('Load products error',e);renderProducts();}
+}
+
+async function saveProductToFirestore(data){
+  const db=window._db; const fs=window._fs;
+  return await fs.addDoc(fs.collection(db,'products'),{...data,timestamp:Date.now()});
+}
+
+async function updateProductInFirestore(id, data){
+  const db=window._db; const fs=window._fs;
+  await fs.updateDoc(fs.doc(db,'products',id), data);
+}
+
+async function deleteProductFromFirestore(id){
+  const db=window._db; const fs=window._fs;
+  await fs.deleteDoc(fs.doc(db,'products',id));
+}
+
+// ---- Filters ----
 function populateFilters(){
-  const all=Object.values(products);
-  const cats=[...new Set(all.map(p=>p.category))].sort();
-  const farms=[...new Set(all.map(p=>p.farm))].sort();
+  const cats=[...new Set(productsList.map(p=>p.category).filter(Boolean))].sort();
+  const farms=[...new Set(productsList.map(p=>p.farm).filter(Boolean))].sort();
   const cs=document.getElementById('category-filter');
   const fs=document.getElementById('farm-filter');
+  const cv=cs.value; const fv=fs.value;
+  cs.innerHTML='<option value="">Toutes catégories</option>';
+  fs.innerHTML='<option value="">Toutes farms</option>';
   cats.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});
   farms.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent=f;fs.appendChild(o);});
+  cs.value=cv; fs.value=fv;
 }
 function filterProducts(){
   const cf=document.getElementById('category-filter').value;
   const ff=document.getElementById('farm-filter').value;
-  renderProducts(Object.values(products).filter(p=>(!cf||p.category===cf)&&(!ff||p.farm===ff)));
+  renderProducts(productsList.filter(p=>(!cf||p.category===cf)&&(!ff||p.farm===ff)));
 }
 window.filterProducts=filterProducts;
 
+// ---- Render Products ----
 function renderProducts(list){
-  if(!list)list=Object.values(products);
+  if(!list)list=productsList;
   const grid=document.getElementById('products-grid');
   grid.innerHTML='';
   const n=list.length;
-  const ce=document.getElementById('products-count-modern');
-  ce.querySelector('.products-count-number').textContent=n;
-  ce.querySelector('.products-count-label').textContent=n>1?'Produits':'Produit';
-  if(n===0){grid.innerHTML='<div class="no-results">Aucun produit 🔍</div>';return;}
+  document.getElementById('prod-count-num').textContent=n;
+  document.getElementById('prod-count-lbl').textContent=n>1?'Produits':'Produit';
+  if(n===0){grid.innerHTML='<div class="no-results">Aucun produit pour l\'instant 🔍</div>';return;}
   list.forEach(p=>{
     const card=document.createElement('div');
     card.className='card';
-    const mediaHTML=p.video
-      ?`<video src="${p.video}" muted autoplay loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
+    const mediaSrc=p.videoBase64||p.videoUrl||'';
+    const mediaHTML=mediaSrc
+      ?`<video src="${mediaSrc}" muted autoplay loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`
       :`<div class="card-no-video">🎬</div>`;
     const restockBadge=p.restock?`<div style="position:absolute;top:8px;left:8px;z-index:6;background:linear-gradient(135deg,#1a0a00,#2a1200);border:1.5px solid rgba(255,170,0,0.7);border-radius:6px;padding:4px 10px;font-family:'Bangers',cursive;font-size:0.8rem;letter-spacing:1.5px;color:#ffcc00;box-shadow:0 0 10px rgba(255,180,0,0.4);display:flex;align-items:center;gap:4px;"><span class="restock-spin">⏳</span> RESTOCK</div>`:'';
-    card.innerHTML=`<div class="card-media">${mediaHTML}${restockBadge}<div class="manga-corner"></div><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
-    card.onclick=()=>openProductDetail(p.key);
+    card.innerHTML=`<div class="card-media">${mediaHTML}${restockBadge}<div class="manga-corner"></div><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm||''}</div></div></div>`;
+    card.onclick=()=>openProductDetail(p.id);
     grid.appendChild(card);
   });
 }
 
+// ---- Detail ----
+let currentProductId=null;
+let swiperIndex=0,swiperItems=[];
+function buildProductMedia(src){
+  const track=document.getElementById('swiper-track');
+  const btnPrev=document.querySelector('.swiper-btn-prev');
+  const btnNext=document.querySelector('.swiper-btn-next');
+  const counter=document.getElementById('swiper-counter');
+  track.innerHTML='';swiperItems=[];swiperIndex=0;
+  if(src){
+    const vid=document.createElement('video');
+    vid.src=src;vid.controls=true;vid.playsInline=true;vid.loop=true;vid.muted=false;
+    vid.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#0f0700;pointer-events:auto;';
+    track.appendChild(vid);swiperItems.push('video');
+  }else{
+    const ph=document.createElement('div');
+    ph.style.cssText='flex-shrink:0;width:100%;height:100%;background:linear-gradient(135deg,#111111,#000000);display:flex;align-items:center;justify-content:center;font-size:4rem;';
+    ph.textContent='🎬';track.appendChild(ph);swiperItems.push('placeholder');
+  }
+  btnPrev.style.display='none';btnNext.style.display='none';counter.style.display='none';
+  document.getElementById('swiper-track').style.transform='translateX(0)';
+}
+function swiperPrev(){if(swiperItems.length<=1)return;swiperIndex=(swiperIndex-1+swiperItems.length)%swiperItems.length;document.getElementById('swiper-track').style.transform=`translateX(-${swiperIndex*100}%)`;}
+function swiperNext(){if(swiperItems.length<=1)return;swiperIndex=(swiperIndex+1)%swiperItems.length;document.getElementById('swiper-track').style.transform=`translateX(-${swiperIndex*100}%)`;}
+window.swiperPrev=swiperPrev;window.swiperNext=swiperNext;
+
+function openProductDetail(id){
+  const p=productsList.find(x=>x.id===id);
+  if(!p)return;
+  currentProductId=id;
+  document.getElementById('detail-title').textContent=p.title;
+  document.getElementById('detail-farm-badge').textContent=p.farm||'';
+  const badgesEl=document.querySelector('.badges');
+  const existing=document.getElementById('restock-badge-detail');
+  if(existing)existing.remove();
+  if(p.restock){const rb=document.createElement('div');rb.id='restock-badge-detail';rb.style.cssText='background:linear-gradient(135deg,#1a0a00,#2a1200);border:1.5px solid rgba(255,170,0,0.7);border-radius:6px;padding:5px 14px;font-family:\'Bangers\',cursive;font-size:0.95rem;letter-spacing:2px;color:#ffcc00;box-shadow:0 0 14px rgba(255,180,0,0.35);display:flex;align-items:center;gap:6px;';rb.innerHTML='<span class="restock-spin">⏳</span> RESTOCK';badgesEl.appendChild(rb);}
+  let content='';
+  if(p.strains)content+=`<div style="color:#ffffff;font-weight:800;margin-bottom:10px;font-size:0.93rem;">Strains :\n${p.strains}</div>`;
+  if(p.description)content+=`<div style="margin-top:8px;color:#c8a87a;font-size:0.9rem;line-height:1.7;font-style:italic">${p.description.replace(/\n/g,'<br>')}</div>`;
+  document.getElementById('detail-strain-desc').innerHTML=content||'';
+  const qtyGrid=document.getElementById('qty-grid');
+  qtyGrid.innerHTML='';
+  (p.quantities||[]).forEach((item,idx)=>{
+    const btn=document.createElement('button');
+    btn.className='qty-btn';
+    btn.innerHTML=`${item.qty}<br><span class="price-new">${item.price}</span>`;
+    btn.dataset.idx=idx;
+    if(p.restock){btn.disabled=true;btn.style.opacity='0.3';btn.style.cursor='not-allowed';}
+    else btn.onclick=()=>{qtyGrid.querySelectorAll('.qty-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');};
+    qtyGrid.appendChild(btn);
+  });
+  const addBtn=document.getElementById('add-to-cart-btn');
+  if(p.restock){addBtn.disabled=true;addBtn.style.background='linear-gradient(135deg,#1a0a00,#2a1200)';addBtn.style.color='#ffcc00';addBtn.style.border='1.5px solid rgba(255,170,0,0.5)';addBtn.style.cursor='not-allowed';addBtn.style.opacity='0.75';addBtn.innerHTML='<span class="restock-spin">⏳</span> RESTOCK EN COURS...';}
+  else{addBtn.disabled=false;addBtn.style.background='';addBtn.style.color='';addBtn.style.border='';addBtn.style.cursor='';addBtn.style.opacity='';addBtn.innerHTML='<span>🛒</span> Ajouter au Panier';}
+  buildProductMedia(p.videoBase64||p.videoUrl||null);
+  hideAllPages();
+  document.getElementById('product-detail').style.display='flex';
+  if(tg)tg.BackButton.show();
+  scrollToTop();
+}
+
+document.getElementById('add-to-cart-btn').onclick=()=>{
+  const sel=document.querySelector('.qty-btn.selected');
+  if(!sel){alert('Sélectionnez une quantité !');return;}
+  const p=productsList.find(x=>x.id===currentProductId);
+  if(!p)return;
+  const item=p.quantities[parseInt(sel.dataset.idx)];
+  cart.push({title:p.title,qty:item.qty,price:item.price});
+  saveCart();alert('✅ Ajouté au panier !');
+};
+
+// ---- Nav ----
 function hideAllPages(){
-  ['home-page','product-detail','cart-page','infos-page','reseaux-page','avis-page','profil-page'].forEach(id=>{
+  ['home-page','product-detail','cart-page','infos-page','reseaux-page','avis-page','profil-page','admin-page'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.style.display='none';
   });
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
@@ -609,132 +722,56 @@ function goToHome(){
   if(tg)tg.BackButton.hide();
   scrollToTop();
 }
-
-let swiperIndex=0,swiperItems=[];
-function buildProductMedia(videoSrc){
-  const track=document.getElementById('swiper-track');
-  const counter=document.getElementById('swiper-counter');
-  const btnPrev=document.querySelector('.swiper-btn-prev');
-  const btnNext=document.querySelector('.swiper-btn-next');
-  track.innerHTML='';swiperItems=[];swiperIndex=0;
-  if(videoSrc){
-    const vid=document.createElement('video');
-    vid.src=videoSrc;vid.controls=true;vid.playsInline=true;vid.loop=true;vid.muted=false;
-    vid.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#0f0700;pointer-events:auto;';
-    track.appendChild(vid);swiperItems.push('video');
-  } else {
-    const ph=document.createElement('div');
-    ph.style.cssText='flex-shrink:0;width:100%;height:100%;background:linear-gradient(135deg,#111111,#000000);display:flex;align-items:center;justify-content:center;font-size:4rem;';
-    ph.textContent='🎬';track.appendChild(ph);swiperItems.push('placeholder');
-  }
-  btnPrev.style.display='none';btnNext.style.display='none';counter.style.display='none';
-  updateSwiperPosition();
-}
-function updateSwiperPosition(){
-  const track=document.getElementById('swiper-track');
-  track.style.transform=`translateX(-${swiperIndex*100}%)`;
-  track.querySelectorAll('video').forEach(v=>v.pause());
-}
-function swiperPrev(){if(swiperItems.length<=1)return;swiperIndex=(swiperIndex-1+swiperItems.length)%swiperItems.length;updateSwiperPosition();}
-function swiperNext(){if(swiperItems.length<=1)return;swiperIndex=(swiperIndex+1)%swiperItems.length;updateSwiperPosition();}
-window.swiperPrev=swiperPrev;window.swiperNext=swiperNext;
-
-function openProductDetail(key){
-  const p=products[key];
-  document.getElementById('detail-title').textContent=p.title;
-  document.getElementById('detail-farm-badge').textContent=p.farm;
-  // Restock badge in detail
-  const badgesEl=document.querySelector('.badges');
-  const existingRestock=document.getElementById('restock-badge-detail');
-  if(existingRestock)existingRestock.remove();
-  if(p.restock){
-    const rb=document.createElement('div');
-    rb.id='restock-badge-detail';
-    rb.style.cssText='background:linear-gradient(135deg,#1a0a00,#2a1200);border:1.5px solid rgba(255,170,0,0.7);border-radius:6px;padding:5px 14px;font-family:\'Bangers\',cursive;font-size:0.95rem;letter-spacing:2px;color:#ffcc00;box-shadow:0 0 14px rgba(255,180,0,0.35);display:flex;align-items:center;gap:6px;';
-    rb.innerHTML='<span class="restock-spin">⏳</span> RESTOCK';
-    badgesEl.appendChild(rb);
-  }
-  let content='';
-  if(p.strain)content+=`<div style="color:#ffffff;font-weight:800;margin-bottom:10px;font-size:0.93rem;text-shadow:0 0 8px rgba(255,122,0,0.3)">Strains :\n${p.strain}</div>`;
-  if(p.description)content+=`<div style="margin-top:8px;color:#c8a87a;font-size:0.9rem;line-height:1.7;font-style:italic">${p.description.replace(/\n/g,'<br>')}</div>`;
-  document.getElementById('detail-strain-desc').innerHTML=content||'';
-  const qtyGrid=document.getElementById('qty-grid');
-  qtyGrid.innerHTML='';
-  p.quantities.forEach((item,idx)=>{
-    const btn=document.createElement('button');
-    btn.className='qty-btn';
-    btn.innerHTML=`${item.qty}<br><span class="price-new">${item.price}</span>`;
-    btn.dataset.idx=idx;
-    if(p.restock){btn.disabled=true;btn.style.opacity='0.3';btn.style.cursor='not-allowed';}
-    else btn.onclick=()=>{qtyGrid.querySelectorAll('.qty-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');};
-    qtyGrid.appendChild(btn);
-  });
-  // Add to cart button state
-  const addBtn=document.getElementById('add-to-cart-btn');
-  if(p.restock){
-    addBtn.disabled=true;
-    addBtn.style.background='linear-gradient(135deg,#1a0a00,#2a1200)';
-    addBtn.style.color='#ffcc00';
-    addBtn.style.border='1.5px solid rgba(255,170,0,0.5)';
-    addBtn.style.cursor='not-allowed';
-    addBtn.style.boxShadow='0 0 14px rgba(255,180,0,0.2)';
-    addBtn.style.opacity='0.75';
-    addBtn.innerHTML='<span class="restock-spin">⏳</span> RESTOCK EN COURS...';
-  } else {
-    addBtn.disabled=false;
-    addBtn.style.background='';addBtn.style.color='';addBtn.style.border='';
-    addBtn.style.cursor='';addBtn.style.boxShadow='';addBtn.style.opacity='';
-    addBtn.innerHTML='<span>🛒</span> Ajouter au Panier';
-  }
-  buildProductMedia(p.video||null);
-  hideAllPages();
-  document.getElementById('product-detail').style.display='flex';
-  if(tg)tg.BackButton.show();
-  scrollToTop();
-}
-
-document.getElementById('add-to-cart-btn').onclick=()=>{
-  const sel=document.querySelector('.qty-btn.selected');
-  if(!sel){alert('Sélectionnez une quantité !');return;}
-  const title=document.getElementById('detail-title').textContent;
-  const key=Object.keys(products).find(k=>products[k].title===title);
-  const item=products[key].quantities[parseInt(sel.dataset.idx)];
-  cart.push({title,qty:item.qty,price:item.price});
-  saveCart();alert('✅ Ajouté au panier !');
-};
-
 document.getElementById('nav-home').onclick=goToHome;
 document.getElementById('nav-cart').onclick=()=>{hideAllPages();document.getElementById('cart-page').style.display='block';document.getElementById('nav-cart').classList.add('active');if(tg)tg.BackButton.hide();renderCart();scrollToTop();};
 document.getElementById('nav-infos').onclick=()=>{hideAllPages();document.getElementById('infos-page').style.display='block';document.getElementById('nav-infos').classList.add('active');if(tg)tg.BackButton.hide();scrollToTop();};
 document.getElementById('nav-reseaux').onclick=()=>{hideAllPages();document.getElementById('reseaux-page').style.display='block';document.getElementById('nav-reseaux').classList.add('active');if(tg)tg.BackButton.hide();scrollToTop();};
-document.getElementById('nav-avis').onclick=()=>{hideAllPages();document.getElementById('avis-page').style.display='block';document.getElementById('nav-avis').classList.add('active');if(tg)tg.BackButton.hide();renderAvis();scrollToTop();};
+document.getElementById('nav-avis').onclick=()=>{hideAllPages();document.getElementById('avis-page').style.display='block';document.getElementById('nav-avis').classList.add('active');if(tg)tg.BackButton.hide();if(window.loadAvisFromFirestore)window.loadAvisFromFirestore();else renderAvis();scrollToTop();};
 document.getElementById('nav-profil').onclick=()=>{hideAllPages();document.getElementById('profil-page').style.display='block';document.getElementById('nav-profil').classList.add('active');if(tg)tg.BackButton.hide();renderProfilPage();scrollToTop();};
+document.getElementById('nav-admin').onclick=()=>{hideAllPages();document.getElementById('admin-page').style.display='block';document.getElementById('nav-admin').classList.add('active');if(tg)tg.BackButton.hide();renderAdminPanel();scrollToTop();};
 if(tg)tg.BackButton.onClick(()=>goToHome());
 
+// ---- Avis ----
 let selectedStar=0;
 document.querySelectorAll('.star').forEach(star=>{
-  star.addEventListener('click',()=>{
-    selectedStar=parseInt(star.dataset.v);
-    document.querySelectorAll('.star').forEach(s=>{s.textContent=parseInt(s.dataset.v)<=selectedStar?'★':'☆';s.classList.toggle('on',parseInt(s.dataset.v)<=selectedStar);});
-  });
+  star.addEventListener('click',()=>{selectedStar=parseInt(star.dataset.v);document.querySelectorAll('.star').forEach(s=>{s.textContent=parseInt(s.dataset.v)<=selectedStar?'★':'☆';s.classList.toggle('on',parseInt(s.dataset.v)<=selectedStar);});});
 });
 function renderAvis(){
   const list=document.getElementById('avis-list');
   if(!avisList.length){list.innerHTML='<p style="text-align:center;color:#3a2010;padding:30px 0;font-weight:700">Aucun avis pour l\'instant.</p>';return;}
-  list.innerHTML=[...avisList].reverse().map(a=>`<div class="avis-card"><div class="avis-header"><span class="avis-user">${a.user}</span><span style="font-size:0.95rem;letter-spacing:2px;color:var(--orange)">${'★'.repeat(a.note)}${'☆'.repeat(5-a.note)}</span></div><div class="avis-date">${a.date}</div><div class="avis-comment">${a.comment}</div></div>`).join('');
+  list.innerHTML=avisList.map(a=>`<div class="avis-card"><div class="avis-header"><span class="avis-user">${a.user}</span><span style="font-size:0.95rem;letter-spacing:2px;color:var(--orange)">${'\u2605'.repeat(a.note)}${'\u2606'.repeat(5-a.note)}</span></div><div class="avis-date">${a.date}</div><div class="avis-comment">${a.comment}</div></div>`).join('');
 }
-document.getElementById('submit-avis-btn').onclick=()=>{
+window.loadAvisFromFirestore=async function(){
+  try{
+    const list=document.getElementById('avis-list');
+    if(list)list.innerHTML='<p style="text-align:center;color:#3a2010;padding:30px 0;font-weight:700">Chargement... ⏳</p>';
+    const db=window._db;const fs=window._fs;
+    const q=fs.query(fs.collection(db,'avis'),fs.orderBy('timestamp','desc'));
+    const snap=await fs.getDocs(q);
+    avisList=snap.docs.map(d=>d.data());
+    renderAvis();
+  }catch(e){console.error('Avis load error',e);}
+};
+document.getElementById('submit-avis-btn').onclick=async()=>{
   const comment=document.getElementById('avis-text').value.trim();
   if(!selectedStar){alert('Veuillez sélectionner une note ⭐');return;}
   if(!comment){alert('Veuillez écrire un commentaire');return;}
   const username=tgUser?.first_name||tgUser?.username||'Anonyme';
-  avisList.push({user:username,note:selectedStar,comment,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})});
-  saveAvis();
-  document.getElementById('avis-text').value='';
-  selectedStar=0;
-  document.querySelectorAll('.star').forEach(s=>{s.textContent='☆';s.classList.remove('on');});
-  renderAvis();alert('✅ Merci pour votre avis !');
+  const avis={user:username,note:selectedStar,comment,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}),timestamp:Date.now()};
+  const btn=document.getElementById('submit-avis-btn');
+  btn.disabled=true;btn.textContent='Publication...';
+  try{
+    const db=window._db;const fs=window._fs;
+    await fs.addDoc(fs.collection(db,'avis'),avis);
+    avisList.unshift(avis);
+    document.getElementById('avis-text').value='';
+    selectedStar=0;
+    document.querySelectorAll('.star').forEach(s=>{s.textContent='☆';s.classList.remove('on');});
+    renderAvis();alert('✅ Merci pour votre avis !');
+  }catch(e){alert('❌ Erreur. Réessaie.');}finally{btn.disabled=false;btn.innerHTML='Publier mon avis ⭐';}
 };
+
+// ---- Cart ----
 function renderCart(){
   const container=document.getElementById('cart-items');
   container.innerHTML='';
@@ -742,20 +779,16 @@ function renderCart(){
   let total=0;
   cart.forEach((item,index)=>{
     total+=parseInt(item.price)||0;
-    const div=document.createElement('div');
-    div.className='cart-item';
+    const div=document.createElement('div');div.className='cart-item';
     div.innerHTML=`<div><div class="cart-item-title">${item.title}</div><div class="cart-item-qty">${item.qty} — ${item.price}</div></div><button class="delete-btn" data-index="${index}">×</button>`;
     container.appendChild(div);
   });
   document.getElementById('cart-total').innerHTML=`Total : <strong>${total} €</strong>`;
 }
-document.getElementById('cart-page').addEventListener('click',e=>{
-  if(e.target.classList.contains('delete-btn')){cart.splice(parseInt(e.target.dataset.index),1);saveCart();renderCart();}
-});
+document.getElementById('cart-page').addEventListener('click',e=>{if(e.target.classList.contains('delete-btn')){cart.splice(parseInt(e.target.dataset.index),1);saveCart();renderCart();}});
 document.querySelectorAll('.option-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
+    document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
     document.getElementById('pickup-questions').style.display=btn.dataset.type==='pickup'?'block':'none';
     document.getElementById('delivery-questions').style.display=btn.dataset.type==='delivery'?'block':'none';
     document.getElementById('shipping-questions').style.display=btn.dataset.type==='shipping'?'block':'none';
@@ -766,52 +799,220 @@ document.getElementById('submit-order-btn').onclick=()=>{
   const modeBtn=document.querySelector('.option-btn.active');
   if(!modeBtn){alert('Veuillez choisir un mode de récupération.');return;}
   let modeLabel='';
-  if(modeBtn.dataset.type==='pickup') modeLabel='Venir sur place';
-  else if(modeBtn.dataset.type==='delivery') modeLabel='Livraison';
+  if(modeBtn.dataset.type==='pickup')modeLabel='Venir sur place';
+  else if(modeBtn.dataset.type==='delivery')modeLabel='Livraison';
   else modeLabel='Envoi postal 📦';
   const senderName=tgUser?.username?'@'+tgUser.username:(tgUser?.first_name||'Utilisateur');
   let message=`🍣 *NOUVELLE COMMANDE — DINO TERPS 76* 🍣\n\n👤 ${senderName}\n📅 ${new Date().toLocaleString('fr-FR')}\n\n🛍️ *Articles :*\n`;
   let total=0;let itemsText='';
   cart.forEach(item=>{total+=parseInt(item.price)||0;message+=`• ${item.title} — ${item.qty} (${item.price})\n`;itemsText+=`• ${item.title} ${item.qty} (${item.price})\n`;});
   message+=`\n💰 *Total : ${total} €*\n\n📦 *Mode :* ${modeLabel}\n`;
-  if(modeBtn.dataset.type==='pickup'){
-    const time=document.getElementById('pickup-time').value;
-    if(time)message+=`\n🕐 Heure meet-up : ${time}`;
-  } else if(modeBtn.dataset.type==='delivery'){
-    const time=document.getElementById('delivery-time').value;
-    const address=document.getElementById('delivery-address').value.trim();
-    const details=document.getElementById('delivery-details').value.trim();
-    if(time)message+=`\n🕐 Heure livraison : ${time}`;
-    if(address)message+=`\n📍 Adresse : ${address}`;
-    if(details)message+=`\n📝 Détails : ${details}`;
-  } else if(modeBtn.dataset.type==='shipping'){
-    const address=document.getElementById('shipping-address').value.trim();
-    const details=document.getElementById('shipping-details').value.trim();
-    message+=`\n💳 Paiement : Crypto (ETH/BTC) en PV`;
-    if(address)message+=`\n📮 Adresse postale : ${address}`;
-    if(details)message+=`\n📝 Précisions : ${details}`;
-  }
+  if(modeBtn.dataset.type==='pickup'){const t=document.getElementById('pickup-time').value;if(t)message+=`\n🕐 Heure meet-up : ${t}`;}
+  else if(modeBtn.dataset.type==='delivery'){const t=document.getElementById('delivery-time').value;const a=document.getElementById('delivery-address').value.trim();const d=document.getElementById('delivery-details').value.trim();if(t)message+=`\n🕐 Heure : ${t}`;if(a)message+=`\n📍 Adresse : ${a}`;if(d)message+=`\n📝 Détails : ${d}`;}
+  else{const a=document.getElementById('shipping-address').value.trim();const d=document.getElementById('shipping-details').value.trim();message+=`\n💳 Paiement : Crypto (ETH/BTC) en PV`;if(a)message+=`\n📮 Adresse : ${a}`;if(d)message+=`\n📝 Précisions : ${d}`;}
   message+=`\n\nMerci ! 🙏`;
   commandes.push({tgName:tgUser?.first_name||'Invité',items:itemsText.trim(),total,mode:modeLabel,date:new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'})});
   saveCommandes();
   const url=`https://t.me/DINO76S?text=${encodeURIComponent(message)}`;
   if(tg)tg.openTelegramLink(url);else window.open(url,'_blank');
 };
+
+// ---- Profil ----
 function renderProfilPage(){
   const page=document.getElementById('profil-page');
   const displayName=tgUser?(tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'')):'Invité';
   const username=tgUser?.username?'@'+tgUser.username:'';
   const photoUrl=tgUser?.photo_url||'';
-  page.innerHTML=`<div class="profil-header"><div class="profil-avatar">${photoUrl?`<img src="${photoUrl}" alt="avatar">`:'<span>👤</span>'}</div><div class="profil-name">${displayName}</div>${username?`<div style="color:#3a2010;font-size:0.76rem;margin-top:2px">${username}</div>`:''} ${tgUser?.id?`<div style="color:#2a1008;font-size:0.66rem;margin-top:3px">ID Telegram: ${tgUser.id}</div>`:''}</div><div class="profil-stats-block"><div class="profil-stats-icon">📦</div><div><div class="profil-stats-number">${commandes.length}</div><div class="profil-stats-label">commande(s) passée(s)</div></div></div><div class="profil-section-title">📦 Mes commandes</div><div id="profil-commandes">${commandes.length===0?'<p style="color:#3a2010;text-align:center;padding:20px;font-size:0.86rem;font-weight:700">Aucune commande pour l\'instant.</p>':[...commandes].reverse().map(c=>`<div class="commande-card"><div class="commande-header"><span class="commande-date">${c.date}</span><span class="commande-total">${c.total} €</span></div><div class="commande-items">${c.items}</div><span class="commande-mode">${c.mode}</span></div>`).join('')}</div>`;
+  page.innerHTML=`<div class="profil-header"><div class="profil-avatar">${photoUrl?`<img src="${photoUrl}" alt="avatar">`:'<span>👤</span>'}</div><div class="profil-name">${displayName}</div>${username?`<div style="color:#3a2010;font-size:0.76rem;margin-top:2px">${username}</div>`:''}</div><div class="profil-stats-block"><div class="profil-stats-icon">📦</div><div><div class="profil-stats-number">${commandes.length}</div><div class="profil-stats-label">commande(s) passée(s)</div></div></div><div class="profil-section-title">📦 Mes commandes</div><div>${commandes.length===0?'<p style="color:#3a2010;text-align:center;padding:20px;font-size:0.86rem;font-weight:700">Aucune commande pour l\'instant.</p>':[...commandes].reverse().map(c=>`<div class="commande-card"><div class="commande-header"><span class="commande-date">${c.date}</span><span class="commande-total">${c.total} €</span></div><div class="commande-items">${c.items}</div><span class="commande-mode">${c.mode}</span></div>`).join('')}</div>`;
 }
-document.querySelectorAll('.reseau-item[data-link]').forEach(el=>{
-  el.onclick=()=>{const l=el.getAttribute('data-link');if(tg)tg.openLink(l);else window.open(l,'_blank');};
-});
-document.addEventListener('DOMContentLoaded',()=>{
-  populateFilters();renderProducts();updateBadge();goToHome();
-  const splash=document.getElementById('splash-screen');
-  setTimeout(()=>{splash.classList.add('hidden');setTimeout(()=>{splash.style.display='none';},700);},2600);
-});
+
+// ---- Réseaux ----
+document.querySelectorAll('.reseau-item[data-link]').forEach(el=>{el.onclick=()=>{const l=el.getAttribute('data-link');if(tg)tg.openLink(l);else window.open(l,'_blank');};});
+
+// ==================
+// ---- ADMIN ----
+// ==================
+
+document.getElementById('admin-login-btn').onclick=()=>{
+  const pw=document.getElementById('admin-pw-input').value;
+  if(pw===ADMIN_PWD){
+    adminLoggedIn=true;
+    document.getElementById('admin-login-block').style.display='none';
+    document.getElementById('admin-panel-block').style.display='block';
+    renderAdminPanel();
+  }else{
+    document.getElementById('admin-pw-input').value='';
+    document.getElementById('admin-pw-input').style.borderColor='var(--red)';
+    alert('❌ Mot de passe incorrect');
+  }
+};
+document.getElementById('admin-pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('admin-login-btn').click();});
+
+document.getElementById('admin-logout-btn').onclick=()=>{
+  adminLoggedIn=false;
+  document.getElementById('admin-pw-input').value='';
+  document.getElementById('admin-login-block').style.display='block';
+  document.getElementById('admin-panel-block').style.display='none';
+};
+
+function renderAdminPanel(){
+  if(!adminLoggedIn)return;
+  document.getElementById('admin-prod-count').textContent=productsList.length;
+  const list=document.getElementById('admin-products-list');
+  list.innerHTML='';
+  if(!productsList.length){list.innerHTML='<p style="color:#3a2010;text-align:center;padding:20px;font-size:0.84rem;font-weight:700">Aucun produit pour l\'instant.</p>';return;}
+  productsList.forEach(p=>{
+    const div=document.createElement('div');
+    div.className='product-admin-card';
+    const mediaSrc=p.videoBase64||p.videoUrl||'';
+    div.innerHTML=`
+      <div class="product-admin-thumb">${mediaSrc?`<video src="${mediaSrc}" muted autoplay loop playsinline style="width:100%;height:100%;object-fit:cover;"></video>`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🎬</div>'}</div>
+      <div class="product-admin-info">
+        <div class="product-admin-name">${p.title||'Sans titre'}${p.restock?'<span class="restock-badge-inline">⏳ RESTOCK</span>':''}</div>
+        <div class="product-admin-farm">${p.farm||''} — ${p.category||''}</div>
+      </div>
+      <div class="product-admin-actions">
+        <button class="btn-edit" title="Modifier">✏️</button>
+        <button class="btn-del" title="Supprimer">🗑️</button>
+      </div>`;
+    div.querySelector('.btn-edit').onclick=()=>openEditModal(p.id);
+    div.querySelector('.btn-del').onclick=()=>confirmDeleteProduct(p.id,p.title);
+    list.appendChild(div);
+  });
+}
+
+// -- Qty rows helpers --
+function buildQtyRow(qty='',price='',containerId){
+  const container=document.getElementById(containerId);
+  const row=document.createElement('div');
+  row.className='qty-row';
+  row.innerHTML=`<input type="text" placeholder="Quantité (ex: 5G)" value="${qty}" style="padding:9px;"><input type="text" placeholder="Prix (ex: 70 €)" value="${price}" style="padding:9px;"><button type="button">×</button>`;
+  row.querySelector('button').onclick=()=>row.remove();
+  container.appendChild(row);
+}
+function getQtyRows(containerId){
+  const rows=[...document.getElementById(containerId).querySelectorAll('.qty-row')];
+  return rows.map(r=>{const inputs=r.querySelectorAll('input');return{qty:inputs[0].value.trim(),price:inputs[1].value.trim()};}).filter(r=>r.qty&&r.price);
+}
+document.getElementById('add-qty-btn-add').onclick=()=>buildQtyRow('','','qty-rows-add');
+document.getElementById('add-qty-btn-edit').onclick=()=>buildQtyRow('','','qty-rows-edit');
+
+// -- Video upload ADD --
+document.getElementById('video-input-add').onchange=function(){
+  const file=this.files[0];if(!file)return;
+  if(file.size>52428800){alert('Vidéo trop lourde (max 50 Mo)');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    addVideoBase64=e.target.result;
+    document.getElementById('video-el-add').src=addVideoBase64;
+    document.getElementById('video-preview-add').style.display='block';
+    document.getElementById('video-drop-add').classList.add('has-video');
+    document.getElementById('video-drop-add').querySelector('.video-upload-txt').textContent='✅ Vidéo prête';
+  };
+  reader.readAsDataURL(file);
+};
+
+// -- Save new product --
+document.getElementById('save-product-btn').onclick=async()=>{
+  const title=document.getElementById('p-title').value.trim();
+  const farm=document.getElementById('p-farm').value.trim();
+  const category=document.getElementById('p-category').value.trim();
+  const strains=document.getElementById('p-strains').value.trim();
+  const description=document.getElementById('p-desc').value.trim();
+  const restock=document.getElementById('p-restock').checked;
+  const quantities=getQtyRows('qty-rows-add');
+  if(!title){alert('Le titre est obligatoire');return;}
+  const btn=document.getElementById('save-product-btn');
+  btn.disabled=true;btn.textContent='Enregistrement...';
+  try{
+    const data={title,farm,category,strains,description,restock,quantities,videoBase64:addVideoBase64||null,timestamp:Date.now()};
+    const ref=await saveProductToFirestore(data);
+    productsList.unshift({id:ref.id,...data});
+    // Reset form
+    ['p-title','p-farm','p-category','p-strains','p-desc'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('p-restock').checked=false;
+    document.getElementById('qty-rows-add').innerHTML='';
+    document.getElementById('video-preview-add').style.display='none';
+    document.getElementById('video-drop-add').classList.remove('has-video');
+    document.getElementById('video-drop-add').querySelector('.video-upload-txt').textContent='Appuyer pour choisir une vidéo';
+    addVideoBase64=null;
+    populateFilters();renderProducts();renderAdminPanel();
+    alert('✅ Produit ajouté !');
+  }catch(e){console.error(e);alert('❌ Erreur lors de l\'enregistrement');}
+  finally{btn.disabled=false;btn.textContent='💾 Enregistrer le produit';}
+};
+
+// -- Edit modal --
+function openEditModal(id){
+  const p=productsList.find(x=>x.id===id);if(!p)return;
+  currentEditId=id;editVideoBase64=null;
+  document.getElementById('e-title').value=p.title||'';
+  document.getElementById('e-farm').value=p.farm||'';
+  document.getElementById('e-category').value=p.category||'';
+  document.getElementById('e-strains').value=p.strains||'';
+  document.getElementById('e-desc').value=p.description||'';
+  document.getElementById('e-restock').checked=!!p.restock;
+  const qtyContainer=document.getElementById('qty-rows-edit');
+  qtyContainer.innerHTML='';
+  (p.quantities||[]).forEach(q=>buildQtyRow(q.qty,q.price,'qty-rows-edit'));
+  document.getElementById('video-preview-edit').style.display='none';
+  document.getElementById('video-drop-edit').classList.remove('has-video');
+  document.getElementById('edit-video-txt').textContent='Appuyer pour changer la vidéo';
+  document.getElementById('edit-modal').classList.remove('hidden');
+}
+document.getElementById('modal-close-btn').onclick=()=>{document.getElementById('edit-modal').classList.add('hidden');currentEditId=null;};
+document.getElementById('edit-modal').onclick=function(e){if(e.target===this)this.classList.add('hidden');};
+
+document.getElementById('video-input-edit').onchange=function(){
+  const file=this.files[0];if(!file)return;
+  if(file.size>52428800){alert('Vidéo trop lourde (max 50 Mo)');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    editVideoBase64=e.target.result;
+    document.getElementById('video-el-edit').src=editVideoBase64;
+    document.getElementById('video-preview-edit').style.display='block';
+    document.getElementById('video-drop-edit').classList.add('has-video');
+    document.getElementById('edit-video-txt').textContent='✅ Nouvelle vidéo prête';
+  };
+  reader.readAsDataURL(file);
+};
+
+document.getElementById('save-edit-btn').onclick=async()=>{
+  if(!currentEditId)return;
+  const data={
+    title:document.getElementById('e-title').value.trim(),
+    farm:document.getElementById('e-farm').value.trim(),
+    category:document.getElementById('e-category').value.trim(),
+    strains:document.getElementById('e-strains').value.trim(),
+    description:document.getElementById('e-desc').value.trim(),
+    restock:document.getElementById('e-restock').checked,
+    quantities:getQtyRows('qty-rows-edit'),
+  };
+  if(editVideoBase64)data.videoBase64=editVideoBase64;
+  const btn=document.getElementById('save-edit-btn');
+  btn.disabled=true;btn.textContent='Sauvegarde...';
+  try{
+    await updateProductInFirestore(currentEditId,data);
+    const idx=productsList.findIndex(x=>x.id===currentEditId);
+    if(idx!==-1)productsList[idx]={...productsList[idx],...data};
+    document.getElementById('edit-modal').classList.add('hidden');
+    currentEditId=null;editVideoBase64=null;
+    populateFilters();renderProducts();renderAdminPanel();
+    alert('✅ Produit mis à jour !');
+  }catch(e){console.error(e);alert('❌ Erreur lors de la mise à jour');}
+  finally{btn.disabled=false;btn.textContent='💾 Sauvegarder';}
+};
+
+// -- Delete --
+async function confirmDeleteProduct(id,title){
+  if(!confirm(`Supprimer "${title}" ?\nCette action est irréversible.`))return;
+  try{
+    await deleteProductFromFirestore(id);
+    productsList=productsList.filter(x=>x.id!==id);
+    populateFilters();renderProducts();renderAdminPanel();
+    alert('🗑️ Produit supprimé.');
+  }catch(e){console.error(e);alert('❌ Erreur lors de la suppression');}
+}
 </script>
 </body>
 </html>
