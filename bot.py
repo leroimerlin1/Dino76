@@ -26,7 +26,7 @@ CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
 MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"
 GROUP_LINK = "https://t.me/+mktubkoTrqM0ZjI0"
 
-ADMIN_ID = 8313494819
+ADMIN_ID = 8442169401
 
 USERS_FILE = "users_dino.json"
 
