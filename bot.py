@@ -26,7 +26,7 @@ CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
 MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"
 GROUP_LINK = "https://t.me/+mktubkoTrqM0ZjI0"
 
-ADMIN_ID = 8442169401
+ADMIN_IDS = [8442169401, 8313494819]  # ← Remplace ICI_LE_2EME_ID
 
 USERS_FILE = "users_dino.json"
 
@@ -191,7 +191,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
    user = update.effective_user
-   if not user or user.id != ADMIN_ID:
+   if not user or user.id not in ADMIN_IDS:
        await update.message.reply_text("❌ Tu n'as pas la permission d'utiliser cette commande.")
        return
 
@@ -232,7 +232,7 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def users_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
    user = update.effective_user
-   if not user or user.id != ADMIN_ID:
+   if not user or user.id not in ADMIN_IDS:
        await update.message.reply_text("❌ Tu n'as pas la permission d'utiliser cette commande.")
        return
 
