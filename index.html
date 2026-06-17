@@ -159,6 +159,7 @@ body::before{
 .card:active::before{opacity:1;}
 .card-media{height:100%;width:100%;position:relative;background:#080808;}
 .card-media video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.card-media img.card-img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
 .card-no-video{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#141414,#080808);font-size:3rem;}
 .card-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.55) 60%, transparent 100%);padding:14px 10px 10px;z-index:2;}
 .card-title{font-family:'Bangers',cursive;font-size:0.95rem;color:var(--orange-light);font-weight:400;letter-spacing:1px;margin-bottom:3px;text-shadow:0 0 12px rgba(255,140,0,0.7);line-height:1.2;}
@@ -186,7 +187,6 @@ nav::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;backgro
 .badges{padding:0 16px 12px;display:flex;flex-wrap:wrap;gap:8px;}
 .badge{padding:6px 14px;border-radius:5px;font-size:.82rem;font-weight:800;font-family:var(--font-body);letter-spacing:1px;text-transform:uppercase;}
 .badge-farm{background:rgba(255,140,0,0.08);color:var(--white);border:1px solid rgba(255,140,0,0.12);}
-/* Description & strains en BLANC */
 .strain-section{padding:0 16px 18px;color:#ffffff;font-size:0.95rem;line-height:1.7;white-space:pre-line;font-family:var(--font-body);}
 .quantity-section{padding:16px;margin:10px 16px;border-radius:14px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.7);position:relative;overflow:hidden;}
 .quantity-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);opacity:0.3;}
@@ -194,7 +194,6 @@ nav::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;backgro
 .quantity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 .qty-btn{background:rgba(0,0,0,0.9);border:1px solid rgba(255,255,255,0.07);color:var(--white);padding:14px 10px;border-radius:10px;text-align:center;cursor:pointer;font-weight:800;transition:.2s;font-family:var(--font-body);font-size:0.95rem;letter-spacing:1px;text-transform:uppercase;}
 .qty-btn.selected{background:linear-gradient(135deg,rgba(255,140,0,0.18),rgba(230,50,0,0.12));color:var(--white);border-color:rgba(255,140,0,0.25);box-shadow:0 0 12px rgba(255,140,0,0.15);}
-/* PRIX EN BLANC */
 .price-new{color:#ffffff;font-weight:900;font-size:1rem;font-family:var(--font-body);letter-spacing:1px;}
 .add-to-cart{margin:14px 16px 36px;background:linear-gradient(135deg,var(--red),var(--red-dark));color:var(--orange-light);border:1px solid rgba(255,140,0,0.15);padding:16px;font-size:1.1rem;font-weight:400;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;box-shadow:0 0 20px rgba(230,50,0,0.3);font-family:'Bangers',cursive;letter-spacing:3px;}
 
@@ -432,6 +431,10 @@ textarea{min-height:80px;resize:vertical;}
         <input class="admin-input" id="af-video" placeholder="ex: dry_black.mp4">
       </div>
       <div class="admin-field">
+        <label class="admin-label">Image (nom fichier, si pas de vidéo)</label>
+        <input class="admin-input" id="af-image" placeholder="ex: caliplates.jpg">
+      </div>
+      <div class="admin-field">
         <label class="admin-label">Strains</label>
         <textarea class="admin-input admin-textarea" id="af-strain" placeholder="- Acai S1 🫐&#10;- Forbidden 🍒"></textarea>
       </div>
@@ -482,7 +485,7 @@ textarea{min-height:80px;resize:vertical;}
       <div id="products-header">
         <div class="products-title">🛍️ Catalogue</div>
         <div id="products-count-modern" class="products-count">
-          <div class="products-count-number">6</div>
+          <div class="products-count-number">9</div>
           <div class="products-count-label">Produits</div>
         </div>
       </div>
@@ -757,7 +760,11 @@ const BASE_PRODUCTS = {
   bnf_mintz:{key:'bnf_mintz',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_mintz.mp4',strain:'- Original Mintz 🍊',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'270 €'}]},
   bnf_icc:{key:'bnf_icc',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_icc.mp4',strain:'- Wedding Cake 🎂🥧',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'270 €'}]},
   psg_static:{key:'psg_static',title:'STATIC SIFT 140/75u ⚡️',category:'Static Sift ⚡️',farm:'PSG F*RM 🗼',video:'psg_static.mp4',restock:true,strain:'- Peach Tsunami 🌊🍑\n- Forbidden 🍓🍉',description:'La capitale !! PSG farm une farm reconnue static frais sec pétant — très élevé excellent rien à dire. 🍋🍓🍉🔥🔥',quantities:[{qty:'2G',price:'40 €'},{qty:'5G',price:'90 €'},{qty:'10G',price:'180 €'},{qty:'20G',price:'300 €'}]},
-  golden_dry:{key:'golden_dry',title:'DRY TECH 🌟🌟',category:'Dry 🍫',farm:'GOLDEN FARM',video:'golden_dry.mp4',strain:'- Yellow Runtz ✨🌈\n- Mac Melon 🍡🍈',description:'Golden Farm haute qualité de resiné très bon — consommer en journée ou soirée goutu TERPS validé ! 🔥🔥',quantities:[{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'260 €'}]}
+  golden_dry:{key:'golden_dry',title:'DRY TECH 🌟🌟',category:'Dry 🍫',farm:'GOLDEN FARM',video:'golden_dry.mp4',strain:'- Yellow Runtz ✨🌈\n- Mac Melon 🍡🍈',description:'Golden Farm haute qualité de resiné très bon — consommer en journée ou soirée goutu TERPS validé ! 🔥🔥',quantities:[{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'260 €'}]},
+  // ── NOUVEAUX PRODUITS ──
+  cali_frozen_sift:{key:'cali_frozen_sift',title:'FROZEN SIFT 🏅❄️\nUSA PREMIUM\n70/130u',category:'Frozen Sift ❄️',farm:'Caliplate❄️',image:'caliplates.jpg',strain:'- BISCOTTI 🎄🏠🥂\n- WEDDING CRASHER 🤩🌟',description:'Le meilleur que Frozen Sift, tout droit des USA à la famille, rien à dire 🇺🇸🇺🇸🚀🚀',quantities:[{qty:'3G',price:'60 €'},{qty:'5G',price:'100 €'},{qty:'10G',price:'200 €'}]},
+  bmp_forbidden:{key:'bmp_forbidden',title:'FROZEN SIFT ❄️❄️\nForbiden pell 😊🍈',category:'Frozen Sift ❄️',farm:'BLUE MAGIC PATRON ⛽️🔵',video:'blue.mp4',strain:'- Forbiden pell 😊🍈',description:'LE BMP la famille, une marque de Frozen, très connue et reconnue pour c\'est TERPS RICHE saveurs go, fruité, Dray, sec, petant, explosion de fruits en bouche 🍓🍉🍋🍒🥭🫐',quantities:[{qty:'3G',price:'50 €'},{qty:'5G',price:'80 €'},{qty:'10G',price:'150 €'},{qty:'20G',price:'290 €'},{qty:'25G',price:'320 €'}]},
+  bmp_yellow:{key:'bmp_yellow',title:'FROZEN SIFT ❄️❄️\nYellow melon 🌈🍈',category:'Frozen Sift ❄️',farm:'BLUE MAGIC PATRON ⛽️🔵',video:'blue1.mp4',strain:'- Yellow melon 🌈🍈',description:'LE BMP la famille, une marque de Frozen, très connue et reconnue pour c\'est TERPS RICHE saveurs go, fruité, Dray, sec, petant, explosion de fruits en bouche 🍓🍉🍋🍒🥭🫐',quantities:[{qty:'3G',price:'50 €'},{qty:'5G',price:'80 €'},{qty:'10G',price:'150 €'},{qty:'20G',price:'290 €'},{qty:'25G',price:'320 €'}]}
 };
 
 function loadCustomProducts(){try{return JSON.parse(localStorage.getItem('admin_products_dino76'))||{};}catch(e){return {};}}
@@ -819,7 +826,14 @@ function renderProducts(list){
   if(n===0){grid.innerHTML='<div class="no-results">Aucun produit 🔍</div>';return;}
   list.forEach(p=>{
     const card=document.createElement('div');card.className='card';
-    const mediaHTML=p.video?`<video src="${p.video}" muted autoplay loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`:`<div class="card-no-video">🎬</div>`;
+    let mediaHTML;
+    if(p.video){
+      mediaHTML=`<video src="${p.video}" muted autoplay loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;"></video>`;
+    } else if(p.image){
+      mediaHTML=`<img class="card-img" src="${p.image}" alt="${p.title}" onerror="this.style.display='none'">`;
+    } else {
+      mediaHTML=`<div class="card-no-video">🎬</div>`;
+    }
     const restockBadge=p.restock?`<div style="position:absolute;top:8px;left:8px;z-index:6;background:linear-gradient(135deg,#1a0a00,#2a1200);border:1px solid rgba(255,170,0,0.4);border-radius:8px;padding:4px 10px;font-family:'Bangers',cursive;font-size:0.8rem;letter-spacing:1.5px;color:#ffcc00;display:flex;align-items:center;gap:4px;"><span class="restock-spin">⏳</span> RESTOCK</div>`:'';
     card.innerHTML=`<div class="card-media">${mediaHTML}${restockBadge}<div class="manga-corner"></div><div class="card-overlay"><div class="card-title">${p.title}</div><div class="card-farm">${p.farm}</div></div></div>`;
     card.onclick=()=>openProductDetail(p.key);grid.appendChild(card);
@@ -836,12 +850,19 @@ function scrollToTop(){document.querySelector('.content').scrollTo({top:0,behavi
 function goToHome(){hideAllPages();document.getElementById('home-page').style.display='block';document.getElementById('nav-home').classList.add('active');if(tg)tg.BackButton.hide();scrollToTop();}
 
 let swiperIndex=0,swiperItems=[];
-function buildProductMedia(videoSrc){
+function buildProductMedia(videoSrc, imageSrc){
   const track=document.getElementById('swiper-track');const counter=document.getElementById('swiper-counter');
   const btnPrev=document.querySelector('.swiper-btn-prev');const btnNext=document.querySelector('.swiper-btn-next');
   track.innerHTML='';swiperItems=[];swiperIndex=0;
-  if(videoSrc){const vid=document.createElement('video');vid.src=videoSrc;vid.controls=true;vid.playsInline=true;vid.loop=true;vid.muted=false;vid.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#080800;pointer-events:auto;';track.appendChild(vid);swiperItems.push('video');}
-  else{const ph=document.createElement('div');ph.style.cssText='flex-shrink:0;width:100%;height:100%;background:linear-gradient(135deg,#141414,#080808);display:flex;align-items:center;justify-content:center;font-size:4rem;';ph.textContent='🎬';track.appendChild(ph);swiperItems.push('placeholder');}
+  if(videoSrc){
+    const vid=document.createElement('video');vid.src=videoSrc;vid.controls=true;vid.playsInline=true;vid.loop=true;vid.muted=false;vid.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#080800;pointer-events:auto;';
+    track.appendChild(vid);swiperItems.push('video');
+  } else if(imageSrc){
+    const img=document.createElement('img');img.src=imageSrc;img.alt='';img.style.cssText='flex-shrink:0;width:100%;height:100%;object-fit:cover;background:#080808;pointer-events:none;user-select:none;';
+    track.appendChild(img);swiperItems.push('image');
+  } else {
+    const ph=document.createElement('div');ph.style.cssText='flex-shrink:0;width:100%;height:100%;background:linear-gradient(135deg,#141414,#080808);display:flex;align-items:center;justify-content:center;font-size:4rem;';ph.textContent='🎬';track.appendChild(ph);swiperItems.push('placeholder');
+  }
   btnPrev.style.display='none';btnNext.style.display='none';counter.style.display='none';updateSwiperPosition();
 }
 function updateSwiperPosition(){const track=document.getElementById('swiper-track');track.style.transform=`translateX(-${swiperIndex*100}%)`;track.querySelectorAll('video').forEach(v=>v.pause());}
@@ -864,7 +885,7 @@ function openProductDetail(key){
   const addBtn=document.getElementById('add-to-cart-btn');
   if(p.restock){addBtn.disabled=true;addBtn.style.background='linear-gradient(135deg,#1a0a00,#2a1200)';addBtn.style.color='#ffcc00';addBtn.style.border='1px solid rgba(255,170,0,0.3)';addBtn.style.cursor='not-allowed';addBtn.style.opacity='0.75';addBtn.innerHTML='<span class="restock-spin">⏳</span> RESTOCK EN COURS...';}
   else{addBtn.disabled=false;addBtn.style.background='';addBtn.style.color='';addBtn.style.border='';addBtn.style.cursor='';addBtn.style.opacity='';addBtn.innerHTML='<span>🛒</span> Ajouter au Panier';}
-  buildProductMedia(p.video||null);hideAllPages();document.getElementById('product-detail').style.display='flex';if(tg)tg.BackButton.show();scrollToTop();
+  buildProductMedia(p.video||null, p.image||null);hideAllPages();document.getElementById('product-detail').style.display='flex';if(tg)tg.BackButton.show();scrollToTop();
 }
 
 document.getElementById('add-to-cart-btn').onclick=()=>{
@@ -973,8 +994,8 @@ let adminRestockValue=false;
 function openAdminForm(key){
   const formSection=document.getElementById('admin-form-section');formSection.style.display='block';formSection.scrollIntoView({behavior:'smooth'});
   document.getElementById('admin-edit-key').value=key||'';
-  if(key){document.getElementById('admin-form-title').textContent='✏️ Modifier le produit';const p=getAllProducts()[key];document.getElementById('af-title').value=p.title||'';document.getElementById('af-category').value=p.category||'';document.getElementById('af-farm').value=p.farm||'';document.getElementById('af-video').value=p.video||'';document.getElementById('af-strain').value=p.strain||'';document.getElementById('af-description').value=p.description||'';adminRestockValue=!!p.restock;renderQtyRows(p.quantities||[]);}
-  else{document.getElementById('admin-form-title').textContent='➕ Nouveau produit';['af-title','af-category','af-farm','af-video','af-strain','af-description'].forEach(id=>document.getElementById(id).value='');adminRestockValue=false;renderQtyRows([{qty:'',price:''}]);}
+  if(key){document.getElementById('admin-form-title').textContent='✏️ Modifier le produit';const p=getAllProducts()[key];document.getElementById('af-title').value=p.title||'';document.getElementById('af-category').value=p.category||'';document.getElementById('af-farm').value=p.farm||'';document.getElementById('af-video').value=p.video||'';document.getElementById('af-image').value=p.image||'';document.getElementById('af-strain').value=p.strain||'';document.getElementById('af-description').value=p.description||'';adminRestockValue=!!p.restock;renderQtyRows(p.quantities||[]);}
+  else{document.getElementById('admin-form-title').textContent='➕ Nouveau produit';['af-title','af-category','af-farm','af-video','af-image','af-strain','af-description'].forEach(id=>document.getElementById(id).value='');adminRestockValue=false;renderQtyRows([{qty:'',price:''}]);}
   updateRestockButtons();
 }
 function closeAdminForm(){document.getElementById('admin-form-section').style.display='none';}
@@ -990,9 +1011,9 @@ window.addQtyRow=addQtyRow;
 function getQtyRows(){const rows=document.querySelectorAll('#qty-rows .admin-qty-row');const result=[];rows.forEach(row=>{const inputs=row.querySelectorAll('input');const qty=inputs[0].value.trim();const price=inputs[1].value.trim();if(qty&&price)result.push({qty,price});});return result;}
 
 function saveAdminProduct(){
-  const key=document.getElementById('admin-edit-key').value;const title=document.getElementById('af-title').value.trim();const category=document.getElementById('af-category').value.trim();const farm=document.getElementById('af-farm').value.trim();const video=document.getElementById('af-video').value.trim();const strain=document.getElementById('af-strain').value.trim();const description=document.getElementById('af-description').value.trim();const quantities=getQtyRows();
+  const key=document.getElementById('admin-edit-key').value;const title=document.getElementById('af-title').value.trim();const category=document.getElementById('af-category').value.trim();const farm=document.getElementById('af-farm').value.trim();const video=document.getElementById('af-video').value.trim();const image=document.getElementById('af-image').value.trim();const strain=document.getElementById('af-strain').value.trim();const description=document.getElementById('af-description').value.trim();const quantities=getQtyRows();
   if(!title||!category||!farm){alert('⚠️ Titre, catégorie et farm sont obligatoires !');return;}if(!quantities.length){alert('⚠️ Ajoutez au moins une quantité !');return;}
-  const productData={title,category,farm,video,strain,description,quantities,restock:adminRestockValue};
+  const productData={title,category,farm,video,image,strain,description,quantities,restock:adminRestockValue};
   const isBase=key&&!!BASE_PRODUCTS[key];const isCustom=key&&!!loadCustomProducts()[key];
   if(isBase){const overrides=loadOverrides();overrides[key]={...productData,key};saveOverrides(overrides);}
   else if(isCustom){const custom=loadCustomProducts();custom[key]={...custom[key],...productData};saveCustomProducts(custom);}
