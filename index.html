@@ -7,7 +7,7 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, getDoc, setDoc, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     const firebaseConfig = {
       apiKey: "AIzaSyCDlaHQOdFqglYjFuKsdW8oqePLbdcCluc",
       authDomain: "dino76.firebaseapp.com",
@@ -23,17 +23,10 @@
     window._fsCol = collection;
     window._fsAdd = addDoc;
     window._fsGet = getDocs;
-    window._fsGetDoc = getDoc;
-    window._fsSet = setDoc;
-    window._fsDelete = deleteDoc;
-    window._fsDoc = doc;
     window._fsQ = query;
     window._fsOrder = orderBy;
     document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        if(window.loadAvisFromFirestore) window.loadAvisFromFirestore();
-        if(window.loadProductsFromFirestore) window.loadProductsFromFirestore();
-      }, 300);
+      setTimeout(() => { if(window.loadAvisFromFirestore) window.loadAvisFromFirestore(); }, 300);
     });
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -462,7 +455,7 @@ textarea{min-height:80px;resize:vertical;}
         <button class="admin-add-qty" onclick="addQtyRow()">+ Ajouter une quantité</button>
       </div>
       <div class="admin-form-actions">
-        <button class="btn-save" id="admin-save-btn" onclick="saveAdminProduct()">💾 Sauvegarder</button>
+        <button class="btn-save" onclick="saveAdminProduct()">💾 Sauvegarder</button>
         <button class="btn-cancel" onclick="closeAdminForm()">Annuler</button>
       </div>
     </div>
@@ -768,67 +761,26 @@ const BASE_PRODUCTS = {
   bnf_icc:{key:'bnf_icc',title:'BARBE NOIR F*RM 90u 🏴‍☠️',category:'Fresh Frozen 🧊',farm:'BNF 🏴‍☠️',video:'bnf_icc.mp4',strain:'- Wedding Cake 🎂🥧',description:'Vous connaissez déjà le bon vieux Barbe Noir TERPS high — four saveur rien à dire !! 🔥🔥',quantities:[{qty:'5G',price:'60 €'},{qty:'10G',price:'120 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'270 €'}]},
   psg_static:{key:'psg_static',title:'STATIC SIFT 140/75u ⚡️',category:'Static Sift ⚡️',farm:'PSG F*RM 🗼',video:'psg_static.mp4',restock:true,strain:'- Peach Tsunami 🌊🍑\n- Forbidden 🍓🍉',description:'La capitale !! PSG farm une farm reconnue static frais sec pétant — très élevé excellent rien à dire. 🍋🍓🍉🔥🔥',quantities:[{qty:'2G',price:'40 €'},{qty:'5G',price:'90 €'},{qty:'10G',price:'180 €'},{qty:'20G',price:'300 €'}]},
   golden_dry:{key:'golden_dry',title:'DRY TECH 🌟🌟',category:'Dry 🍫',farm:'GOLDEN FARM',video:'golden_dry.mp4',strain:'- Yellow Runtz ✨🌈\n- Mac Melon 🍡🍈',description:'Golden Farm haute qualité de resiné très bon — consommer en journée ou soirée goutu TERPS validé ! 🔥🔥',quantities:[{qty:'5G',price:'70 €'},{qty:'10G',price:'130 €'},{qty:'20G',price:'230 €'},{qty:'25G',price:'260 €'}]},
+  // ── NOUVEAUX PRODUITS ──
   cali_frozen_sift:{key:'cali_frozen_sift',title:'FROZEN SIFT 🏅❄️\nUSA PREMIUM\n70/130u',category:'Frozen Sift ❄️',farm:'Caliplate❄️',image:'caliplates.jpg',strain:'- BISCOTTI 🎄🏠🥂\n- WEDDING CRASHER 🤩🌟',description:'Le meilleur que Frozen Sift, tout droit des USA à la famille, rien à dire 🇺🇸🇺🇸🚀🚀',quantities:[{qty:'3G',price:'60 €'},{qty:'5G',price:'100 €'},{qty:'10G',price:'200 €'}]},
   bmp_forbidden:{key:'bmp_forbidden',title:'FROZEN SIFT ❄️❄️\nForbiden pell 😊🍈',category:'Frozen Sift ❄️',farm:'BLUE MAGIC PATRON ⛽️🔵',video:'blue.mp4',strain:'- Forbiden pell 😊🍈',description:'LE BMP la famille, une marque de Frozen, très connue et reconnue pour c\'est TERPS RICHE saveurs go, fruité, Dray, sec, petant, explosion de fruits en bouche 🍓🍉🍋🍒🥭🫐',quantities:[{qty:'3G',price:'50 €'},{qty:'5G',price:'80 €'},{qty:'10G',price:'150 €'},{qty:'20G',price:'290 €'},{qty:'25G',price:'320 €'}]},
   bmp_yellow:{key:'bmp_yellow',title:'FROZEN SIFT ❄️❄️\nYellow melon 🌈🍈',category:'Frozen Sift ❄️',farm:'BLUE MAGIC PATRON ⛽️🔵',video:'blue1.mp4',strain:'- Yellow melon 🌈🍈',description:'LE BMP la famille, une marque de Frozen, très connue et reconnue pour c\'est TERPS RICHE saveurs go, fruité, Dray, sec, petant, explosion de fruits en bouche 🍓🍉🍋🍒🥭🫐',quantities:[{qty:'3G',price:'50 €'},{qty:'5G',price:'80 €'},{qty:'10G',price:'150 €'},{qty:'20G',price:'290 €'},{qty:'25G',price:'320 €'}]}
 };
 
-/* ============================================================
-   PRODUITS — stockage partagé Firestore (collection "produits")
-   Tous les utilisateurs voient les mêmes produits.
-   Fallback : si Firestore est inaccessible, on utilise BASE_PRODUCTS
-   en lecture seule (l'admin ne pourra pas sauvegarder).
-   ============================================================ */
-let products = {...BASE_PRODUCTS};
-let productsLoadedFromCloud = false;
-let firestoreAvailable = true;
+function loadCustomProducts(){try{return JSON.parse(localStorage.getItem('admin_products_dino76'))||{};}catch(e){return {};}}
+function saveCustomProducts(obj){try{localStorage.setItem('admin_products_dino76',JSON.stringify(obj));}catch(e){}}
+function loadDeletedBase(){try{return JSON.parse(localStorage.getItem('admin_deleted_base_dino76'))||[];}catch(e){return [];}}
+function saveDeletedBase(arr){try{localStorage.setItem('admin_deleted_base_dino76',JSON.stringify(arr));}catch(e){}}
+function loadOverrides(){try{return JSON.parse(localStorage.getItem('admin_overrides_dino76'))||{};}catch(e){return {};}}
+function saveOverrides(obj){try{localStorage.setItem('admin_overrides_dino76',JSON.stringify(obj));}catch(e){}}
 
-window.loadProductsFromFirestore = async function(){
-  try{
-    const snap = await window._fsGet(window._fsCol(window._db,'produits'));
-    if(snap.empty){
-      // Première fois : on seed Firestore avec les produits de base
-      await seedBaseProductsToFirestore();
-      products = {...BASE_PRODUCTS};
-    } else {
-      const fromCloud = {};
-      snap.docs.forEach(d=>{ fromCloud[d.id] = {...d.data(), key:d.id}; });
-      products = fromCloud;
-    }
-    productsLoadedFromCloud = true;
-    firestoreAvailable = true;
-    refreshUIAfterProductsLoad();
-  }catch(e){
-    console.error('Firestore produits load error', e);
-    firestoreAvailable = false;
-    products = {...BASE_PRODUCTS};
-    refreshUIAfterProductsLoad();
-  }
-};
-
-async function seedBaseProductsToFirestore(){
-  try{
-    const promises = Object.values(BASE_PRODUCTS).map(p =>
-      window._fsSet(window._fsDoc(window._db,'produits',p.key), p)
-    );
-    await Promise.all(promises);
-  }catch(e){console.error('Seed Firestore error', e);}
+function getAllProducts(){
+  const deleted=loadDeletedBase();const overrides=loadOverrides();const custom=loadCustomProducts();const result={};
+  Object.values(BASE_PRODUCTS).forEach(p=>{if(!deleted.includes(p.key)){result[p.key]=overrides[p.key]?{...p,...overrides[p.key]}:{...p};}});
+  Object.values(custom).forEach(p=>{result[p.key]={...p};});
+  return result;
 }
-
-function refreshUIAfterProductsLoad(){
-  populateFilters();
-  renderProducts();
-  // Si le panel admin est ouvert, on rafraîchit sa liste aussi
-  const adminOverlay = document.getElementById('admin-overlay');
-  if(adminOverlay && adminOverlay.classList.contains('open')) renderAdminProductsList();
-}
-
-async function saveProductToFirestore(key, data){
-  await window._fsSet(window._fsDoc(window._db,'produits',key), data);
-}
-async function deleteProductFromFirestore(key){
-  await window._fsDelete(window._fsDoc(window._db,'produits',key));
-}
+let products=getAllProducts();
 
 let cart=[];
 try{cart=JSON.parse(localStorage.getItem('cart_dino76'))||[];}catch(e){cart=[];}
@@ -855,12 +807,9 @@ function populateFilters(){
   const cats=[...new Set(all.map(p=>p.category))].sort();
   const farms=[...new Set(all.map(p=>p.farm))].sort();
   const cs=document.getElementById('category-filter');const fs=document.getElementById('farm-filter');
-  const prevCat=cs.value, prevFarm=fs.value;
   cs.innerHTML='<option value="">Toutes catégories</option>';fs.innerHTML='<option value="">Toutes farms</option>';
   cats.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cs.appendChild(o);});
   farms.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent=f;fs.appendChild(o);});
-  if(cats.includes(prevCat))cs.value=prevCat;
-  if(farms.includes(prevFarm))fs.value=prevFarm;
 }
 function filterProducts(){
   const cf=document.getElementById('category-filter').value;const ff=document.getElementById('farm-filter').value;
@@ -890,6 +839,8 @@ function renderProducts(list){
     card.onclick=()=>openProductDetail(p.key);grid.appendChild(card);
   });
 }
+
+function refreshProductData(){products=getAllProducts();populateFilters();renderProducts();}
 
 function hideAllPages(){
   ['home-page','product-detail','cart-page','infos-page','reseaux-page','avis-page','profil-page'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
@@ -1016,47 +967,34 @@ function openAdmin(){renderAdminProductsList();closeAdminForm();document.getElem
 function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');}
 
 function renderAdminProductsList(){
-  const list=document.getElementById('admin-products-list');list.innerHTML='';
-  if(!firestoreAvailable){
-    list.innerHTML='<p style="color:#ff5533;text-align:center;padding:20px;font-weight:700;font-family:\'Barlow Condensed\',sans-serif;">⚠️ Connexion au serveur impossible. Les modifications ne pourront pas être enregistrées pour les autres utilisateurs. Vérifie ta connexion et réessaie.</p>';
-    return;
-  }
-  if(!Object.keys(products).length){list.innerHTML='<p style="color:#3a2010;text-align:center;padding:20px;font-weight:700;font-family:\'Barlow Condensed\',sans-serif;">Aucun produit.</p>';return;}
-  Object.values(products).forEach(p=>{
-    const div=document.createElement('div');div.className='admin-product-card';
-    div.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px"><div><div class="admin-product-name">${p.title}</div><div class="admin-product-farm">${p.farm} · ${p.category}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">${p.restock?'<span class="admin-restock-on"><span class="restock-spin">⏳</span> RESTOCK</span>':''}</div></div><div class="admin-product-actions"><button class="btn-edit" onclick="openAdminForm('${p.key}')">✏️ Modifier</button><button class="btn-toggle-restock" onclick="toggleRestock('${p.key}')">${p.restock?'✅ Activer':'⏳ Restock'}</button><button class="btn-delete" onclick="deleteAdminProduct('${p.key}')">🗑️</button></div>`;
+  const list=document.getElementById('admin-products-list');const all=getAllProducts();list.innerHTML='';
+  if(!Object.keys(all).length){list.innerHTML='<p style="color:#3a2010;text-align:center;padding:20px;font-weight:700;font-family:\'Barlow Condensed\',sans-serif;">Aucun produit.</p>';return;}
+  Object.values(all).forEach(p=>{
+    const isBase=!!BASE_PRODUCTS[p.key];const div=document.createElement('div');div.className='admin-product-card';
+    div.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px"><div><div class="admin-product-name">${p.title}</div><div class="admin-product-farm">${p.farm} · ${p.category}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">${isBase?'<span style="font-size:0.65rem;color:#3a2010;font-weight:800;letter-spacing:1px;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;">BASE</span>':'<span style="font-size:0.65rem;color:var(--orange);font-weight:800;letter-spacing:1px;font-family:\'Barlow Condensed\',sans-serif;text-transform:uppercase;">CUSTOM</span>'}${p.restock?'<span class="admin-restock-on"><span class="restock-spin">⏳</span> RESTOCK</span>':''}</div></div><div class="admin-product-actions"><button class="btn-edit" onclick="openAdminForm('${p.key}')">✏️ Modifier</button><button class="btn-toggle-restock" onclick="toggleRestock('${p.key}')">${p.restock?'✅ Activer':'⏳ Restock'}</button><button class="btn-delete" onclick="deleteAdminProduct('${p.key}')">🗑️</button></div>`;
     list.appendChild(div);
   });
 }
 
-async function toggleRestock(key){
-  const p=products[key];if(!p)return;
-  const newVal=!p.restock;const updated={...p,restock:newVal};
-  try{
-    await saveProductToFirestore(key,updated);
-    products[key]=updated;
-    populateFilters();renderProducts();renderAdminProductsList();
-    showAdminToast(newVal?'⏳ Restock activé':'✅ Produit disponible');
-  }catch(e){console.error(e);alert('❌ Erreur de synchronisation. Réessaie.');}
+function toggleRestock(key){
+  const all=getAllProducts();const p=all[key];const isBase=!!BASE_PRODUCTS[key];const isCustom=!!loadCustomProducts()[key];const newVal=!p.restock;
+  if(isBase){const overrides=loadOverrides();overrides[key]={...(overrides[key]||{}),restock:newVal};saveOverrides(overrides);}
+  else if(isCustom){const custom=loadCustomProducts();custom[key].restock=newVal;saveCustomProducts(custom);}
+  refreshProductData();renderAdminProductsList();showAdminToast(newVal?'⏳ Restock activé':'✅ Produit disponible');
 }
-window.toggleRestock=toggleRestock;
 
-async function deleteAdminProduct(key){
-  if(!confirm('Supprimer ce produit ? Cette action est visible par tous les utilisateurs.'))return;
-  try{
-    await deleteProductFromFirestore(key);
-    delete products[key];
-    populateFilters();renderProducts();renderAdminProductsList();
-    showAdminToast('🗑️ Produit supprimé');
-  }catch(e){console.error(e);alert('❌ Erreur de synchronisation. Réessaie.');}
+function deleteAdminProduct(key){
+  const isBase=!!BASE_PRODUCTS[key];const isCustom=!!loadCustomProducts()[key];if(!confirm('Supprimer ce produit ?'))return;
+  if(isBase){const deleted=loadDeletedBase();if(!deleted.includes(key))deleted.push(key);saveDeletedBase(deleted);const overrides=loadOverrides();delete overrides[key];saveOverrides(overrides);}
+  else if(isCustom){const custom=loadCustomProducts();delete custom[key];saveCustomProducts(custom);}
+  refreshProductData();renderAdminProductsList();showAdminToast('🗑️ Produit supprimé');
 }
-window.deleteAdminProduct=deleteAdminProduct;
 
 let adminRestockValue=false;
 function openAdminForm(key){
   const formSection=document.getElementById('admin-form-section');formSection.style.display='block';formSection.scrollIntoView({behavior:'smooth'});
   document.getElementById('admin-edit-key').value=key||'';
-  if(key){document.getElementById('admin-form-title').textContent='✏️ Modifier le produit';const p=products[key];document.getElementById('af-title').value=p.title||'';document.getElementById('af-category').value=p.category||'';document.getElementById('af-farm').value=p.farm||'';document.getElementById('af-video').value=p.video||'';document.getElementById('af-image').value=p.image||'';document.getElementById('af-strain').value=p.strain||'';document.getElementById('af-description').value=p.description||'';adminRestockValue=!!p.restock;renderQtyRows(p.quantities||[]);}
+  if(key){document.getElementById('admin-form-title').textContent='✏️ Modifier le produit';const p=getAllProducts()[key];document.getElementById('af-title').value=p.title||'';document.getElementById('af-category').value=p.category||'';document.getElementById('af-farm').value=p.farm||'';document.getElementById('af-video').value=p.video||'';document.getElementById('af-image').value=p.image||'';document.getElementById('af-strain').value=p.strain||'';document.getElementById('af-description').value=p.description||'';adminRestockValue=!!p.restock;renderQtyRows(p.quantities||[]);}
   else{document.getElementById('admin-form-title').textContent='➕ Nouveau produit';['af-title','af-category','af-farm','af-video','af-image','af-strain','af-description'].forEach(id=>document.getElementById(id).value='');adminRestockValue=false;renderQtyRows([{qty:'',price:''}]);}
   updateRestockButtons();
 }
@@ -1072,30 +1010,22 @@ window.addQtyRow=addQtyRow;
 
 function getQtyRows(){const rows=document.querySelectorAll('#qty-rows .admin-qty-row');const result=[];rows.forEach(row=>{const inputs=row.querySelectorAll('input');const qty=inputs[0].value.trim();const price=inputs[1].value.trim();if(qty&&price)result.push({qty,price});});return result;}
 
-async function saveAdminProduct(){
+function saveAdminProduct(){
   const key=document.getElementById('admin-edit-key').value;const title=document.getElementById('af-title').value.trim();const category=document.getElementById('af-category').value.trim();const farm=document.getElementById('af-farm').value.trim();const video=document.getElementById('af-video').value.trim();const image=document.getElementById('af-image').value.trim();const strain=document.getElementById('af-strain').value.trim();const description=document.getElementById('af-description').value.trim();const quantities=getQtyRows();
   if(!title||!category||!farm){alert('⚠️ Titre, catégorie et farm sont obligatoires !');return;}if(!quantities.length){alert('⚠️ Ajoutez au moins une quantité !');return;}
-  const finalKey = key || ('custom_'+Date.now());
-  const productData={key:finalKey,title,category,farm,video,image,strain,description,quantities,restock:adminRestockValue};
-  const saveBtn=document.getElementById('admin-save-btn');saveBtn.disabled=true;saveBtn.textContent='💾 Enregistrement...';
-  try{
-    await saveProductToFirestore(finalKey, productData);
-    products[finalKey]=productData;
-    populateFilters();renderProducts();renderAdminProductsList();closeAdminForm();
-    showAdminToast('✅ Produit sauvegardé pour tout le monde !');
-  }catch(e){
-    console.error(e);
-    alert('❌ Erreur de synchronisation. Le produit n\'a pas pu être enregistré. Vérifie ta connexion et réessaie.');
-  }finally{
-    saveBtn.disabled=false;saveBtn.innerHTML='💾 Sauvegarder';
-  }
+  const productData={title,category,farm,video,image,strain,description,quantities,restock:adminRestockValue};
+  const isBase=key&&!!BASE_PRODUCTS[key];const isCustom=key&&!!loadCustomProducts()[key];
+  if(isBase){const overrides=loadOverrides();overrides[key]={...productData,key};saveOverrides(overrides);}
+  else if(isCustom){const custom=loadCustomProducts();custom[key]={...custom[key],...productData};saveCustomProducts(custom);}
+  else{const newKey='custom_'+Date.now();const custom=loadCustomProducts();custom[newKey]={key:newKey,...productData};saveCustomProducts(custom);}
+  refreshProductData();renderAdminProductsList();closeAdminForm();showAdminToast('✅ Produit sauvegardé !');
 }
-window.saveAdminProduct=saveAdminProduct;window.openAdminForm=openAdminForm;window.closeAdminForm=closeAdminForm;
+window.saveAdminProduct=saveAdminProduct;window.openAdminForm=openAdminForm;window.closeAdminForm=closeAdminForm;window.deleteAdminProduct=deleteAdminProduct;window.toggleRestock=toggleRestock;
 
 function showAdminToast(msg){const t=document.getElementById('admin-toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
 document.addEventListener('DOMContentLoaded',()=>{
-  populateFilters();renderProducts();updateBadge();goToHome();
+  products=getAllProducts();populateFilters();renderProducts();updateBadge();goToHome();
   const splash=document.getElementById('splash-screen');
   setTimeout(()=>{splash.classList.add('hidden');setTimeout(()=>{splash.style.display='none';},700);},2600);
 });
