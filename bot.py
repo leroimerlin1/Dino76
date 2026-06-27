@@ -19,10 +19,10 @@ from telegram.ext import (
    JobQueue
 )
 
-token = "7897439481:AAGl5umeYPVWTMcVxoLdHyO1aY6G0sJ1LK8"
+token = "8636560343:AAGgR3obkv5qZLuI5EX6gfVCNcELM5NVgFM"
 
 CHANNEL_ID = -1003733915057
-CHANNEL_LINK = "https://t.me/+j7EMkLSIaV83ZmU8"
+CHANNEL_LINK = "https://t.me/+_kRdeFkatcZmZTM0"
 MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"
 GROUP_LINK = "https://t.me/+mktubkoTrqM0ZjI0"
 
