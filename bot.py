@@ -19,7 +19,7 @@ from telegram.ext import (
    JobQueue
 )
 
-token = "8636560343:AAGgR3obkv5qZLuI5EX6gfVCNcELM5NVgFM"
+token = "8889295763:AAG58WSUJuB1QkGLcWXRewCwdtN69qDY_LU"
 
 CHANNEL_ID = -1003733915057
 CHANNEL_LINK = "https://t.me/+_kRdeFkatcZmZTM0"
