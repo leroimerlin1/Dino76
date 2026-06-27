@@ -21,7 +21,7 @@ from telegram.ext import (
 
 token = "8889295763:AAG58WSUJuB1QkGLcWXRewCwdtN69qDY_LU"
 
-CHANNEL_ID = -1003733915057
+CHANNEL_ID = -1003958072575
 CHANNEL_LINK = "https://t.me/+_kRdeFkatcZmZTM0"
 MINI_APP_URL = "https://leroimerlin1.github.io/Dino76/"
 GROUP_LINK = "https://t.me/+mktubkoTrqM0ZjI0"
